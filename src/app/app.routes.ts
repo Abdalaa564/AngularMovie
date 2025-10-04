@@ -9,7 +9,7 @@ import { Carousel } from './component/carousel/carousel';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'Home' },
-  { path: 'MovieDetail', component: MovieDetail, title: 'MovieDetail' },
+  { path: 'details/:id', component: MovieDetail, title: 'Movie Details' },
   { path: 'MovieList', component: MovieList, title: 'MovieList' },
   { path: 'Wishlist', component: Wishlist, title: 'Wishlist' },
   { path: 'Review', component: Review, title: 'Review' },
