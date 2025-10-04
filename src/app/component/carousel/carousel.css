@@ -1,98 +1,148 @@
-/* إعداد الصورة الأساسية */
+
+.main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+
+
+.big-icon {
+    font-size: 5rem;
+    cursor: pointer;
+}
+.carousel-item {
+    position: relative;
+    overflow: hidden;
+    height: 550px;
+    margin-bottom: 5rem;
+}
 .carousel-item img {
-  height: 550px;
+  height: 500px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 8px;
+  display: block;
+  z-index: 0;
+  position: relative;
+}
+.carousel-caption {
+  position: absolute;
+  z-index: 10;
+}
+.main-caption {
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  bottom: -20px;
+  left: 0;
+  padding: 20px;
+  padding-left: 60px;
+  width: 100%;
+  position: absolute;
+  z-index: 20;
 }
 
-/* تنسيق البوكس اللي فيه المعلومات */
-.caption-box {
-  margin-bottom: -80px;
-  margin-left: -120px;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
-  padding: 15px;
+.main-caption-content h5 {
+  font-size: 2rem;
+  margin: 0;
 }
 
-/* الكارد الصغيرة */
+.main-caption-content p {
+  font-size: 1.25rem;
+  color: #ccc;
+  margin-bottom: 5px;
+}
+
+.movie-time {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+
 .movie-card {
-  width: 12rem;
-  background-color: transparent;
-  border-radius: 15px;
+  width: 165px;
+  height: 240px;
+  border-radius: 10px;
   overflow: hidden;
   position: relative;
-  box-shadow: none;
 }
 
 .movie-card img {
-  width: 170px;
-  height: auto;
-  border-radius: 15px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* الأيقونة أعلى الكارد */
 .add-icon {
   position: absolute;
   top: 0;
   left: 0;
-  width: 40px;
-  height: 50px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-top-left-radius: 15px;
+  background: rgba(0,0,0,0.5);
+  padding: 4px;
+  border-bottom-right-radius: 6px;
 }
 
 .add-icon i {
-  color: white;
-  font-size: 24px;
-}
-
-/* أيقونة التشغيل الكبيرة */
-.play-icon {
-  font-size: 50px;
-  margin-left: 15px;
-  color: white;
-  transition: transform 0.3s ease;
-  cursor: pointer;
-}
-
-.play-icon:hover {
-  transform: scale(1.1);
-  color: #f5b921;
-}
-
-/* النصوص */
-.movie-info h5 {
-  font-weight: 600;
-  color: white;
-}
-
-.movie-info p {
-  color: #ddd;
-}
-
-.movie-info img {
-  width: 40px;
-  height: auto;
-}
-
-.reactions i {
   color: #fff;
-  margin-right: 10px;
+  font-size: 18px;
 }
 
-/* المؤشرات */
-.carousel-indicators {
-  margin-bottom: -1.5rem;
+.up-next-list {
+  margin-top: 10px;
 }
 
-.carousel-indicators [data-bs-target] {
-  background-color: #fff;
+
+.up-next-card {
+  border-radius: 10px;
+  align-items: center;
+  height: 140px;
+
+  display: flex;
 }
 
-/* أزرار التحكم */
-.carousel-control-prev,
-.carousel-control-next {
-  background: transparent;
-  border: none;
-  box-shadow: none;
+.up-next-card img {
+  width: 90px;
+  height: 130px;
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+.up-next-card h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(255, 255, 255);
+}
+
+.up-next-card p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.custom-icons i {
+  color: rgba(255, 255, 255, 75) !important;
+
+}
+.main-icon{
+
+  color: rgba(255, 255, 255, 75) !important;
+}
+.browse-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.browse-link:hover {
+  color: #ffc107;
+}
+
+.up-next{
+    margin-top: 5px;
+    font-size: 1.25rem;
+    font-weight: 600;
 }
