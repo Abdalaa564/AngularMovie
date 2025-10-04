@@ -120,6 +120,10 @@
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
+.text-muted{
+  color: rgb(255 255 255 / 75%);
+}
+
 .custom-icons i {
   color: rgba(255, 255, 255, 75) !important;
 
@@ -139,6 +143,7 @@
 
 .browse-link:hover {
   color: #ffc107;
+  text-decoration: underline;
 }
 
 .up-next{
