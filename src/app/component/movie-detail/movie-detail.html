@@ -1,1 +1,82 @@
-<p>movie-detail works!</p>
+@if (movieDetails(); as movie) {
+<div class="container-fluid movie-details-container py-5" 
+     [style.background-image]="'url(https://image.tmdb.org/t/p/original' + movie.backdrop_path + ')'">
+  <div class="container details-content">
+    <div class="row">
+      <div class="col-md-4 text-center">
+        <img [src]="imageBaseUrl + movie.poster_path" class="img-fluid rounded shadow" [alt]="movie.title">
+      </div>
+      <div class="col-md-8">
+        <h2>{{ movie.title }} ({{ movie.release_date | date: 'yyyy' }})</h2>
+        <p class="tagline"><em>{{ movie.tagline }}</em></p>
+        
+        <div class="genres mb-3">
+          @for (genre of movie.genres; track genre.id) {
+            <span class="badge bg-secondary me-2">{{ genre.name }}</span>
+          }
+        </div>
+
+        <p class="rating">
+          <i class="bi bi-star-fill text-warning"></i> 
+          <strong>{{ movie.vote_average.toFixed(1) }}</strong> / 10
+        </p>
+
+        <h4>Overview</h4>
+        <p>{{ movie.overview }}</p>
+
+        @if (trailerUrl()) {
+          <a class="btn btn-warning btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#trailerModal">
+            <i class="bi bi-play-circle"></i> Watch Trailer
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5">
+  <h3 class="mb-4">Top Billed Cast</h3>
+  <div class="scrolling-wrapper">
+    @for (actor of movie.credits?.cast | slice:0:10; track actor.id) {
+      <div class="actor-card">
+        <img [src]="imageBaseUrl + actor.profile_path" [alt]="actor.name" class="actor-img">
+        <div class="actor-info">
+          <strong>{{ actor.name }}</strong>
+          <small>{{ actor.character }}</small>
+        </div>
+      </div>
+    }
+  </div>
+
+  <hr class="my-5">
+
+  <h3 class="mb-4">Recommendations</h3>
+  <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+    @for (rec of recommendations(); track rec.id) {
+      <div class="col">
+        <app-movie-card [movie]="rec" />
+      </div>
+    }
+  </div>
+</div>
+
+@if (trailerUrl(); as url) {
+  <div class="modal fade" id="trailerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ movie.title }} - Trailer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="ratio ratio-16x9">
+            <iframe [src]="url" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+} @else {
+  <p class="text-center mt-5">Loading...</p>
+}

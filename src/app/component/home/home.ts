@@ -1,29 +1,28 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Carousel } from "../carousel/carousel";
 import { MovieService } from '../../services/movie-service';
-import { IMovie } from '../../models/i-movie'; // استيراد الـ Interface
+import { IMovie } from '../../models/i-movie';
+import { MovieCard } from '../movie-card/movie-card';
+import { Carousel } from '../carousel/carousel';
+import { CommonModule } from '@angular/common'; //  <-- ضيف الـ import ده
 
 @Component({
   selector: 'app-home',
-  imports: [Carousel],
+  imports: [Carousel, MovieCard, CommonModule], // <-- وضيفه هنا كمان
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
 export class Home implements OnInit {
   private movieService = inject(MovieService);
-  
-  // متغير عشان نخزن فيه قائمة الأفلام اللي هتيجي من الـ API
   movies: IMovie[] = [];
 
   ngOnInit(): void {
-    // أول ما الكومبوننت يشتغل، بنطلب الأفلام
     this.movieService.getNowPlayingMovies().subscribe({
-      next: (response: any) => {
-        // الـ API بيرجع object اسمه results وجواه قائمة الأفلام
-        this.movies = response.results;
+      next: (response) => {
+        // ## السطر ده هو التعديل المهم ##
+        // بنقوله هات قائمة الأفلام اللي جوه 'results'
+        this.movies = response.results; 
         
-        // أهم خطوة: نتأكد إن الداتا وصلت عن طريق الـ console
-        console.log(this.movies); 
+        console.log('Movies for Home page:', this.movies); // للتأكد
       },
       error: (err) => console.error('Error fetching movies:', err)
     });

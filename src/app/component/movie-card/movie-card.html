@@ -1,0 +1,10 @@
+<a [routerLink]="['/details', movie.id]" class="card movie-card h-100 text-decoration-none text-white">
+  <img [src]="imageBaseUrl + movie.poster_path" class="card-img-top" [alt]="movie.title">
+  <div class="card-body">
+    <h6 class="card-title">{{ movie.title }}</h6>
+    <p class="card-text"><small class="text-muted">{{ movie.release_date | date: 'yyyy' }}</small></p>
+  </div>
+  <div class="rating">
+    {{ movie.vote_average.toFixed(1) }}
+  </div>
+</a>
