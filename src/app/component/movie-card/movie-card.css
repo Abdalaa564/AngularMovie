@@ -4,16 +4,19 @@
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   position: relative;
   overflow: hidden;
+  font-family: cairo, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
 }
 
 .movie-card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+
 }
 
 .card-title {
   font-size: 0.9rem;
   font-weight: bold;
+  font-family: cairo, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
 }
 
 .rating {
@@ -26,4 +29,5 @@
   border-radius: 5px;
   font-size: 0.8rem;
   font-weight: bold;
+  font-family: cairo, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
 }

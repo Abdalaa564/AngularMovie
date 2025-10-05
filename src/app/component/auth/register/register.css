@@ -7,7 +7,7 @@
 	padding: 24px;
 	border-radius: 10px;
 	box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-	font-family: Inter, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
+	font-family: cairo, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
 }
 
 .auth-form h2 {
