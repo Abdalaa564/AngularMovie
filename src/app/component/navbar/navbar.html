@@ -46,12 +46,14 @@
       </div>
     </div>
 
-    <div class="action-item">
-      <i class="fa fa-bookmark"></i> Watchlist
-    </div>
-    <div class="action-item">
-      <i class="fa fa-user"></i> Sign In
-    </div>
+   <div class="action-item" [routerLink]="['/watchlist']" routerLinkActive="active">
+  <i class="fa fa-bookmark"></i> Watchlist
+</div>
+
+  <div class="action-item" [routerLink]="['/login']">
+  <i class="fa fa-user"></i> Sign In
+</div>
+
     <div class="action-item">
       EN <i class="fa fa-caret-down"></i>
     </div>
