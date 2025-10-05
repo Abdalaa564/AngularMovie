@@ -8,24 +8,29 @@ import { WishlistService } from '../../services/wishlist-service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css']
+  styleUrls: ['./navbar.css'],
 })
 export class Navbar {
+  showMenuList = false;
+
+  toggleMenuList() {
+    this.showMenuList = !this.showMenuList;
+  }
   showAllDropdown = false;
- showImdbPro = false;
+  showImdbPro = false;
   private router = inject(Router);
   auth = inject(AuthService);
   private wishlist = inject(WishlistService);
   wishlistCount = computed(() => this.wishlist.count());
   searchText = '';
   searchType: 'All' | 'Titles' | 'TV' | 'Celebs' | 'Companies' | 'Keywords' = 'All';
-   hideProBox() {
-  setTimeout(() => {
-    this.showImdbPro = false;
-  }, 200); // تأخير 200ms
-}
+  hideProBox() {
+    setTimeout(() => {
+      this.showImdbPro = false;
+    }, 200); // تأخير 200ms
+  }
 
   goToLogin() {
     this.router.navigate(['/auth/login']);
@@ -67,9 +72,7 @@ export class Navbar {
   logout() {
     this.auth.logout();
     this.wishlist.refreshForCurrentUser();
-    alert( 'Logged out');
+    alert('Logged out');
     this.router.navigate(['/']);
   }
-
-
 }

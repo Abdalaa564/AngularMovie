@@ -1,12 +1,20 @@
 <nav class="navbar">
   <!-- Logo -->
-  <div class="logo">IMDb</div>
-
-  <!-- Menu -->
-  <div class="menu" (click)="goHome()" style="cursor: pointer;">
-    <i class="fa fa-bars"></i> Menu
+    <div class="logo" [routerLink]="['/']" style="cursor: pointer;">
+    IMDb
   </div>
 
+  <!-- Menu -->
+   <div class="menu" (click)="toggleMenuList()">
+    <i class="fa fa-bars"></i> Menu
+
+    <div class="menu-list" *ngIf="showMenuList">
+      <a routerLink="/" class="menu-item"><i class="fa fa-home"></i> Home</a>
+      <a routerLink="/Wishlist" class="menu-item"><i class="fa fa-film"></i> Movies</a>
+      <a routerLink="/auth/login" class="menu-item"> <i class="fa fa-user"></i> Sign In</a>
+      <a routerLink="/" class="menu-item"><i class="fa fa-envelope"></i> Contact</a>
+    </div>
+  </div>
   <!-- Search Section -->
   <div class="search-bar">
     <div class="dropdown" (click)="toggleSearchTypeMenu($event)">
