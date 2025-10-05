@@ -1,0 +1,193 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: #232222;
+  color: white;
+  padding: 10px 20px;
+  font-family: Arial, sans-serif;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  background-color: #f5c518;
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 5px 5px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.menu {
+  cursor: pointer;
+  margin-right: 20px;
+margin-left: 30px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
+  gap: 5px;
+  flex-grow: 1;
+  max-width: 800px;
+  margin-left: 30px;
+}
+
+.search-bar input {
+  flex-grow: 1;
+  border: none;
+  padding: 5px;
+}
+
+.search-bar button {
+  background-color: #f5c518;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.dropdown {
+  position: relative;
+  background-color: white;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 100;
+  min-width: 200px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.dropdown-menu div {
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-menu div:hover {
+  background-color: #333;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.pro {
+  color: #00bfff;
+  font-weight: bold;
+}
+
+.imdbpro {
+  position: relative;
+  cursor: pointer;
+}
+
+.imdbpro-box {
+  position: absolute;
+  top: 100%;
+  right: 70%;
+background-image: url(https://media.istockphoto.com/id/1478374885/photo/joyful-family-watching-movie-in-cinema.jpg?s=612x612&w=0&k=20&c=U0Qp-c2vCTUPG51ZOD2H7KcrByyBKow3r9wSR2QMFZU=);
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+
+  min-width: 700px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 200;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+
+}
+
+
+.imdbpro-box button {
+  background-color: yellow;
+  color: black;
+  font-weight: bold;
+  border: none;
+  padding: 5px 10px;
+  margin-top: 10px;
+  border-radius: 3px;
+
+}
+/* عناصر التنقل بعد البحث */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  margin-left: auto;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.action-item:hover {
+  color: #f5c518;
+}
+
+/* تحسين زر البحث */
+.search-bar button:hover {
+  background-color: #e4b800;
+}
+
+/* تحسين Dropdown */
+.dropdown:hover {
+  background-color: #f0f0f0;
+}
+
+/* تحسين أيقونات */
+.fa {
+  font-size: 14px;
+}
+
+/* تأثير دخول للبوكس */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.imdbpro-box {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* تحسين النص داخل بوكس IMDbPro */
+.imdbpro-box p {
+  margin: 5px 0;
+  text-transform: uppercase;
+  font-size: 18px;
+  padding: 6px 12px;
+  border-radius: 4px;
+}

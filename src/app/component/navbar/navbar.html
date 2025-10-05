@@ -1,1 +1,59 @@
-<p>navbar works!</p>
+<nav class="navbar">
+  <!-- Logo -->
+  <div class="logo">IMDb</div>
+
+  <!-- Menu -->
+  <div class="menu">
+    <i class="fa fa-bars"></i> Menu
+  </div>
+
+  <!-- Search Section -->
+  <div class="search-bar">
+    <div class="dropdown"
+     (mouseenter)="showAllDropdown = true"
+     (mouseleave)="showAllDropdown = false">
+  All <i class="fa fa-caret-down"></i>
+  <div class="dropdown-menu" *ngIf="showAllDropdown">
+    <div><i class="fa fa-search"></i> All</div>
+    <div><i class="fa fa-film"></i> Titles</div>
+    <div><i class="fa fa-tv"></i> TV Episodes</div>
+    <div><i class="fa fa-user"></i> Celebs</div>
+    <div><i class="fa fa-building"></i> Companies</div>
+    <div><i class="fa fa-tag"></i> Keywords</div>
+    <div><i class="fa fa-plus"></i> Advanced Search</div>
+  </div>
+</div>
+
+    <input type="text" placeholder="Search IMDb..." />
+    <button><i class="fa fa-search"></i></button>
+  </div>
+
+  <!-- Navigation Actions -->
+  <div class="nav-actions">
+    <div class="imdbpro"
+         (mouseenter)="showImdbPro = true"
+         (mouseleave)="showImdbPro = false">
+      <span>IMDb<span class="pro">Pro</span></span>
+
+      <div class="imdbpro-box"
+           (mouseenter)="showImdbPro = true"
+           (mouseleave)="showImdbPro = false"
+           *ngIf="showImdbPro">
+        <p>Expand your network</p>
+        <p>Express yourself authentically</p>
+        <p>Access exclusive insights</p>
+        <button>Try IMDbPro for FREE</button>
+      </div>
+    </div>
+
+    <div class="action-item">
+      <i class="fa fa-bookmark"></i> Watchlist
+    </div>
+    <div class="action-item">
+      <i class="fa fa-user"></i> Sign In
+    </div>
+    <div class="action-item">
+      EN <i class="fa fa-caret-down"></i>
+    </div>
+  </div>
+</nav>
