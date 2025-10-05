@@ -1,82 +1,118 @@
-@if (movieDetails(); as movie) {
-<div class="container-fluid movie-details-container py-5" 
-     [style.background-image]="'url(https://image.tmdb.org/t/p/original' + movie.backdrop_path + ')'">
-  <div class="container details-content">
-    <div class="row">
-      <div class="col-md-4 text-center">
-        <img [src]="imageBaseUrl + movie.poster_path" class="img-fluid rounded shadow" [alt]="movie.title">
-      </div>
-      <div class="col-md-8">
-        <h2>{{ movie.title }} ({{ movie.release_date | date: 'yyyy' }})</h2>
-        <p class="tagline"><em>{{ movie.tagline }}</em></p>
-        
-        <div class="genres mb-3">
-          @for (genre of movie.genres; track genre.id) {
-            <span class="badge bg-secondary me-2">{{ genre.name }}</span>
-          }
-        </div>
-
-        <p class="rating">
-          <i class="bi bi-star-fill text-warning"></i> 
-          <strong>{{ movie.vote_average.toFixed(1) }}</strong> / 10
-        </p>
-
-        <h4>Overview</h4>
-        <p>{{ movie.overview }}</p>
-
-        @if (trailerUrl()) {
-          <a class="btn btn-warning btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#trailerModal">
-            <i class="bi bi-play-circle"></i> Watch Trailer
-          </a>
-        }
-      </div>
-    </div>
+@if (isLoading()) {
+  <div class="loading-container">
+    <div class="spinner"></div>
   </div>
-</div>
-
-<div class="container my-5">
-  <h3 class="mb-4">Top Billed Cast</h3>
-  <div class="scrolling-wrapper">
-    @for (actor of movie.credits?.cast | slice:0:10; track actor.id) {
-      <div class="actor-card">
-        <img [src]="imageBaseUrl + actor.profile_path" [alt]="actor.name" class="actor-img">
-        <div class="actor-info">
-          <strong>{{ actor.name }}</strong>
-          <small>{{ actor.character }}</small>
+} @else {
+  @if (movieDetails(); as movie) {
+  <div class="container-fluid movie-details-container py-5" 
+       [style.background-image]="'url(https://image.tmdb.org/t/p/original' + movie.backdrop_path + ')'">
+    <div class="container details-content">
+      <div class="row">
+        <div class="col-md-4 text-center">
+            
+          <img [src]="imageBaseUrl + movie.poster_path" class="img-fluid rounded shadow" [alt]="movie.title">
         </div>
+        <div class="col-md-8">
+            
+          <h2>{{ movie.title }} ({{ movie.release_date | date: 'yyyy' }})</h2>
+          
+          <div class="quick-info">
+            <span>{{ movie.release_date | date: 'MM/dd/yyyy' }}</span>
+            <span class="dot-separator"></span>
+            @for (genre of movie.genres; track genre.id) {
+              <span>{{ genre.name }}@if (!$last) {, }</span>
+            }
+            <span class="dot-separator"></span>
+            <span>{{ formatRuntime(movie.runtime) }}</span>
+          </div>
+  
+          <div class="rating-badge md-3">
+              <i class="bi bi-star-fill text-dark me-1"></i> 
+              <strong>{{ movie.vote_average.toFixed(1) }}</strong> / 10
+          </div>
+          
+          <p class="tagline mt-3"><em>{{ movie.tagline }}</em></p>
+  
+          <h4>Overview</h4>
+          <p>{{ movie.overview }}</p>
+
+          <div class="row crew-section md-4">
+            @for (crewMember of featuredCrew(); track crewMember.credit_id) {
+              <div class="col-md-4">
+                <strong>{{ crewMember.name }}</strong>
+                <p>{{ crewMember.job }}</p>
+              </div>
+            }
+          </div>
+          </div>
       </div>
-    }
-  </div>
+      <br>
 
-  <hr class="my-5">
-
-  <h3 class="mb-4">Recommendations</h3>
-  <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
-    @for (rec of recommendations(); track rec.id) {
-      <div class="col">
-        <app-movie-card [movie]="rec" />
-      </div>
-    }
-  </div>
-</div>
-
-@if (trailerUrl(); as url) {
-  <div class="modal fade" id="trailerModal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{ movie.title }} - Trailer</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <div class="ratio ratio-16x9">
-            <iframe [src]="url" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+      <div class="row md-5">
+        <div class="col-12">
+          <h3 class="mb-4">Top Billed Cast</h3>
+          <div class="cast-slider">
+            <div class="scrolling-wrapper" #scrollingWrapper>
+              @for (actor of movie.credits?.cast | slice:0:15; track actor.id) {
+                <div class="actor-card">
+                  @if (actor.profile_path) {
+                    <img [src]="imageBaseUrl + actor.profile_path" [alt]="actor.name" class="actor-img">
+                  } @else {
+                    <div class="actor-img-placeholder"><i class="bi bi-person"></i></div>
+                  }
+                  <div class="actor-info">
+                    <strong>{{ actor.name }}</strong>
+                    <small>{{ actor.character }}</small>
+                  </div>
+                </div>
+              }
+            </div>
+            <button class="slider-btn prev" (click)="scrollCast('prev')"><i class="bi bi-chevron-left"></i></button>
+            <button class="slider-btn next" (click)="scrollCast('next')"><i class="bi bi-chevron-right"></i></button>
           </div>
         </div>
       </div>
     </div>
   </div>
-}
-} @else {
-  <p class="text-center mt-5">Loading...</p>
+  
+  
+  <div class="container my-5">
+    @if (mediaItems().length > 0) {
+      <h3 class="mb-4">Media</h3>
+      <div class="media-slider"> 
+        <div class="scrolling-wrapper media-scroller" #mediaScroller>
+          @for (item of mediaItems(); track $index) {
+            <div class="media-card">
+              @switch (item.media_type) {
+                @case ('video') {
+                  <div class="video-container">
+                    <iframe [src]="getSafeVideoUrl(item.key)" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+                  </div>
+                }
+                @case ('backdrop') {
+                  <img [src]="getFullImagePath(item.file_path)" alt="Backdrop">
+                }
+                @case ('poster') {
+                  <img [src]="getFullImagePath(item.file_path)" alt="Poster">
+                }
+              }
+            </div>
+          }
+        </div>
+        <button class="slider-btn prev" (click)="scrollMedia('prev')"><i class="bi bi-chevron-left"></i></button>
+        <button class="slider-btn next" (click)="scrollMedia('next')"><i class="bi bi-chevron-right"></i></button>
+      </div>
+      <hr class="my-5">
+    }
+  
+    <h3 class="mb-4">Recommendations</h3>
+    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+      @for (rec of recommendations(); track rec.id) {
+        <div class="col">
+          <app-movie-card [movie]="rec" />
+        </div>
+      }
+    </div>
+  </div>
+  }
 }
