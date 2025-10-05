@@ -1,36 +1,14 @@
 <nav class="navbar">
   <!-- Logo -->
-  <div class="logo" [routerLink]="['/']" style="cursor: pointer;">
-    IMDb
-  </div>
+  <div class="logo">IMDb</div>
 
   <!-- Menu -->
-  <div class="menu" (click)="toggleMenuList()">
   <div class="menu" (click)="goHome()" style="cursor: pointer;">
     <i class="fa fa-bars"></i> Menu
-
-    <div class="menu-list" *ngIf="showMenuList">
-      <a routerLink="/" class="menu-item"><i class="fa fa-home"></i> Home</a>
-      <a routerLink="/MovieList" class="menu-item"><i class="fa fa-film"></i> Movies</a>
-      <a routerLink="/login" class="menu-item"> <i class="fa fa-user"></i> Sign In</a>
-      <a routerLink="/" class="menu-item"><i class="fa fa-envelope"></i> Contact</a>
-    </div>
   </div>
 
   <!-- Search Section -->
   <div class="search-bar">
-    <div class="dropdown" (mouseenter)="showAllDropdown = true" (mouseleave)="showAllDropdown = false">
-      All <i class="fa fa-caret-down"></i>
-      <div class="dropdown-menu" *ngIf="showAllDropdown">
-        <div><i class="fa fa-search"></i> All</div>
-        <div><i class="fa fa-film"></i> Titles</div>
-        <div><i class="fa fa-tv"></i> TV Episodes</div>
-        <div><i class="fa fa-user"></i> Celebs</div>
-        <div><i class="fa fa-building"></i> Companies</div>
-        <div><i class="fa fa-tag"></i> Keywords</div>
-        <div><i class="fa fa-plus"></i> Advanced Search</div>
-      </div>
-    </div>
     <div class="dropdown" (click)="toggleSearchTypeMenu($event)">
   {{ searchType }} <i class="fa fa-caret-down"></i>
   <div class="dropdown-menu" *ngIf="showAllDropdown">
@@ -50,10 +28,15 @@
 
   <!-- Navigation Actions -->
   <div class="nav-actions">
-    <div class="imdbpro" (mouseenter)="showImdbPro = true" (mouseleave)="showImdbPro = false">
+    <div class="imdbpro"
+         (mouseenter)="showImdbPro = true"
+         (mouseleave)="showImdbPro = false">
       <span>IMDb<span class="pro">Pro</span></span>
 
-      <div class="imdbpro-box" (mouseenter)="showImdbPro = true" (mouseleave)="showImdbPro = false" *ngIf="showImdbPro">
+      <div class="imdbpro-box"
+           (mouseenter)="showImdbPro = true"
+           (mouseleave)="showImdbPro = false"
+           *ngIf="showImdbPro">
         <p>Expand your network</p>
         <p>Express yourself authentically</p>
         <p>Access exclusive insights</p>
@@ -61,7 +44,6 @@
       </div>
     </div>
 
-    <div class="action-item" [routerLink]="['/MovieList']" routerLinkActive="active">
     <div class="action-item" (click)="toggleWishlist()" title="Go to Wishlist" style="position: relative;">
       <i class="fa fa-bookmark"></i> Watchlist
       <span *ngIf="wishlistCount() > 0"
@@ -69,11 +51,6 @@
         {{ wishlistCount() }}
       </span>
     </div>
-
-    <div class="action-item" [routerLink]="['/login']">
-      <i class="fa fa-user"></i> Sign In
-    </div>
-
     <div class="action-item" *ngIf="!auth.isLoggedIn()" (click)="goToLogin()" title="Sign in">
       <i class="fa fa-user"></i> Sign In
     </div>
