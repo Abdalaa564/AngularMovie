@@ -4,7 +4,7 @@
   background-color: #232222;
   color: white;
   padding: 10px 20px;
-  font-family: Arial, sans-serif;
+  font-family: cairo, sans-serif;
   gap: 10px;
   flex-wrap: wrap;
 }
@@ -25,6 +25,10 @@
 margin-left: 30px;
 }
 
+.dropdown-menu div:hover {
+  background-color: #333;
+}
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -35,6 +39,8 @@ margin-left: 30px;
   flex-grow: 1;
   max-width: 800px;
   margin-left: 30px;
+  position: relative;
+  overflow: visible;
 }
 
 .search-bar input {
@@ -57,6 +63,8 @@ margin-left: 30px;
   border-radius: 3px;
   cursor: pointer;
   font-weight: bold;
+  user-select: none;
+  z-index: 2;
 }
 
 .dropdown-menu {
@@ -67,7 +75,7 @@ margin-left: 30px;
   color: white;
   padding: 10px;
   border-radius: 5px;
-  z-index: 100;
+  z-index: 1000;
   min-width: 200px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
@@ -191,25 +199,17 @@ background-image: url(https://media.istockphoto.com/id/1478374885/photo/joyful-f
   padding: 6px 12px;
   border-radius: 4px;
 }
-.menu {
-  position: relative;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 15px;
-  padding: 5px 10px;
-}
-
 .menu-list {
   position: absolute;
   top: 100%;
-  left: 0;
+  left: 85px;
   background-color: #222;
   color: white;
   padding: 10px;
   border-radius: 5px;
   z-index: 150;
   min-width: 180px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
 }

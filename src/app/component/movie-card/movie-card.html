@@ -1,11 +1,20 @@
 <a [routerLink]="['/details', movie.id]" class="card movie-card h-100 text-decoration-none text-white">
   <img [src]="imageBaseUrl + movie.poster_path" class="card-img-top" [alt]="movie.title">
-  <div class="card-body">
+  <div class="card-body d-flex flex-column align-items-start">
+    <div class="d-flex align-items-center mb-2 rating-container">
+      <i class="bi bi-star-fill text-warning ms-1 rating-star"></i>
+      <span class="rating">{{ movie.vote_average.toFixed(1) }}</span>
+    </div>
+
     <h6 class="card-title">{{ movie.title }}</h6>
+
+    <button class="btn watchlist-btn mb-2"><span class="me-1">+</span> Watchlist</button>
+    <div class="card-actions">
+      <a class="Trailer me-2"><i class="bi bi-play-fill"></i>Trailer</a>
+      <div class="info-icon">
+        <i class="bi bi-exclamation-circle"></i>
+      </div>
+    </div>
     <p class="card-text"><small class="text-muted">{{ movie.release_date | date: 'yyyy' }}</small></p>
-    <a><i class="bi bi-plus"></i>Watchlist</a>
-  </div>
-  <div class="rating">
-    {{ movie.vote_average.toFixed(1) }}
   </div>
 </a>

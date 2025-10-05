@@ -19,36 +19,16 @@ export interface ICrew {
   name: string;
 }
 
-// واجهة لتعريف شكل بيانات "الفيديو"
+// واجهة لتعريف شكل بيانات "الفيديو" مع إضافة خاصية المدة
 export interface IVideo {
   key: string;
   site: string;
   type: string;
   official: boolean;
+  duration?: string; // الخاصية الجديدة من فريقك
 }
 
-// تحديث الواجهة الرئيسية للفيلم عشان تشمل كل البيانات
-export interface IMovie {
-  id: number;
-  title: string;
-  poster_path: string;
-  backdrop_path: string;
-  overview: string;
-  vote_average: number;
-  release_date: string;
-  tagline: string;
-  genres: IGenre[];
-  runtime: number; // الخاصية الناقصة تم إضافتها
-  credits?: { 
-    cast: ICredit[];
-    crew: ICrew[]; // تم إضافة طاقم العمل
-  };
-  videos?: { results: IVideo[] };
-}
-
-// ... (Interfaces الموجودة عندك) ...
-
-// === Interface جديد للصور ===
+// واجهة لتعريف شكل بيانات "الصور"
 export interface IImage {
     aspect_ratio: number;
     height: number;
@@ -58,14 +38,13 @@ export interface IImage {
     vote_count: number;
     width: number;
 }
-// ==========================
-// === Type جديد لدمج كل أنواع الميديا ===
+
+// Type جديد لدمج كل أنواع الميديا
 export type MediaItem = 
   | (IVideo & { media_type: 'video' })
   | (IImage & { media_type: 'backdrop' | 'poster' });
-// ===================================
 
-// تحديث الواجهة الرئيسية للفيلم
+// الواجهة الرئيسية للفيلم (نسخة مدمجة ونهائية)
 export interface IMovie {
   id: number;
   title: string;
@@ -76,13 +55,13 @@ export interface IMovie {
   release_date: string;
   tagline: string;
   genres: IGenre[];
-  runtime: number;
+  runtime: number; 
   credits?: { 
     cast: ICredit[];
     crew: ICrew[];
   };
   videos?: { results: IVideo[] };
-  images?: { // <-- إضافة خاصية الصور هنا
+  images?: {
     backdrops: IImage[];
     posters: IImage[];
   };

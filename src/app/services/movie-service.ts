@@ -62,4 +62,9 @@ export class MovieService {
     const url = `${this.baseUrl}/movie/${id}/recommendations?api_key=${this.apiKey}`;
     return this.http.get<IMoviesResponse>(url);
   }
+
+  searchMovies(query: string): Observable<IMoviesResponse> {
+    const url = `${this.baseUrl}/search/movie?api_key=${this.apiKey}&query=${encodeURIComponent(query)}`;
+    return this.http.get<IMoviesResponse>(url);
+  }
 }

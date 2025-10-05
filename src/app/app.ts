@@ -6,9 +6,10 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Footer,CommonModule],
+  standalone: true,
+  imports: [RouterOutlet, Navbar, Footer, CommonModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
 export class App {
   protected readonly title = signal('FinalMovie');

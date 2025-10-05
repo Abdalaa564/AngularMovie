@@ -1,46 +1,50 @@
 <nav class="navbar">
   <!-- Logo -->
-  <div class="logo" [routerLink]="['/']" style="cursor: pointer;">
+    <div class="logo" [routerLink]="['/']" style="cursor: pointer;">
     IMDb
   </div>
 
   <!-- Menu -->
-  <div class="menu" (click)="toggleMenuList()">
+   <div class="menu" (click)="toggleMenuList()">
     <i class="fa fa-bars"></i> Menu
 
     <div class="menu-list" *ngIf="showMenuList">
       <a routerLink="/" class="menu-item"><i class="fa fa-home"></i> Home</a>
-      <a routerLink="/MovieList" class="menu-item"><i class="fa fa-film"></i> Movies</a>
-      <a routerLink="/login" class="menu-item"> <i class="fa fa-user"></i> Sign In</a>
+      <a routerLink="/Wishlist" class="menu-item"><i class="fa fa-film"></i> Movies</a>
+      <a routerLink="/auth/login" class="menu-item"> <i class="fa fa-user"></i> Sign In</a>
       <a routerLink="/" class="menu-item"><i class="fa fa-envelope"></i> Contact</a>
     </div>
   </div>
-
   <!-- Search Section -->
   <div class="search-bar">
-    <div class="dropdown" (mouseenter)="showAllDropdown = true" (mouseleave)="showAllDropdown = false">
-      All <i class="fa fa-caret-down"></i>
-      <div class="dropdown-menu" *ngIf="showAllDropdown">
-        <div><i class="fa fa-search"></i> All</div>
-        <div><i class="fa fa-film"></i> Titles</div>
-        <div><i class="fa fa-tv"></i> TV Episodes</div>
-        <div><i class="fa fa-user"></i> Celebs</div>
-        <div><i class="fa fa-building"></i> Companies</div>
-        <div><i class="fa fa-tag"></i> Keywords</div>
-        <div><i class="fa fa-plus"></i> Advanced Search</div>
-      </div>
-    </div>
+    <div class="dropdown" (click)="toggleSearchTypeMenu($event)">
+  {{ searchType }} <i class="fa fa-caret-down"></i>
+  <div class="dropdown-menu" *ngIf="showAllDropdown">
+    <div (click)="selectSearchType('All')"><i class="fa fa-search"></i> All</div>
+    <div (click)="selectSearchType('Titles')"><i class="fa fa-film"></i> Titles</div>
+    <div (click)="selectSearchType('TV')"><i class="fa fa-tv"></i> TV Episodes</div>
+    <div (click)="selectSearchType('Celebs')"><i class="fa fa-user"></i> Celebs</div>
+    <div (click)="selectSearchType('Companies')"><i class="fa fa-building"></i> Companies</div>
+    <div (click)="selectSearchType('Keywords')"><i class="fa fa-tag"></i> Keywords</div>
+    <div><i class="fa fa-plus"></i> Advanced Search</div>
+  </div>
+</div>
 
-    <input type="text" placeholder="Search IMDb..." />
-    <button><i class="fa fa-search"></i></button>
+    <input type="text" placeholder="Search IMDb..." [(ngModel)]="searchText" (keyup.enter)="runSearch()" />
+    <button (click)="runSearch()"><i class="fa fa-search"></i></button>
   </div>
 
   <!-- Navigation Actions -->
   <div class="nav-actions">
-    <div class="imdbpro" (mouseenter)="showImdbPro = true" (mouseleave)="showImdbPro = false">
+    <div class="imdbpro"
+         (mouseenter)="showImdbPro = true"
+         (mouseleave)="showImdbPro = false">
       <span>IMDb<span class="pro">Pro</span></span>
 
-      <div class="imdbpro-box" (mouseenter)="showImdbPro = true" (mouseleave)="showImdbPro = false" *ngIf="showImdbPro">
+      <div class="imdbpro-box"
+           (mouseenter)="showImdbPro = true"
+           (mouseleave)="showImdbPro = false"
+           *ngIf="showImdbPro">
         <p>Expand your network</p>
         <p>Express yourself authentically</p>
         <p>Access exclusive insights</p>
@@ -48,14 +52,22 @@
       </div>
     </div>
 
-    <div class="action-item" [routerLink]="['/MovieList']" routerLinkActive="active">
+    <div class="action-item" (click)="toggleWishlist()" title="Go to Wishlist" style="position: relative;">
       <i class="fa fa-bookmark"></i> Watchlist
+      <span *ngIf="wishlistCount() > 0"
+            style="position:absolute; top:-6px; right:-10px; background:#f59e0b; color:#111; font-weight:700; font-size:10px; border-radius:999px; padding:2px 6px;">
+        {{ wishlistCount() }}
+      </span>
     </div>
-
-    <div class="action-item" [routerLink]="['/login']">
+    <div class="action-item" *ngIf="!auth.isLoggedIn()" (click)="goToLogin()" title="Sign in">
       <i class="fa fa-user"></i> Sign In
     </div>
-
+    <div class="action-item" *ngIf="!auth.isLoggedIn()" (click)="goToRegister()" title="Register">
+      <i class="fa fa-user-plus"></i> Register
+    </div>
+    <div class="action-item" *ngIf="auth.isLoggedIn()" (click)="logout()" title="Logout">
+      <i class="fa fa-sign-out-alt"></i> Logout
+    </div>
     <div class="action-item">
       EN <i class="fa fa-caret-down"></i>
     </div>

@@ -1,4 +1,63 @@
 
 .Home {
     background-color: black;
+    font-family: cairo, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
+}
+
+.all {
+    margin: 0 8.4rem 0 2rem;
+    max-width: 1285px;
+}
+.all .row {
+  gap: 0.9rem;
+}
+
+
+.movies-slider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* width: 110%; */
+}
+
+.movies-slider {
+  display: flex;
+  overflow: hidden;
+  scroll-behavior: smooth;
+  width: 100%;
+  gap: 1.1rem;
+}
+
+.movies-slider app-movie-card {
+  flex: 0 0 calc(100% / 6);
+  margin-right: 0.5rem;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.5);
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  border-radius: 10%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.slider-btn.prev {
+  left: 10px;
+}
+
+.slider-btn.next {
+  right: 10px;
+}
+
+.movies-slider-wrapper:hover .slider-btn {
+  opacity: 1;
 }
