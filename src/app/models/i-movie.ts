@@ -18,6 +18,8 @@ export interface IVideo {
   site: string;
   type: string;
   official: boolean;
+
+  duration?: string;
 }
 
 // تحديث الواجهة الرئيسية للفيلم عشان تشمل البيانات الجديدة
@@ -33,4 +35,8 @@ export interface IMovie {
   genres: IGenre[];
   credits?: { cast: ICredit[] }; // علاقة اختيارية
   videos?: { results: IVideo[] }; // علاقة اختيارية
+  
+  popularity: number;
+  vote_count: number;
 }
+ 
