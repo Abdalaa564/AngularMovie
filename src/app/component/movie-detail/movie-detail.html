@@ -25,7 +25,7 @@
         <p>{{ movie.overview }}</p>
 
         @if (trailerUrl()) {
-          <a class="btn btn-warning btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#trailerModal">
+          <a class="btn btn-warning btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#trailerModal" (click)="onWatchTrailerClick()">
             <i class="bi bi-play-circle"></i> Watch Trailer
           </a>
         }

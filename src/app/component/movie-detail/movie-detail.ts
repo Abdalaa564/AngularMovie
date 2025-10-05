@@ -6,18 +6,24 @@ import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MovieCard } from '../movie-card/movie-card';
+import { AuthService } from '../../services/auth-service';
+import { WishlistService } from '../../services/wishlist-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
   imports: [CommonModule, MovieCard], // <-- شيلنا الـ RouterLink من هنا
   templateUrl: './movie-detail.html',
-  styleUrl: './movie-detail.css'
+  styleUrls: ['./movie-detail.css']
 })
 export class MovieDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private movieService = inject(MovieService);
   private sanitizer = inject(DomSanitizer);
+  private auth = inject(AuthService);
+  private wishlist = inject(WishlistService);
+  private router = inject(Router);
 
   // دلوقتي الـ signal عارف نوع البيانات اللي هيشيلها بالظبط
   movieDetails = signal<IMovie | null>(null);
@@ -66,5 +72,17 @@ export class MovieDetail implements OnInit {
       
       console.log('All Movie Data:', this.movieDetails());
     });
+  }
+
+  onWatchTrailerClick(): void {
+    const movie = this.movieDetails();
+    if (!movie) return;
+    if (!this.auth.isLoggedIn()) {
+      alert( 'You must be logged in to add a movie to your watchlist');
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+    this.wishlist.addMovie(movie);
+    alert( 'Movie added to watchlist');
   }
 }

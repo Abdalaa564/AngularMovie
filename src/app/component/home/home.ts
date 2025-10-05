@@ -7,9 +7,10 @@ import { CommonModule } from '@angular/common'; //  <-- ضيف الـ import د�
 
 @Component({
   selector: 'app-home',
+  standalone: true,
   imports: [Carousel, MovieCard, CommonModule], // <-- وضيفه هنا كمان
   templateUrl: './home.html',
-  styleUrl: './home.css'
+  styleUrls: ['./home.css']
 })
 export class Home implements OnInit {
   private movieService = inject(MovieService);

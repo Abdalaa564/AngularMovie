@@ -8,6 +8,7 @@ import { Carousel } from './component/carousel/carousel';
 import { Login } from './component/auth/login/login';
 
 
+import { Register } from './component/auth/register/register';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'Home' },
@@ -15,6 +16,9 @@ export const routes: Routes = [
   { path: 'MovieList', component: MovieList, title: 'MovieList' },
   {path:'login',component:Login,title:'login'},
   {path:'watchlist',component:MovieList,title :'watchlist'},
+  { path: 'auth/login', component: Login, title: 'Login' },
+  { path: 'auth/register', component: Register, title: 'Register' },
+  { path: 'Wishlist', component: Wishlist, title: 'Wishlist' },
   { path: 'Review', component: Review, title: 'Review' },
   { path: 'Carousel', component: Carousel, title: 'Carousel' },
 
