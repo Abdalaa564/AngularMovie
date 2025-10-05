@@ -8,7 +8,7 @@ import { DatePipe } from '@angular/common'; //  <-- 1. اعمل Import هنا
   standalone: true,
   imports: [RouterLink, DatePipe], //         <-- 2. ضيفه هنا
   templateUrl: './movie-card.html',
-  styleUrl: './movie-card.css'
+  styleUrls: ['./movie-card.css']
 })
 export class MovieCard {
   @Input({ required: true }) movie!: IMovie;

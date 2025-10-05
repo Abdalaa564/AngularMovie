@@ -1,1 +1,8 @@
-<p>movie-list works!</p>
+<div class="container mt-4">
+  <h3 class="mb-3 text-white">{{ title }}</h3>
+  <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+    <div class="col" *ngFor="let movie of movies">
+      <app-movie-card [movie]="movie"></app-movie-card>
+    </div>
+  </div>
+</div>
