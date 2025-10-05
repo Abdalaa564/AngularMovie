@@ -17,6 +17,11 @@ export class Navbar {
     this.showImdbPro = false;
   }, 200); // تأخير 200ms
 }
+showMenuList = false;
+
+toggleMenuList() {
+  this.showMenuList = !this.showMenuList;
+}
 
 
 }
