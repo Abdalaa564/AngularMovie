@@ -1,0 +1,10 @@
+/* Highlight active buttons in sort/view toolbars */
+.btn-group .btn.active {
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.2);
+}
+
+/* Light list rows similar to IMDb */
+.list-group-item.bg-light {
+  background-color: #f8f9fa;
+}
+
