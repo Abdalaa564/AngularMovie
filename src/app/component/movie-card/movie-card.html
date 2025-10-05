@@ -3,6 +3,7 @@
   <div class="card-body">
     <h6 class="card-title">{{ movie.title }}</h6>
     <p class="card-text"><small class="text-muted">{{ movie.release_date | date: 'yyyy' }}</small></p>
+    <a><i class="bi bi-plus"></i>Watchlist</a>
   </div>
   <div class="rating">
     {{ movie.vote_average.toFixed(1) }}
