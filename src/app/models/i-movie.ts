@@ -38,3 +38,4 @@ export interface IMovie {
   popularity: number;
   vote_count: number;
 }
+
