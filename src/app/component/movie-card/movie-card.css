@@ -92,3 +92,122 @@
 .watchlist-btn span {
   font-size: 1rem;
 }
+
+
+
+
+
+
+
+
+
+.movie-modal {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.movie-modal-content {
+  background-color: #1c1c1c;
+  color: #fff;
+  border-radius: 15px;
+  max-width: 700px;
+  width: 90%;
+  padding: 20px;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+  animation: slideDown 0.4s ease;
+  position: relative;
+}
+
+.movie-modal-content img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.movie-modal-header {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.movie-modal-header img {
+  width: 75px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.movie-info h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.release-date,
+.rating,
+.genres {
+  margin: 5px 0;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.genre {
+  background: #ffcc00;
+  color: #111;
+  border-radius: 5px;
+  padding: 3px 8px;
+  margin-right: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.movie-overview {
+  margin-top: 20px;
+}
+
+.movie-overview h4 {
+  margin-bottom: 8px;
+  color: #ffcc00;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #ffcc00;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

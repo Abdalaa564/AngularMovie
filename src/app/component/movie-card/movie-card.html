@@ -1,20 +1,66 @@
-<a [routerLink]="['/details', movie.id]" class="card movie-card h-100 text-decoration-none text-white">
-  <img [src]="imageBaseUrl + movie.poster_path" class="card-img-top" [alt]="movie.title">
+<div class="card movie-card h-100 text-decoration-none text-white">
+    <a [routerLink]="['/details', movie.id]" class="text-decoration-none">
+      <img [src]="imageBaseUrl + movie.poster_path" class="card-img-top" [alt]="movie.title">
+    </a>
+
   <div class="card-body d-flex flex-column align-items-start">
     <div class="d-flex align-items-center mb-2 rating-container">
       <i class="bi bi-star-fill text-warning ms-1 rating-star"></i>
       <span class="rating">{{ movie.vote_average.toFixed(1) }}</span>
     </div>
-
-    <h6 class="card-title">{{ movie.title }}</h6>
-
-    <button class="btn watchlist-btn mb-2"><span class="me-1">+</span> Watchlist</button>
+    <a [routerLink]="['/details', movie.id]" class="text-decoration-none">
+      <h6 class="card-title">{{ movie.title }}</h6>
+    </a>
+    <button class="btn watchlist-btn mb-2"
+    
+    >
+      <span class="me-1">+</span> Watchlist
+    </button>
     <div class="card-actions">
       <a class="Trailer me-2"><i class="bi bi-play-fill"></i>Trailer</a>
-      <div class="info-icon">
+
+      <div class="info-icon" (click)="openMovieModal(movie)">
         <i class="bi bi-exclamation-circle"></i>
       </div>
     </div>
     <p class="card-text"><small class="text-muted">{{ movie.release_date | date: 'yyyy' }}</small></p>
   </div>
-</a>
+</div>
+
+
+
+
+<!-- Movie Modal -->
+@if (selectedMovie) {
+  <div class="movie-modal" (click)="closeModal()">
+    <div class="movie-modal-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeModal()">×</button>
+
+      <div class="movie-modal-header">
+        <img
+          [src]="'https://image.tmdb.org/t/p/w500' + selectedMovie.poster_path"
+          [alt]="selectedMovie.title"
+        />
+        <div class="movie-info">
+          <h2>{{ selectedMovie.title }}</h2>
+          <p class="release-date">
+            {{ selectedMovie.release_date | date: 'longDate' }}
+          </p>
+          <p class="rating">
+            ⭐ {{ selectedMovie.vote_average.toFixed(1) }} / 10
+          </p>
+          <p class="genres">
+            @for (genre of selectedMovie.genres; track genre.id) {
+              <span class="genre">{{ genre.name }}</span>
+            }
+          </p>
+        </div>
+      </div>
+
+      <div class="movie-overview">
+        <h4>Overview</h4>
+        <p>{{ selectedMovie.overview }}</p>
+      </div>
+    </div>
+  </div>
+}

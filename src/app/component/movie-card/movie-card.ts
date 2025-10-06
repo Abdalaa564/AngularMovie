@@ -12,6 +12,15 @@ import { DatePipe } from '@angular/common'; //  <-- 1. اعمل Import هنا
 })
 export class MovieCard {
   @Input({ required: true }) movie!: IMovie;
-  
+  selectedMovie: IMovie | null = null;
+
   imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
+
+  openMovieModal(movie: IMovie): void {
+    this.selectedMovie = movie;
+  }
+
+  closeModal(): void {
+    this.selectedMovie = null;
+  }
 }

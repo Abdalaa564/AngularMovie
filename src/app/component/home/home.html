@@ -4,7 +4,7 @@
   <br>
   <p>home works!</p>
   <div class="container all">
-    <h2 class="mb-4 text-white">Now Playing</h2>
+    <h2 class="mb-4 text-white  fa-lg">Now Playing<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
     <div class="movies-slider-wrapper">
       <div class="movies-slider" #slider>
         
@@ -19,9 +19,9 @@
       <button class="slider-btn next" (click)="nextSlide(slider)">&gt;</button>
     </div>
   </div>
-
+  <!-- 1------------------ -->
   <div class="container all">
-    <h2 class="mb-4 text-white">Popular interests</h2>
+    <h2 class="mb-4 text-white fa-lg">Popular interests<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
     <div class="movies-slider-wrapper">
       <div class="movies-slider" #popularSlider>
         
@@ -34,6 +34,24 @@
       </div>
       <button class="slider-btn prev" (click)="prevSlide(popularSlider)">&lt;</button>
       <button class="slider-btn next" (click)="nextSlide(popularSlider)">&gt;</button>
+    </div>
+  </div>
+
+    <!-- 1------------------ -->
+  <div class="container all">
+    <h2 class="mb-4 text-white fa-lg">Coming soon to theaters<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+    <div class="movies-slider-wrapper">
+      <div class="movies-slider" #UpcomingMoviesSlider>
+        
+        @for (movie of UpcomingMovies; track movie.id) {
+          <div class="col">
+            <app-movie-comingsoon [movie]="movie" />
+          </div>
+        }
+        
+      </div>
+      <button class="slider-btn prev" (click)="prevSlide(UpcomingMoviesSlider)">&lt;</button>
+      <button class="slider-btn next" (click)="nextSlide(UpcomingMoviesSlider)">&gt;</button>
     </div>
   </div>
 
