@@ -34,6 +34,26 @@ export interface IImage {
     width: number;
 }
 
+
+export interface IReview {
+  author: string;
+  author_details: {
+    name: string;
+    username: string;
+    avatar_path: string | null;
+    rating: number | null;
+  };
+  content: string;
+  created_at: string;
+  id: string;
+  updated_at: string;
+  url: string;
+}
+
+export interface IReviewsResponse {
+  results: IReview[];
+}
+
 export type MediaItem = 
   | (IVideo & { media_type: 'video' })
   | (IImage & { media_type: 'backdrop' | 'poster' });
@@ -60,4 +80,5 @@ export interface IMovie {
     backdrops: IImage[];
     posters: IImage[];
   };
+  reviews?: IReviewsResponse; 
 }

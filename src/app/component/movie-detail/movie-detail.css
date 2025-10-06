@@ -13,25 +13,24 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.75);
-
 }
 
 .details-content {
   position: relative;
   z-index: 2;
 }
+
 /* للتحكم في أقصى عرض للبوستر على الشاشات الكبيرة */
 .details-content .col-md-4 .img-fluid {
   width: 67%;
-  margin: 0 auto; /* هذا السطر يضمن بقاء البوستر في المنتصف */
+  margin: 0 auto;
 }
-
-
 
 .tagline {
   font-style: italic;
   opacity: 0.8;
   font-size: 1.1em;
+  margin-bottom: 1rem;
 }
 
 .quick-info {
@@ -74,6 +73,16 @@
 
 .cast-slider {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.media-slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .scrolling-wrapper {
@@ -83,6 +92,7 @@
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  flex: 1;
 }
 .scrolling-wrapper::-webkit-scrollbar {
     width: 0;
@@ -90,10 +100,6 @@
 }
 
 .slider-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
   background-color: rgba(0, 0, 0, 0.334);
   backdrop-filter: blur(4px);
   color: rgb(255, 221, 0);
@@ -108,15 +114,11 @@
   align-items: center;
   justify-content: center;
   line-height: 1;
+  flex-shrink: 0;
+  z-index: 10;
 }
 .slider-btn:hover {
   background-color: rgba(255, 255, 255, 0.2);
-}
-.slider-btn.prev {
-  left: -20px;
-}
-.slider-btn.next {
-  right: -20px;
 }
 
 .actor-card {
@@ -201,15 +203,6 @@
   position: relative;
 }
 
-.media-card:hover .play-icon-overlay {
-  color: rgba(255, 255, 255, 1);
-  background: rgba(0, 0, 0, 0);
-}
-
-.media-slider {
-  position: relative;
-}
-
 .loading-container {
   display: flex;
   justify-content: center;
@@ -233,6 +226,83 @@
   }
 }
 
+/* Error State */
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+.error-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.error-content i {
+  font-size: 4rem;
+  color: #ffc107;
+  margin-bottom: 1rem;
+}
+
+.error-content h4 {
+  margin-bottom: 1rem;
+}
+
+/* Back to Top Button */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ffc107;
+  color: #212529;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+}
+
+.back-to-top-btn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top-btn:hover {
+  background-color: #e0a800;
+  transform: translateY(-2px);
+}
+
+/* Wishlist Button Styles */
+.action-bar .watchlist-trigger-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 193, 7, 0.5);
+  color: #ffc107;
+  transition: all 0.2s ease;
+}
+
+.action-bar .watchlist-trigger-btn:hover {
+  background-color: #ffc107;
+  color: #111;
+  border-color: #ffc107;
+}
+
+.action-bar .watchlist-trigger-btn.active {
+  background-color: #ffc107;
+  color: #111;
+  border-color: #ffc107;
+}
+
 /* --- ## Responsive Styles ## --- */
 @media (max-width: 991px) {
   .details-content h2 {
@@ -240,15 +310,14 @@
   }
   
   .details-content .col-md-4 .img-fluid {
-  max-width: 70%;
-  margin: 0 auto; /* هذا السطر يضمن بقاء البوستر في المنتصف */
-}
-
-  .slider-btn.prev {
-    left: 10px;
+    max-width: 70%;
+    margin: 0 auto;
   }
-  .slider-btn.next {
-    right: 10px;
+
+  .slider-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
   }
 
   .media-card {
@@ -263,9 +332,8 @@
     padding-bottom: 20px !important;
   }
 
-  /* ## تعديل للبوستر على الموبايل ## */
   .movie-poster-img {
-    max-width: 80%; /* لا يملأ الشاشة بالكامل ويترك هوامش */
+    max-width: 80%;
   }
   
   .details-content .col-md-8 {
@@ -287,7 +355,25 @@
     padding-left: 10px;
     padding-right: 10px;
   }
-  
+
+  /* الـ Action Bar بيكون في النص على الموبايل - الزراير جمب بعض */
+  .action-bar {
+    justify-content: center;
+    text-align: center;
+
+    flex-direction: row;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Tagline يبقى فوق الزراير */
+  .tagline {
+    order: -1;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  /* إخفاء أزرار السكرول على الموبايل */
   .slider-btn {
     display: none;
   }
@@ -297,22 +383,281 @@
     height: auto;
     aspect-ratio: 16 / 9;
   }
+
+  /* تحسين السكرول على الموبايل */
+  .scrolling-wrapper {
+    padding-bottom: 10px;
+  }
 }
-/* Tablet Styles (للشاشات المتوسطة مثل التابلت) */
-@media (max-width: 991px) {
-  .details-content h2 {
+
+/* تحسينات إضافية للتابلت */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .slider-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.3rem;
+  }
+}
+
+/* Snackbar Styles */
+.snackbar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  animation: fadeIn 0.3s ease;
+}
+
+.snackbar-content {
+  position: relative;
+  background-color: #2c2c2c;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  animation: slideInUp 0.4s ease;
+}
+
+.snackbar-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.snackbar-close:hover {
+  color: #fff;
+}
+
+.snackbar-icon {
+  font-size: 3rem;
+  color: #ffc107;
+  margin-bottom: 1rem;
+}
+
+.snackbar-text h4 {
+  margin: 0 0 0.5rem 0;
+  font-weight: bold;
+}
+
+.snackbar-text p {
+  margin: 0;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+}
+
+.snackbar-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.snackbar-actions .login-btn {
+  width: 100%;
+  font-weight: bold;
+}
+
+.snackbar-actions .register-link {
+  color: #ccc;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.snackbar-actions .register-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Snackbar Style */
+.movie-snackbar {
+  background-color: #ffc107;
+  color: #111;
+  font-weight: bold;
+}
+/* تنسيقات User Ratings Section */
+.user-ratings-section {
+  margin: 3rem 0;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ratings-summary {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.rating-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.score-circle {
+  background: linear-gradient(135deg, #ffc107, #ff8c00);
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #212529;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+}
+
+.score {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.out-of {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.rating-stars {
+  text-align: center;
+}
+
+.stars-container {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 0.5rem;
+  justify-content: center;
+}
+
+.stars-container i {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.stars-container i.filled {
+  color: #ffc107;
+}
+
+.vote-count {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.rating-distribution {
+  flex: 1;
+}
+
+.rating-distribution h5 {
+  margin-bottom: 1rem;
+  color: #000000e0;
+  
+}
+
+.distribution-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.rating-label {
+  width: 20px;
+  font-weight: bold;
+  color: #000000e0;
+}
+
+.bar-container {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffc107, #ff8c00);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.percentage {
+  width: 40px;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+/* جعل زر الـ Rating قابل للنقر */
+.clickable-rating {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clickable-rating:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .ratings-summary {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .rating-score {
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .score-circle {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .score {
     font-size: 1.8rem;
   }
   
-  .slider-btn.prev {
-    left: 10px;
-  }
-  .slider-btn.next {
-    right: 10px;
-  }
-
-  .media-card {
-    width: 400px;
-    height: 225px;
+  .user-ratings-section {
+    padding: 1.5rem;
+    margin: 2rem 0;
   }
 }

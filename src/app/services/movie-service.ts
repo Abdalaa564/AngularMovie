@@ -24,7 +24,7 @@ interface IImagesResponse {
 // ===================================
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MovieService {
   private http = inject(HttpClient);
@@ -64,7 +64,9 @@ export class MovieService {
   }
 
   searchMovies(query: string): Observable<IMoviesResponse> {
-    const url = `${this.baseUrl}/search/movie?api_key=${this.apiKey}&query=${encodeURIComponent(query)}`;
+    const url = `${this.baseUrl}/search/movie?api_key=${this.apiKey}&query=${encodeURIComponent(
+      query
+    )}`;
     return this.http.get<IMoviesResponse>(url);
   }
 
@@ -91,5 +93,10 @@ export class MovieService {
   getTrendingMoviesWeekly(): Observable<IMoviesResponse> {
     const url = `${this.baseUrl}/trending/movie/week?api_key=${this.apiKey}`;
     return this.http.get<IMoviesResponse>(url);
+  }
+  // في movie-service.ts
+  getMovieReviews(id: string): Observable<any> {
+    const url = `${this.baseUrl}/movie/${id}/reviews?api_key=${this.apiKey}`;
+    return this.http.get<any>(url);
   }
 }
