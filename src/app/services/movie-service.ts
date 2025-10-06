@@ -56,4 +56,29 @@ export class MovieService {
     const url = `${this.baseUrl}/search/movie?api_key=${this.apiKey}&query=${encodeURIComponent(query)}`;
     return this.http.get<IMoviesResponse>(url);
   }
+
+  getPopularMovies(): Observable<IMoviesResponse> {
+    const url = `${this.baseUrl}/movie/popular?api_key=${this.apiKey}`;
+    return this.http.get<IMoviesResponse>(url);
+  }
+
+  getTopRatedMovies(): Observable<IMoviesResponse> {
+    const url = `${this.baseUrl}/movie/top_rated?api_key=${this.apiKey}`;
+    return this.http.get<IMoviesResponse>(url);
+  }
+
+  getUpcomingMovies(): Observable<IMoviesResponse> {
+    const url = `${this.baseUrl}/movie/upcoming?api_key=${this.apiKey}`;
+    return this.http.get<IMoviesResponse>(url);
+  }
+
+  getTrendingMoviesDaily(): Observable<IMoviesResponse> {
+    const url = `${this.baseUrl}/trending/movie/day?api_key=${this.apiKey}`;
+    return this.http.get<IMoviesResponse>(url);
+  }
+
+  getTrendingMoviesWeekly(): Observable<IMoviesResponse> {
+    const url = `${this.baseUrl}/trending/movie/week?api_key=${this.apiKey}`;
+    return this.http.get<IMoviesResponse>(url);
+  }
 }

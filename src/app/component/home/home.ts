@@ -15,11 +15,14 @@ import { CommonModule } from '@angular/common'; //  <-- ضيف الـ import د�
 export class Home implements OnInit {
   private movieService = inject(MovieService);
   movies: IMovie[] = [];
+  popularMovies: IMovie[] = [];
 
   @ViewChild('moviesSlider', { static: true }) slider!: ElementRef;
+    @ViewChild('popularSlider', { static: true }) popularSlider!: ElementRef;
+
 
   ngOnInit(): void {
-    this.movieService.getNowPlayingMovies().subscribe({
+    this.movieService.getTrendingMoviesDaily().subscribe({
       next: (response) => {
         // ## السطر ده هو التعديل المهم ##
         // بنقوله هات قائمة الأفلام اللي جوه 'results'
@@ -29,16 +32,22 @@ export class Home implements OnInit {
       },
       error: (err) => console.error('Error fetching movies:', err)
     });
+
+    this.movieService.getPopularMovies().subscribe({
+      next: (response) => {
+        this.popularMovies = response.results;
+        console.log('Popular Movies:', this.popularMovies);
+      },
+      error: (err) => console.error(err)
+    });
   }
 
-  nextSlide() {
-    const sliderEl = this.slider.nativeElement;
+  nextSlide(sliderEl: HTMLDivElement) {
     const slideWidth = sliderEl.offsetWidth; 
     sliderEl.scrollLeft += slideWidth;
   }
 
-  prevSlide() {
-    const sliderEl = this.slider.nativeElement;
+  prevSlide(sliderEl: HTMLDivElement) {
     const slideWidth = sliderEl.offsetWidth;
     sliderEl.scrollLeft -= slideWidth;
   }
