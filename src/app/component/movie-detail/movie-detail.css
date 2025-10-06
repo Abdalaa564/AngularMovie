@@ -5,7 +5,6 @@
   color: #fff;
 }
 
-/* طبقة غامقة فوق صورة الخلفية عشان الكلام يبقى واضح */
 .movie-details-container::before {
   content: '';
   position: absolute;
@@ -13,25 +12,111 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.75);
+
 }
 
 .details-content {
-  position: relative; /* عشان يبقى فوق الطبقة الغامقة */
+  position: relative;
   z-index: 2;
 }
+/* للتحكم في أقصى عرض للبوستر على الشاشات الكبيرة */
+.details-content .col-md-4 .img-fluid {
+  width: 67%;
+  margin: 0 auto; /* هذا السطر يضمن بقاء البوستر في المنتصف */
+}
+
+
 
 .tagline {
   font-style: italic;
   opacity: 0.8;
+  font-size: 1.1em;
 }
 
-/* Cast Section */
+.quick-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  opacity: 0.9;
+  margin-bottom: 1rem;
+}
+
+.dot-separator::before {
+  content: '•';
+  margin: 0 4px;
+}
+
+.rating-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffc107;
+    color: #212529;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.rating-badge i {
+    color: #212529;
+}
+
+.crew-section strong {
+  display: block;
+}
+.crew-section p {
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.cast-slider {
+  position: relative;
+}
+
 .scrolling-wrapper {
   display: flex;
   overflow-x: auto;
   padding-bottom: 15px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrolling-wrapper::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.334);
+  backdrop-filter: blur(4px);
+  color: rgb(255, 221, 0);
+  border: 2px solid rgba(255, 255, 0, 0.2);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.slider-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.slider-btn.prev {
+  left: -20px;
+}
+.slider-btn.next {
+  right: -20px;
 }
 
 .actor-card {
@@ -43,6 +128,7 @@
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   text-align: center;
+  color: #000;
 }
 
 .actor-img {
@@ -50,6 +136,19 @@
   height: 175px;
   object-fit: cover;
   object-position: top;
+}
+
+.actor-img-placeholder {
+  width: 100%;
+  height: 175px;
+  background-color: #343a40;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.actor-img-placeholder i {
+  font-size: 50px;
+  color: #6c757d;
 }
 
 .actor-info {
@@ -61,16 +160,159 @@
   display: block;
 }
 
-/* Trailer Modal */
-.modal-content {
-  background-color: #141414;
-  color: white;
-}
-.modal-header {
-  border-bottom: 1px solid #444;
+.media-scroller {
+  padding-bottom: 20px;
 }
 
-/* لتغيير لون زر الإغلاق في الـ modal */
-.btn-close {
-  filter: invert(1) grayscale(100%) brightness(200%);
+.media-card {
+  flex: 0 0 auto;
+  width: 480px; 
+  height: 240px; 
+  margin-right: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #212529;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.media-card:hover {
+  transform: scale(1.03);
+}
+
+.media-card img, .media-card .video-container {
+  width: 100%;
+  height: 100%;
+}
+
+.media-card img {
+  object-fit: cover;
+}
+
+.media-card iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.video-container {
+  position: relative;
+}
+
+.media-card:hover .play-icon-overlay {
+  color: rgba(255, 255, 255, 1);
+  background: rgba(0, 0, 0, 0);
+}
+
+.media-slider {
+  position: relative;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background-color: #1a1a1a;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ffc107;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- ## Responsive Styles ## --- */
+@media (max-width: 991px) {
+  .details-content h2 {
+    font-size: 1.8rem;
+  }
+  
+  .details-content .col-md-4 .img-fluid {
+  max-width: 70%;
+  margin: 0 auto; /* هذا السطر يضمن بقاء البوستر في المنتصف */
+}
+
+  .slider-btn.prev {
+    left: 10px;
+  }
+  .slider-btn.next {
+    right: 10px;
+  }
+
+  .media-card {
+    width: 400px;
+    height: 225px;
+  }
+}
+
+@media (max-width: 767px) {
+  .movie-details-container {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+  }
+
+  /* ## تعديل للبوستر على الموبايل ## */
+  .movie-poster-img {
+    max-width: 80%; /* لا يملأ الشاشة بالكامل ويترك هوامش */
+  }
+  
+  .details-content .col-md-8 {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .details-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .quick-info, .crew-section {
+    justify-content: center;
+  }
+  
+  .crew-section .col-md-4 {
+    flex: 0 0 auto;
+    width: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .slider-btn {
+    display: none;
+  }
+
+  .media-card {
+    width: 90%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+}
+/* Tablet Styles (للشاشات المتوسطة مثل التابلت) */
+@media (max-width: 991px) {
+  .details-content h2 {
+    font-size: 1.8rem;
+  }
+  
+  .slider-btn.prev {
+    left: 10px;
+  }
+  .slider-btn.next {
+    right: 10px;
+  }
+
+  .media-card {
+    width: 400px;
+    height: 225px;
+  }
 }
