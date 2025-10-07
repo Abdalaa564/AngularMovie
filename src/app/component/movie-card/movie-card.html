@@ -7,13 +7,19 @@
     <div class="d-flex align-items-center mb-2 rating-container">
       <i class="bi bi-star-fill text-warning ms-1 rating-star"></i>
       <span class="rating">{{ movie.vote_average.toFixed(1) }}</span>
+      
+      <div class="info-icon " (click)="openRateModal(movie)">
+        <i class="bi bi-star-fill text-warning ms-4 rating-star"></i>
+        @if (userRatings[movie.id]) {
+          <span>{{ userRatings[movie.id] }}</span>
+        }
+      </div>
+
     </div>
     <a [routerLink]="['/details', movie.id]" class="text-decoration-none">
       <h6 class="card-title">{{ movie.title }}</h6>
     </a>
-    <button class="btn watchlist-btn mb-2"
-    
-    >
+    <button class="btn watchlist-btn mb-2">
       <span class="me-1">+</span> Watchlist
     </button>
     <div class="card-actions">
@@ -27,9 +33,6 @@
   </div>
 </div>
 
-
-
-
 <!-- Movie Modal -->
 @if (selectedMovie) {
   <div class="movie-modal" (click)="closeModal()">
@@ -42,7 +45,9 @@
           [alt]="selectedMovie.title"
         />
         <div class="movie-info">
-          <h2>{{ selectedMovie.title }}</h2>
+          <a [routerLink]="['/details', movie.id]" class="text-decoration-none text-white">
+            <h2>{{ selectedMovie.title }}<i class="fa-solid fa-chevron-right fa-xs ii"></i></h2>
+          </a>
           <p class="release-date">
             {{ selectedMovie.release_date | date: 'longDate' }}
           </p>
@@ -61,6 +66,41 @@
         <h4>Overview</h4>
         <p>{{ selectedMovie.overview }}</p>
       </div>
+    </div>
+  </div>
+}
+
+
+<!-- Movie Rate -->
+@if (selectedMovieForRating) {
+  <div class="movie-modal" (click)="closeModal()">
+    <div class="movie-modal-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeModal()">×</button>
+
+      
+      <div class="movie-rate-header text-center">
+        <h2 class="rate-this">RATE THIS</h2>
+        <h2 class="rate-this-title">{{ selectedMovieForRating.title }}</h2>
+
+        <div class="rating-stars">
+          @for (star of [1,2,3,4,5,6,7,8,9,10]; track star) {
+            <i
+              class="bi bi-star-fill rate-star"
+              [ngClass]="{
+                'bi-star-fill': star <= userRating,
+                'bi-star': star > userRating
+              }"
+              (click)="setRating(star)"
+            ></i>
+          }
+        </div>
+
+        <p class="user-rating-text mt-2">
+          You rated this movie: <strong>{{ userRating }}</strong>/10
+        </p>
+      </div>
+
+
     </div>
   </div>
 }

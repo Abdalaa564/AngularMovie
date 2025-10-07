@@ -42,6 +42,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   showBackToTop = signal(false);
 
   movieDetails = signal<IMovie | null>(null);
+  movies: IMovie[] = [];
   recommendations = signal<IMovie[]>([]);
   featuredCrew = signal<ICrew[]>([]);
   imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
@@ -279,4 +280,16 @@ export class MovieDetail implements OnInit, OnDestroy {
       this.loadMovieData(movie.id.toString());
     }
   }
+
+
+  selectedMovie: IMovie | null = null;
+
+  openMovieModal(movie: IMovie): void {
+    this.selectedMovie = movie;
+  }
+  
+  closeModal(): void {
+    this.selectedMovie = null;
+  }
+
 }

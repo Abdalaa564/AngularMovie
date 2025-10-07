@@ -148,6 +148,9 @@
   font-size: 1.4rem;
   font-weight: 600;
 }
+.movie-info h2:hover {
+  text-decoration: underline;
+}
 
 .release-date,
 .rating,
@@ -210,4 +213,49 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+
+/* -------------- */
+
+.rate-this {
+  color: #ffcc00;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.rate-this-title{
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.rating-stars{
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 10px;
+}
+
+.rate-star {
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.rate-star:hover {
+  transform: scale(1.2);
+  color: #ffd700;
+}
+
+.rating-icon-with-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #ffcc00;
+  font-weight: 500;
+}
+.info-icon span {
+  color: #dadada;
+  padding: 2px 0;
+  font-size: 1rem;
+  font-weight: 400;
 }
