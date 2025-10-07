@@ -160,10 +160,10 @@ export class MovieDetail implements OnInit, OnDestroy {
         const wasFavorite = this.isFavorite();
         if (wasFavorite) {
           this.wishlistService.removeMovie(movie.id);
-          this.showWishlistNotification(`"${movie.title}" removed from wishlist`);
+          this.showWishlistNotification(`"${movie.title}" removed from watchlist`);
         } else {
           this.wishlistService.addMovie(movie);
-          this.showWishlistNotification(`"${movie.title}" added to wishlist`);
+          this.showWishlistNotification(`"${movie.title}" added to watchlist`);
         }
         // تحديث فوري لحالة الزر
         this.isFavorite.set(!wasFavorite);
@@ -200,7 +200,7 @@ export class MovieDetail implements OnInit, OnDestroy {
 
   scrollCast(direction: 'prev' | 'next'): void {
     const element = this.scrollingWrapper.nativeElement as HTMLElement;
-    const scrollAmount = element.clientWidth * 0.8;
+    const scrollAmount = element.clientWidth * 0.4;
     const maxScroll = element.scrollWidth - element.clientWidth;
     
     if (direction === 'next') {
