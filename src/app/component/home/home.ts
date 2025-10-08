@@ -5,19 +5,13 @@ import { MovieCard } from '../movie-card/movie-card';
 import { Carousel } from '../carousel/carousel';
 import { CommonModule } from '@angular/common'; //  <-- ضيف الـ import ده
 import { MovieComingsoon } from '../movie-comingsoon/movie-comingsoon';
-<<<<<<< Updated upstream
-
-=======
-// BackToTop was removed from imports because it's not used in the Home template
-// import { BackToTop } from '../../back-to-top/back-to-top';
->>>>>>> Stashed changes
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [Carousel, MovieCard, MovieComingsoon, CommonModule],
   templateUrl: './home.html',
-  styleUrls: ['./home.css']
+  styleUrls: ['./home.css'],
 })
 export class Home implements OnInit {
   @Input({ required: true }) movie!: IMovie;
@@ -30,15 +24,9 @@ export class Home implements OnInit {
 
   @ViewChild('slider', { static: true }) slider!: ElementRef;
   @ViewChild('popularSlider', { static: true }) popularSlider!: ElementRef;
-<<<<<<< Updated upstream
 
   @ViewChild('UpcomingMoviesSlider', { static: true }) UpcomingMoviesSlider!: ElementRef;
-TopRatedMovies: any;
-=======
-  @ViewChild('upcomingSlider', { static: true }) upcomingSlider!: ElementRef;
-  @ViewChild('topRatedSlider', { static: true }) topRatedSlider!: ElementRef;
->>>>>>> Stashed changes
-
+  @ViewChild('TopRatedMoviesSlider', { static: true }) TopRatedMoviesSlider!: ElementRef;
 
   ngOnInit(): void {
     this.movieService.getTrendingMoviesDaily().subscribe({
@@ -49,7 +37,7 @@ TopRatedMovies: any;
 
         console.log('Movies for Home page:', this.movies); // للتأكد
       },
-      error: (err) => console.error('Error fetching movies:', err)
+      error: (err) => console.error('Error fetching movies:', err),
     });
 
     this.movieService.getPopularMovies().subscribe({
@@ -57,7 +45,7 @@ TopRatedMovies: any;
         this.popularMovies = response.results;
         console.log('Popular Movies:', this.popularMovies);
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error(err),
     });
 
     this.movieService.getUpcomingMovies().subscribe({
@@ -65,7 +53,7 @@ TopRatedMovies: any;
         this.UpcomingMovies = response.results;
         console.log('Popular Movies:', this.UpcomingMovies);
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error(err),
     });
   }
 
@@ -78,5 +66,4 @@ TopRatedMovies: any;
     const slideWidth = sliderEl.offsetWidth;
     sliderEl.scrollLeft -= slideWidth;
   }
-
 }

@@ -8,13 +8,8 @@ import { Genre } from '../../services/genre';
 import { MovieService } from '../../services/movie-service';
 import { ThemeService } from '../../services/theme-service';
 import { Title } from '@angular/platform-browser';
-<<<<<<< Updated upstream
 import { IMovie } from '../../models/i-movie';
 import { SnackbarService } from '../../services/snackbar.service';
-=======
-import { SnackbarService } from '../../services/snackbar.service';
-import { IMovie } from '../../models/i-movie';
->>>>>>> Stashed changes
 
 @Component({
   selector: 'app-navbar',
@@ -24,18 +19,16 @@ import { IMovie } from '../../models/i-movie';
   styleUrls: ['./navbar.css'],
 })
 export class Navbar implements OnInit {
-   isLoggedIn = false; // عدّل حسب حالة المستخدم
-    private router = inject(Router);
-private genreService = inject(Genre);
+  isLoggedIn = false; // عدّل حسب حالة المستخدم
+  private router = inject(Router);
+  private genreService = inject(Genre);
   // private translate = inject(TranslateService);
   private movieService = inject(MovieService);
- private themeService = inject(ThemeService);
+  private themeService = inject(ThemeService);
   private defaultGenre = 'General';
 
-
- ngOnInit(): void {
-   this.selectedGenre = null;
-
+  ngOnInit(): void {
+    this.selectedGenre = null;
 
     // تحميل اللغة
     const savedLang = localStorage.getItem('lang') || 'en';
@@ -44,14 +37,11 @@ private genreService = inject(Genre);
     document.documentElement.setAttribute('dir', dir);
 
     // تحميل الثيم
- this.themeService.initTheme();
-
+    this.themeService.initTheme();
 
     // تعيين عنوان الصفحة
     this.titleService.setTitle('IMDb Clone - Movies');
   }
-
-
 
   showMenuList = false;
   toggleMenuList() {
@@ -73,18 +63,18 @@ private genreService = inject(Genre);
   // toggleSearchTypeMenu() {
   //   this.showSearchTypeMenu = !this.showSearchTypeMenu;
   // }
-genres: { id: number; name: string }[] = [];
-selectedGenre: string | null = null;
-showGenreMenu = false;
-constructor() {
-    this.genreService.getGenres().subscribe(res => {
+  genres: { id: number; name: string }[] = [];
+  selectedGenre: string | null = null;
+  showGenreMenu = false;
+  constructor() {
+    this.genreService.getGenres().subscribe((res) => {
       this.genres = res.genres;
     });
   }
 
-toggleGenreMenu() {
-  this.showGenreMenu = !this.showGenreMenu;
-}
+  toggleGenreMenu() {
+    this.showGenreMenu = !this.showGenreMenu;
+  }
   selectGenre(genre: string) {
     this.selectedGenre = genre;
     this.showGenreMenu = false;
@@ -111,23 +101,18 @@ toggleGenreMenu() {
   }
 
   goHome() {
-       this.selectedGenre = null;
+    this.selectedGenre = null;
 
     this.router.navigate(['/']);
   }
 
-
- showAllDropdown = false;
-
+  showAllDropdown = false;
 
   // === زر العودة للأعلى ===
-
 
   // === عنوان الصفحة ===
   private titleService = inject(Title);
   private snackbar = inject(SnackbarService) as SnackbarService;
-
-
 
   toggleWishlist() {
     if (!this.auth.isLoggedIn()) {
@@ -141,64 +126,53 @@ toggleGenreMenu() {
   logout() {
     this.auth.logout();
     this.wishlist.refreshForCurrentUser();
-  this.snackbar.success('Logged out');
+    this.snackbar.success('Logged out');
     this.router.navigate(['/']);
   }
 
   @HostListener('document:click', ['$event'])
-handleClickOutside(event: MouseEvent) {
-  const target = event.target as HTMLElement;
-const clickedOutsideGenre = !target.closest('.genre-filter');
-  const clickedOutsideMenu = !target.closest('.menu');
-  const clickedOutsideLanguage = !target.closest('.dropdown-language');
+  handleClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const clickedOutsideGenre = !target.closest('.genre-filter');
+    const clickedOutsideMenu = !target.closest('.menu');
+    const clickedOutsideLanguage = !target.closest('.dropdown-language');
 
-  if (clickedOutsideGenre) this.showGenreMenu = false;
-  if (clickedOutsideMenu) this.showMenuList = false;
-  if (clickedOutsideLanguage) this.showLanguageMenu = false;
-
-}
- // === اللغة ===
+    if (clickedOutsideGenre) this.showGenreMenu = false;
+    if (clickedOutsideMenu) this.showMenuList = false;
+    if (clickedOutsideLanguage) this.showLanguageMenu = false;
+  }
+  // === اللغة ===
   availableLanguages = ['en', 'ar', 'fr', 'zh'];
   currentLang = 'en';
   showLanguageMenu = false;
 
-
-
-    get isDarkMode(): boolean {
+  get isDarkMode(): boolean {
     return this.themeService.currentTheme === 'dark';
   }
-
-
 
   toggleLanguageMenu() {
     this.showLanguageMenu = !this.showLanguageMenu;
   }
 
+  movies: IMovie[] = [];
 
-movies: IMovie[] = [];
-
-   // === تغيير اللغة ===
+  // === تغيير اللغة ===
   changeLanguage(lang: string): void {
-  this.currentLang = lang;
-  localStorage.setItem('lang', lang);
+    this.currentLang = lang;
+    localStorage.setItem('lang', lang);
 
-  const dir = lang === 'ar' ? 'rtl' : 'ltr';
-  document.documentElement.setAttribute('dir', dir);
- this.showLanguageMenu = false;
-  // إعادة تحميل الصفحة علشان المكون MovieList يقرأ اللغة الجديدة
-  window.location.reload();
+    const dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.setAttribute('dir', dir);
+    this.showLanguageMenu = false;
+    // إعادة تحميل الصفحة علشان المكون MovieList يقرأ اللغة الجديدة
+    window.location.reload();
 
-  this.movieService.getNowPlaying(lang).subscribe(res => {
-    this.movies = res.results;
-  });
-}
- // === تغيير الثيم ===
+    this.movieService.getNowPlaying(lang).subscribe((res) => {
+      this.movies = res.results;
+    });
+  }
+  // === تغيير الثيم ===
   toggleTheme(): void {
     this.themeService.toggleTheme();
   }
-
-
-
-
-
 }
