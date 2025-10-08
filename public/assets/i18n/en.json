@@ -1,0 +1,18 @@
+{
+  "HOME": "Home",
+  "MOVIES": "Movies",
+  "WATCHLIST": "Watchlist",
+  "LOGIN": "Login",
+  "LOGOUT": "Logout",
+  "LANGUAGE": "Language",
+  "ADD_TO_WATCHLIST": "Add to Watchlist",
+  "REMOVE_FROM_WATCHLIST": "Remove from Watchlist",
+  "RETRY": "Retry",
+  "CLOSE": "Close",
+  "BACK_TO_TOP": "Back to Top",
+  "SHOW_MORE": "Show More",
+  "SHOW_LESS": "Show Less",
+  "SCROLL_TO_RATINGS": "User Ratings",
+  "SCROLL_TO_MEDIA": "Media Gallery",
+  "SCROLL_TO_CAST": "Cast"
+}

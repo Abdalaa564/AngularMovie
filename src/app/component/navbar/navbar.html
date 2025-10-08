@@ -23,7 +23,7 @@
 </div>
 <!-- زرار فلترة النوع خارج السيرش بوكس -->
 <div class="genre-filter" (click)="toggleGenreMenu()">
-  <span><i class="fa fa-film"></i> {{ selectedGenre || 'Genre' }}</span>
+  <span><i class="fa fa-film"></i> {{ selectedGenre  || ('General') }}</span>
   <i class="fa fa-caret-down"></i>
   <div class="genre-menu" *ngIf="showGenreMenu">
     <div (click)="selectGenre('Action')"><i class="fa fa-bolt"></i> Action</div>

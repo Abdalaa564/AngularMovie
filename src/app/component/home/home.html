@@ -1,16 +1,15 @@
 <div class="Home">
-  <app-carousel [movie]="movie"/>
-  <br>
-  <br>
+  <app-carousel [movie]="movie"></app-carousel>
+
   <div class="container all">
-    <h2 class="mb-4 text-white  fa-lg">Now Playing<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+    <h2 class="mb-4 text-white fa-lg">Now Playing <i class="fa-solid fa-chevron-right fa-xs"></i></h2>
     <div class="movies-slider-wrapper">
       <div class="movies-slider" #slider>
 
         @for (movie of movies; track movie.id) {
-          <div class="col">
-            <app-movie-card [movie]="movie" />
-          </div>
+        <div class="col">
+          <app-movie-card [movie]="movie" />
+        </div>
         }
 
       </div>
@@ -18,16 +17,19 @@
       <button class="slider-btn next" (click)="nextSlide(slider)">&gt;</button>
     </div>
   </div>
+
   <!-- 1------------------ -->
+
+
   <div class="container all">
-    <h2 class="mb-4 text-white fa-lg">Popular interests<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+    <h2 class="mb-4 text-white fa-lg">Popular interests <i class="fa-solid fa-chevron-right fa-xs"></i></h2>
     <div class="movies-slider-wrapper">
       <div class="movies-slider" #popularSlider>
 
         @for (movie of popularMovies; track movie.id) {
-          <div class="col">
-            <app-movie-card [movie]="movie" />
-          </div>
+        <div class="col">
+          <app-movie-card [movie]="movie" />
+        </div>
         }
 
       </div>
@@ -38,14 +40,15 @@
 
     <!-- 1------------------ -->
   <div class="container all">
-    <h2 class="mb-4 text-white fa-lg">Coming soon to theaters<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+    <h2 class="mb-4 text-white fa-lg">Coming soon to theaters <i class="fa-solid fa-chevron-right fa-xs"></i></h2>
     <div class="movies-slider-wrapper">
+
       <div class="movies-slider" #UpcomingMoviesSlider>
 
         @for (movie of UpcomingMovies; track movie.id) {
-          <div class="col">
-            <app-movie-comingsoon [movie]="movie" />
-          </div>
+        <div class="col">
+          <app-movie-comingsoon [movie]="movie" />
+        </div>
         }
 
       </div>
@@ -75,5 +78,28 @@
 
 <!-- ======= -->
 
+</div>
+
+<!-- 1------------------ -->
+<div class="container all">
+  <h2 class="mb-4 text-white fa-lg">Top Rated on IMDb this week<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+  <div class="movies-slider-wrapper">
+    <div class="movies-slider" #TopRatedMoviesSlider>
+
+      @for (movie of TopRatedMovies; track movie.id) {
+      <div class="col">
+        <app-movie-card [movie]="movie" />
+      </div>
+      }
+
+    </div>
+    <button class="slider-btn prev" (click)="prevSlide(TopRatedMoviesSlider)">&lt;</button>
+    <button class="slider-btn next" (click)="nextSlide(TopRatedMoviesSlider)">&gt;</button>
+  </div>
+</div>
+
+
+</div>
+>>>>>>>>> Temporary merge branch 2
 
 <app-back-to-top />

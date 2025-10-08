@@ -74,6 +74,11 @@ export class MovieDetail implements OnInit, OnDestroy {
         this.loadMovieData(movieId);
       }
     });
+
+    // إعداد اللغة
+    const lang = localStorage.getItem('lang') || 'en';
+    const dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.setAttribute('dir', dir);
   }
 
   ngOnDestroy(): void {
@@ -81,12 +86,14 @@ export class MovieDetail implements OnInit, OnDestroy {
   }
 
   loadMovieData(id: string): void {
+    const lang = localStorage.getItem('lang') || 'en';
+
     this.isLoading.set(true);
     this.errorMessage.set(null);
     this.movieDetails.set(null);
 
     forkJoin({
-      details: this.movieService.getMovieDetails(id),
+      details: this.movieService.getMovieDetails(id, lang),
       credits: this.movieService.getMovieCredits(id),
       videos: this.movieService.getMovieVideos(id),
       images: this.movieService.getMovieImages(id),

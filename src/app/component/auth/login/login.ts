@@ -37,4 +37,9 @@ export class Login {
     }
   }
 
+  goToRegister() {
+    // navigate to register page from template click handler
+    this.router.navigate(['/auth/register']);
+  }
+
 }
