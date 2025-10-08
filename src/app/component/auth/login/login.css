@@ -59,3 +59,11 @@
   .glass-card { padding: 18px }
 }
 
+/* Allow clicks to pass through the overlay to the navbar/underlying page,
+   but keep the auth card and its controls interactive. */
+.auth-page { pointer-events: none; }
+.auth-overlay { pointer-events: none; }
+.auth-center, .glass-card, .auth-inner input, .auth-inner button, .auth-inner a, .auth-inner select, .auth-inner textarea {
+  pointer-events: auto;
+}
+
