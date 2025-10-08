@@ -76,4 +76,4 @@ export class Home implements OnInit {
     sliderEl.scrollLeft -= slideWidth;
   }
 
-}
+} 
