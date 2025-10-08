@@ -262,3 +262,84 @@
 .ic {
   margin-left: 0 !important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* الشاشات الصغيرة (الموبايل) */
+@media (max-width: 768px) {
+  .movie-card {
+    width: 150px;
+    height: 250px;
+  }
+
+  .movie-card img {
+    height: 220px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .rating-container .rating {
+    font-size: 0.95rem;
+  }
+
+  .watchlist-btn {
+    font-size: 0.8rem;
+    padding: 3px 12px;
+    margin-left: 17px;
+  }
+
+  .Trailer {
+    font-size: 0.85rem;
+    margin-left: 5px;
+    gap: 0.1rem;
+    margin-left: 0px;
+  }
+
+  .info-icon {
+    font-size: 1rem;
+  }
+}
+
+/* التابلت */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .movie-card {
+    width: 160px;
+    height: 250px;
+  }
+
+  .movie-card img {
+    height: 180px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .watchlist-btn {
+    font-size: 0.9rem;
+    padding: 4px 15px;
+    margin-left: 17px;
+  }
+    .Trailer {
+    font-size: 0.95rem;
+    margin-left: 5px;
+    gap: 0.1rem;
+    margin-left: 5px;
+  }
+  .card-actions{
+    gap: 1.2rem;
+  }
+}
