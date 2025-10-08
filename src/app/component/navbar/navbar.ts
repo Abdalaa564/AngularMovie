@@ -8,7 +8,11 @@ import { Genre } from '../../services/genre';
 import { MovieService } from '../../services/movie-service';
 import { ThemeService } from '../../services/theme-service';
 import { Title } from '@angular/platform-browser';
+<<<<<<< Updated upstream
+=======
 import { SnackbarService } from '../../services/snackbar.service';
+import { IMovie } from '../../models/i-movie';
+>>>>>>> Stashed changes
 
 @Component({
   selector: 'app-navbar',
@@ -106,17 +110,17 @@ toggleGenreMenu() {
 
 
   // === زر العودة للأعلى ===
-  showBackToTop = false;
+
 
   // === عنوان الصفحة ===
   private titleService = inject(Title);
-  private snackbar = inject(SnackbarService);
+  private snackbar = inject(SnackbarService) as SnackbarService;
 
 
 
   toggleWishlist() {
     if (!this.auth.isLoggedIn()) {
-  this.snackbar.info('You must be logged in to access your watchlist');
+      this.snackbar.info('You must be logged in to access your watchlist');
       this.router.navigate(['/auth/login']);
       return;
     }
@@ -147,7 +151,7 @@ const clickedOutsideGenre = !target.closest('.genre-filter');
   currentLang = 'en';
   showLanguageMenu = false;
 
-  movies: any[] = [];
+
 
   get isDarkMode(): boolean {
     return this.themeService.currentTheme === 'dark';
@@ -158,30 +162,35 @@ const clickedOutsideGenre = !target.closest('.genre-filter');
     this.showLanguageMenu = !this.showLanguageMenu;
   }
 
+
+movies: IMovie[] = [];
+
    // === تغيير اللغة ===
   changeLanguage(lang: string): void {
-    this.currentLang = lang;
-    localStorage.setItem('lang', lang);
-    const dir = lang === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.setAttribute('dir', dir);
-    this.showLanguageMenu = false;
-    window.location.reload();
-  }
+  this.currentLang = lang;
+  localStorage.setItem('lang', lang);
+
+  const dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.documentElement.setAttribute('dir', dir);
+ this.showLanguageMenu = false;
+  // إعادة تحميل الصفحة علشان المكون MovieList يقرأ اللغة الجديدة
+  window.location.reload();
+
+  this.movieService.getNowPlaying(lang).subscribe(res => {
+    this.movies = res.results;
+  });
+
+
+
+}
+
 
   // === تغيير الثيم ===
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
   }
-// === زر العودة للأعلى ===
-  @HostListener('window:scroll', [])
-  onScroll(): void {
-    this.showBackToTop = window.scrollY > 300;
-  }
 
-  scrollToTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
 
 
 

@@ -24,7 +24,7 @@
           <p class="tagline mt-3"><em>{{ movie.tagline }}</em></p>
   
           <div class="d-flex align-items-center gap-3 mb-3 action-bar">
-            <!-- تعديل زر الـ Rating ليعمل scroll -->
+            <!-- زر الـ Rating ليعمل scroll -->
             <div class="rating-badge clickable-rating" (click)="scrollToUserRatings()">
               <i class="bi bi-star-fill text-dark me-1"></i> 
               <strong>{{ movie.vote_average.toFixed(1) }}</strong> / 10
@@ -39,8 +39,6 @@
             </button>
           </div>
           
-          
-  
           <h4>Overview</h4>
           <p>{{ movie.overview }}</p>
 
@@ -112,7 +110,7 @@
       <hr class="my-5">
     }
 
-    <!-- قسم User Ratings الجديد -->
+    <!-- قسم User Ratings -->
     <div class="user-ratings-section" id="userRatings">
       <h3 class="mb-4">User Ratings & Reviews</h3>
       
@@ -148,28 +146,24 @@
     </div>
 
     <hr class="my-5">
-  
 
-<!-- ------------------A----------------- -->
-  <div class="container all">
-    <h2 class="mb-4 text-white  fa-lg">Recommendations<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
-    <div class="movies-slider-wrapper">
-      <div class="movies-slider" #slider>
-        
-        @for (movie of movies; track movie.id) {
-          <div class="col">
-            <app-movie-card [movie]="movie" />
-          </div>
-        }
-        
+    <!-- Recommendations Section -->
+    <div class="container all">
+      <h2 class="mb-4 text-white fa-lg">Recommendations<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+      <div class="movies-slider-wrapper">
+        <div class="movies-slider" #slider>
+          
+          @for (movie of recommendations(); track movie.id) {
+            <div class="col">
+              <app-movie-card [movie]="movie" />
+            </div>
+          }
+          
+        </div>
+        <button class="slider-btn prev" (click)="scrollRecommendations('prev')">&lt;</button>
+        <button class="slider-btn next" (click)="scrollRecommendations('next')">&gt;</button>
       </div>
-      <button class="slider-btn prev" (click)="scrollCast('prev')">&lt;</button>
-      <button class="slider-btn next" (click)="scrollCast('next')">&gt;</button>
     </div>
-  </div>
-
-<!-- -----------------A------------------ -->
-
 
   </div>
   }
@@ -197,21 +191,6 @@
     </div>
   </div>
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @if (selectedMovie) {
   <div class="movie-modal" (click)="closeModal()">

@@ -3,6 +3,7 @@
 	<div class="auth-center">
 		<div class="glass-card auth-form">
 			<h1 class="title">Welcome</h1>
+                <p class="subtitle">Sign in to access your watchlist and personalised recommendations</p>
 
 			<form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="auth-inner">
 				<div class="alerts">
@@ -25,7 +26,7 @@
 				<button type="submit" class="cta" [disabled]="loginForm.invalid">Sign In</button>
 
 				<div class="auth-footer">
-					<a class="forgot" routerLink="/auth/forgot">Forgot Password?</a>
+					<a class="forgot" routerLink="/auth/register" href="/auth/register">Register</a>
 				</div>
 			</form>
 		</div>

@@ -35,13 +35,20 @@
   text-align: center;
 }
 
+.subtitle {
+  margin: 6px 0 14px 0;
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  font-size: 14px;
+}
+
 .auth-inner { display:flex; flex-direction:column; gap:12px; }
 
 .auth-inner .field label { color: rgba(255,255,255,0.85); font-size: 13px; }
 .auth-inner .field input { width:100%; padding:12px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.35); color:#fff; }
 .auth-inner .error { color:#ffcccb; font-size:12px; }
 
-.cta { margin-top:8px; background:#c44b4b; color:#fff; padding:12px 20px; border-radius:28px; border:none; font-weight:700; cursor:pointer; box-shadow: 0 6px 18px rgba(196,75,75,0.25); }
+.cta { margin-top:14px; background:#c44b4b; color:#fff; padding:14px 24px; border-radius:28px; border:none; font-weight:700; cursor:pointer; box-shadow: 0 8px 24px rgba(196,75,75,0.28); font-size:16px; }
 .cta[disabled] { opacity:0.6; cursor:not-allowed }
 
 .or-divider { text-align:center; margin:12px 0; color: rgba(255,255,255,0.7); font-size:12px; }

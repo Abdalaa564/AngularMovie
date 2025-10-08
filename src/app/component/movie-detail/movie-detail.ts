@@ -1,4 +1,3 @@
-// movie-detail.ts
 import { Component, OnInit, OnDestroy, inject, signal, ViewChild, ElementRef, effect, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from '../../services/movie-service';
@@ -10,9 +9,10 @@ import { MovieCard } from '../movie-card/movie-card';
 import { AuthService } from '../../services/auth-service';
 import { WishlistService } from '../../services/wishlist-service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ScrollService } from '../../services/scroll-service'; // أضف هذا الاستيراد
+import { ScrollService } from '../../services/scroll-service';
 import { LoadingSpinner } from '../../loading-spinner/loading-spinner';
 import { BackToTop } from '../../back-to-top/back-to-top';
+
 // نوع جديد للبيانات المعروضة مع الرابط الآمن
 type ViewMediaItem = (MediaItem & { safeUrl?: SafeResourceUrl });
 
@@ -26,6 +26,7 @@ type ViewMediaItem = (MediaItem & { safeUrl?: SafeResourceUrl });
 export class MovieDetail implements OnInit, OnDestroy {
   @ViewChild('scrollingWrapper') scrollingWrapper!: ElementRef;
   @ViewChild('mediaScroller') mediaScroller!: ElementRef;
+  @ViewChild('slider') slider!: ElementRef;
 
   private route = inject(ActivatedRoute);
   private movieService = inject(MovieService);
@@ -36,7 +37,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   private wishlistService = inject(WishlistService);
   private injector = inject(Injector);
   private snackBar = inject(MatSnackBar);
-  private scrollService = inject(ScrollService); // أضف هذا السطر
+  private scrollService = inject(ScrollService);
 
   // الإشارات (Signals)
   isLoading = signal(true);
@@ -48,7 +49,6 @@ export class MovieDetail implements OnInit, OnDestroy {
   showBackToTop = this.scrollService.showBackToTop;
 
   movieDetails = signal<IMovie | null>(null);
-  movies: IMovie[] = [];
   recommendations = signal<IMovie[]>([]);
   featuredCrew = signal<ICrew[]>([]);
   imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
@@ -74,25 +74,11 @@ export class MovieDetail implements OnInit, OnDestroy {
         this.loadMovieData(movieId);
       }
     });
-
-    // إزالة الـ event listener المحلي - الخدمة تهتم بهذا
-    // if (typeof window !== 'undefined') {
-    //   window.addEventListener('scroll', this.handleScroll.bind(this));
-    // }
   }
 
   ngOnDestroy(): void {
-    // إزالة التنظيف المحلي - الخدمة تهتم بهذا
-    // if (typeof window !== 'undefined') {
-    //   window.removeEventListener('scroll', this.handleScroll.bind(this));
-    // }
+    // لا حاجة للتنظيف - الخدمة تهتم بهذا
   }
-
-  // إزالة الدالة المحلية handleScroll
-  // private handleScroll(): void {
-  //   const scrollY = window.scrollY;
-  //   this.showBackToTop.set(scrollY > 500);
-  // }
 
   loadMovieData(id: string): void {
     this.isLoading.set(true);
@@ -206,9 +192,8 @@ export class MovieDetail implements OnInit, OnDestroy {
     return `${hours}h ${mins}m`;
   }
 
-  scrollCast(direction: 'prev' | 'next'): void {
-    const element = this.scrollingWrapper.nativeElement as HTMLElement;
-    const scrollAmount = element.clientWidth * 0.4;
+  // دالة مساعدة للسكرول مع خاصية الـ Loop
+  private scrollElement(direction: 'prev' | 'next', element: HTMLElement, scrollAmount: number): void {
     const maxScroll = element.scrollWidth - element.clientWidth;
     
     if (direction === 'next') {
@@ -228,26 +213,19 @@ export class MovieDetail implements OnInit, OnDestroy {
     }
   }
 
+  scrollCast(direction: 'prev' | 'next'): void {
+    const element = this.scrollingWrapper.nativeElement as HTMLElement;
+    this.scrollElement(direction, element, element.clientWidth * 0.4);
+  }
+
   scrollMedia(direction: 'prev' | 'next'): void {
     const element = this.mediaScroller.nativeElement as HTMLElement;
-    const scrollAmount = 480 + 15;
-    const maxScroll = element.scrollWidth - element.clientWidth;
-    
-    if (direction === 'next') {
-      if (element.scrollLeft >= maxScroll - 10) {
-        // إذا وصلنا للنهاية، نرجع للبداية
-        element.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        element.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      }
-    } else {
-      if (element.scrollLeft <= 10) {
-        // إذا كنا في البداية، نذهب للنهاية
-        element.scrollTo({ left: maxScroll, behavior: 'smooth' });
-      } else {
-        element.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      }
-    }
+    this.scrollElement(direction, element, 480 + 15);
+  }
+
+  scrollRecommendations(direction: 'prev' | 'next'): void {
+    const element = this.slider.nativeElement as HTMLElement;
+    this.scrollElement(direction, element, element.clientWidth * 0.8);
   }
 
   // استخدام دالة الخدمة بدلاً من الدالة المحلية
