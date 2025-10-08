@@ -20,10 +20,12 @@ export class Home implements OnInit {
   movies: IMovie[] = [];
   popularMovies: IMovie[] = [];
   UpcomingMovies: IMovie[] = [];
+  TopRatedMovies: IMovie[] = [];
 
   @ViewChild('moviesSlider', { static: true }) slider!: ElementRef;
   @ViewChild('popularSlider', { static: true }) popularSlider!: ElementRef;
   @ViewChild('UpcomingMoviesSlider', { static: true }) UpcomingMoviesSlider!: ElementRef;
+  @ViewChild('TopRatedMoviesSlider', { static: true }) TopRatedMoviesSlider!: ElementRef;
 
 
   ngOnInit(): void {
@@ -50,6 +52,14 @@ export class Home implements OnInit {
       next: (response) => {
         this.UpcomingMovies = response.results;
         console.log('Popular Movies:', this.UpcomingMovies);
+      },
+      error: (err) => console.error(err)
+    });
+
+    this.movieService.getTopRatedMovies().subscribe({
+      next: (response) => {
+        this.TopRatedMovies = response.results;
+        console.log('Popular Movies:', this.TopRatedMovies);
       },
       error: (err) => console.error(err)
     });
