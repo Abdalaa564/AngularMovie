@@ -8,7 +8,6 @@ import { Genre } from '../../services/genre';
 import { MovieService } from '../../services/movie-service';
 import { ThemeService } from '../../services/theme-service';
 import { Title } from '@angular/platform-browser';
-import { IMovie } from '../../models/i-movie';
 
 @Component({
   selector: 'app-navbar',
@@ -110,12 +109,13 @@ toggleGenreMenu() {
 
   // === عنوان الصفحة ===
   private titleService = inject(Title);
+  private snackbar = inject(SnackbarService);
 
 
 
   toggleWishlist() {
     if (!this.auth.isLoggedIn()) {
-      alert('You must be logged in to access your watchlist');
+  this.snackbar.info('You must be logged in to access your watchlist');
       this.router.navigate(['/auth/login']);
       return;
     }
@@ -125,7 +125,7 @@ toggleGenreMenu() {
   logout() {
     this.auth.logout();
     this.wishlist.refreshForCurrentUser();
-    alert('Logged out');
+  this.snackbar.success('Logged out');
     this.router.navigate(['/']);
   }
 

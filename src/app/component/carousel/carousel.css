@@ -23,7 +23,7 @@
   height: 550px;
   margin-bottom: 5rem;
   transition: color 0.3s ease;
-
+  padding: 15px 30px;
 }
 
 .carousel-item:hover .icon {
@@ -109,6 +109,8 @@
 
 
 .up-next-card {
+  display: flex;
+  align-items: flex-start;
   border-radius: 10px;
   align-items: center;
   height: 140px;
@@ -129,14 +131,40 @@
   color: rgb(255, 255, 255);
 }
 
-.up-next-card p {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7) !important;
+
+.up-next-text {
+  flex: 1;          /* ياخد المساحة الباقية */
+  min-width: 0;     /* مهم جدًا ل text-overflow */
+  overflow: hidden;
 }
 
-.text-muted{
-  color: rgb(255 255 255 / 75%);
+.up-next-text p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+.up-next-card p.small {
+  display: -webkit-box !important;
+}
+
+.up-next-card > div {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* .asdd{
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: block !important;
+} */
 
 .custom-icons i {
   color: rgba(255, 255, 255, 75) !important;
@@ -183,8 +211,8 @@
 .carousel-control-prev,
 .carousel-control-next {
   position: absolute;
-  top: 30%; 
-  transform: translateY(-50%); 
+  top: 30%;
+  transform: translateY(-50%);
   width: 45px;
   height: 60px;
   opacity: 1 !important;
@@ -192,7 +220,7 @@
   border-radius: 10%;
   border: 1px solid black;
   transition: all 0.3s ease;
-  z-index: 30; 
+  z-index: 30;
 }
 
 .carousel-control-next {
@@ -223,4 +251,159 @@
 .carousel-arrow:hover {
   color: #ffc107 !important;
   transform: scale(1.15);
+}
+
+
+
+/* 🎯 الهواتف الصغيرة */
+@media (max-width: 768px) {
+
+  .carousel-item {
+    height: 350px;
+  }
+
+  .carousel-item img {
+    height: 300px;
+  }
+
+  .main-caption {
+    padding: 10px 20px;
+    bottom: 0;
+  }
+
+ .main-caption-content {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left;
+    gap: 10px;
+  }
+
+ .main-caption-content .top-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+ .main-caption-content .big-icon {
+    font-size: 3rem;
+    margin-bottom: 0;
+  }
+
+ .movie-time {
+    margin-left: 0 !important;
+    font-size: 0.9rem;
+  }
+
+  .main-caption-content > div {
+    width: 100%; /* يخلي النص ياخد العرض بالكامل */
+  }
+
+  .main-caption-content h5 {
+    font-size: 1.2rem;
+  }
+
+  .main-caption-content p {
+    font-size: 0.9rem;
+  }
+
+  .movie-card {
+    width: 100px;
+    height: 140px;
+  }
+
+  .big-icon {
+    font-size: 2.5rem;
+  }
+
+  .movie-time {
+    font-size: 0.9rem;
+  }
+
+  /* up next section */
+  .up-next-card {
+    height: auto;
+    align-items: flex-start;
+  }
+
+  .up-next-card img {
+    width: 70px;
+    height: 100px;
+  }
+
+  .up-next-card h6 {
+    font-size: 0.9rem;
+  }
+
+  .up-next-card p {
+    font-size: 0.75rem;
+  }
+
+  .browse-link {
+    font-size: 1rem;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 35px;
+    height: 50px;
+    top: 40%;
+  }
+
+  .carousel-arrow {
+    font-size: 1.5rem;
+  }
+}
+
+/* 🎯 التابلت */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .carousel-item {
+    height: 450px;
+  }
+
+  .carousel-item img {
+    height: 400px;
+  }
+
+  .main-caption-content h5 {
+    font-size: 1.5rem;
+  }
+
+  .main-caption-content p {
+    font-size: 1rem;
+  }
+
+  .movie-card {
+    width: 130px;
+    height: 190px;
+  }
+
+  .big-icon {
+    font-size: 3.5rem;
+  }
+
+  .up-next-card img {
+    width: 80px;
+    height: 110px;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 40px;
+    height: 55px;
+    top: 35%;
+  }
+
+    .up-next,
+  .up-next-list,
+  .browse-link,
+  .col-md-4 {
+    display: none !important;
+  }
+
+  .col-md-8 {
+    width: 100% !important;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
 }
