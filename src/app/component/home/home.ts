@@ -21,7 +21,6 @@ export class Home implements OnInit {
   popularMovies: IMovie[] = [];
   UpcomingMovies: IMovie[] = [];
   TopRatedMovies: IMovie[] = [];
-  TopRatedMovies: IMovie[] = [];
 
   @ViewChild('slider', { static: true }) slider!: ElementRef;
   @ViewChild('popularSlider', { static: true }) popularSlider!: ElementRef;
