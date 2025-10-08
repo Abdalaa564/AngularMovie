@@ -120,13 +120,13 @@ toggleGenreMenu() {
 
   // === عنوان الصفحة ===
   private titleService = inject(Title);
-  private snackbar = inject(SnackbarService);
+  private snackbar = inject(SnackbarService) as SnackbarService;
 
 
 
   toggleWishlist() {
     if (!this.auth.isLoggedIn()) {
-  this.snackbar.info('You must be logged in to access your watchlist');
+      this.snackbar.info('You must be logged in to access your watchlist');
       this.router.navigate(['/auth/login']);
       return;
     }
