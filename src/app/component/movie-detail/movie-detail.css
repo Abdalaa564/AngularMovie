@@ -203,29 +203,6 @@
   position: relative;
 }
 
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  background-color: #1a1a1a;
-}
-
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid rgba(255, 255, 255, 0.2);
-  border-top-color: #ffc107;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Error State */
 .error-container {
   display: flex;
@@ -251,38 +228,6 @@
   margin-bottom: 1rem;
 }
 
-/* Back to Top Button */
-.back-to-top-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #ffc107;
-  color: #212529;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  z-index: 1000;
-  transition: all 0.3s ease;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
-}
-
-.back-to-top-btn.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.back-to-top-btn:hover {
-  background-color: #e0a800;
-  transform: translateY(-2px);
-}
-
 /* Wishlist Button Styles */
 .action-bar .watchlist-trigger-btn {
   background-color: rgba(255, 255, 255, 0.1);
@@ -301,6 +246,79 @@
   background-color: #ffc107;
   color: #111;
   border-color: #ffc107;
+}
+
+/* Recommendations Slider Styles */
+.container.all {
+  margin: 0 2rem 3.5rem 2rem;
+  max-width: 1285px;
+}
+
+.movies-slider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.movies-slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  width: 100%;
+  gap: 1.1rem;
+  padding-bottom: 15px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.movies-slider::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.movies-slider .col {
+  flex: 0 0 auto;
+  width: 190px;
+}
+
+.movies-slider-wrapper .slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.5);
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  border-radius: 10%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.movies-slider-wrapper .slider-btn.prev {
+  left: 10px;
+}
+
+.movies-slider-wrapper .slider-btn.next {
+  right: 10px;
+}
+
+.movies-slider-wrapper:hover .slider-btn {
+  opacity: 1;
+}
+
+/* جعل زر الـ Rating قابل للنقر */
+.clickable-rating {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clickable-rating:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
 }
 
 /* --- ## Responsive Styles ## --- */
@@ -356,24 +374,20 @@
     padding-right: 10px;
   }
 
-  /* الـ Action Bar بيكون في النص على الموبايل - الزراير جمب بعض */
   .action-bar {
     justify-content: center;
     text-align: center;
-
     flex-direction: row;
     gap: 1rem;
     flex-wrap: wrap;
   }
 
-  /* Tagline يبقى فوق الزراير */
   .tagline {
     order: -1;
     width: 100%;
     margin-bottom: 1rem;
   }
 
-  /* إخفاء أزرار السكرول على الموبايل */
   .slider-btn {
     display: none;
   }
@@ -384,9 +398,21 @@
     aspect-ratio: 16 / 9;
   }
 
-  /* تحسين السكرول على الموبايل */
   .scrolling-wrapper {
     padding-bottom: 10px;
+  }
+
+  /* Recommendations Responsive */
+  .container.all {
+    margin: 0 1rem 2rem 1rem;
+  }
+  
+  .movies-slider .col {
+    width: 150px;
+  }
+  
+  .movies-slider-wrapper .slider-btn {
+    display: none;
   }
 }
 
@@ -509,6 +535,7 @@
   color: #111;
   font-weight: bold;
 }
+
 /* تنسيقات User Ratings Section */
 .user-ratings-section {
   margin: 3rem 0;
@@ -587,7 +614,6 @@
 .rating-distribution h5 {
   margin-bottom: 1rem;
   color: #000000e0;
-  
 }
 
 .distribution-bar {
@@ -624,18 +650,7 @@
   opacity: 0.8;
 }
 
-/* جعل زر الـ Rating قابل للنقر */
-.clickable-rating {
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.clickable-rating:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
-}
-
-/* Responsive Design */
+/* Responsive Design for User Ratings */
 @media (max-width: 768px) {
   .ratings-summary {
     flex-direction: column;
