@@ -1,3 +1,4 @@
+// movie-detail.ts
 import { Component, OnInit, OnDestroy, inject, signal, ViewChild, ElementRef, effect, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from '../../services/movie-service';
@@ -9,14 +10,16 @@ import { MovieCard } from '../movie-card/movie-card';
 import { AuthService } from '../../services/auth-service';
 import { WishlistService } from '../../services/wishlist-service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { ScrollService } from '../../services/scroll-service'; // أضف هذا الاستيراد
+import { LoadingSpinner } from '../../loading-spinner/loading-spinner';
+import { BackToTop } from '../../back-to-top/back-to-top';
 // نوع جديد للبيانات المعروضة مع الرابط الآمن
 type ViewMediaItem = (MediaItem & { safeUrl?: SafeResourceUrl });
 
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
-  imports: [CommonModule, MovieCard, DatePipe, MatSnackBarModule],
+  imports: [CommonModule, MovieCard, DatePipe, MatSnackBarModule, LoadingSpinner, BackToTop],
   templateUrl: './movie-detail.html',
   styleUrl: './movie-detail.css'
 })
@@ -33,13 +36,16 @@ export class MovieDetail implements OnInit, OnDestroy {
   private wishlistService = inject(WishlistService);
   private injector = inject(Injector);
   private snackBar = inject(MatSnackBar);
+  private scrollService = inject(ScrollService); // أضف هذا السطر
 
   // الإشارات (Signals)
   isLoading = signal(true);
   showLoginSnackbar = signal(false);
   isFavorite = signal(false);
   errorMessage = signal<string | null>(null);
-  showBackToTop = signal(false);
+  
+  // استخدام الإشارة من الخدمة بدلاً من المحلية
+  showBackToTop = this.scrollService.showBackToTop;
 
   movieDetails = signal<IMovie | null>(null);
   movies: IMovie[] = [];
@@ -69,23 +75,24 @@ export class MovieDetail implements OnInit, OnDestroy {
       }
     });
 
-    // إضافة event listener للscroll
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', this.handleScroll.bind(this));
-    }
+    // إزالة الـ event listener المحلي - الخدمة تهتم بهذا
+    // if (typeof window !== 'undefined') {
+    //   window.addEventListener('scroll', this.handleScroll.bind(this));
+    // }
   }
 
   ngOnDestroy(): void {
-    // تنظيف event listener عند تدمير المكون
-    if (typeof window !== 'undefined') {
-      window.removeEventListener('scroll', this.handleScroll.bind(this));
-    }
+    // إزالة التنظيف المحلي - الخدمة تهتم بهذا
+    // if (typeof window !== 'undefined') {
+    //   window.removeEventListener('scroll', this.handleScroll.bind(this));
+    // }
   }
 
-  private handleScroll(): void {
-    const scrollY = window.scrollY;
-    this.showBackToTop.set(scrollY > 500);
-  }
+  // إزالة الدالة المحلية handleScroll
+  // private handleScroll(): void {
+  //   const scrollY = window.scrollY;
+  //   this.showBackToTop.set(scrollY > 500);
+  // }
 
   loadMovieData(id: string): void {
     this.isLoading.set(true);
@@ -98,7 +105,7 @@ export class MovieDetail implements OnInit, OnDestroy {
       videos: this.movieService.getMovieVideos(id),
       images: this.movieService.getMovieImages(id),
       recommendations: this.movieService.getMovieRecommendations(id),
-      reviews: this.movieService.getMovieReviews(id) // الإضافة الجديدة
+      reviews: this.movieService.getMovieReviews(id)
     }).subscribe({
       next: ({ details, credits, videos, images, recommendations, reviews }) => {
         const movieData: IMovie = { 
@@ -106,7 +113,7 @@ export class MovieDetail implements OnInit, OnDestroy {
           credits, 
           videos, 
           images, 
-          reviews // إضافة الـ reviews للبيانات
+          reviews
         };
         this.movieDetails.set(movieData);
         
@@ -243,20 +250,14 @@ export class MovieDetail implements OnInit, OnDestroy {
     }
   }
 
-  // زر العودة للأعلى
+  // استخدام دالة الخدمة بدلاً من الدالة المحلية
   scrollToTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.scrollService.scrollToTop();
   }
 
   // دالة الـ Smooth Scroll لقسم User Ratings
   scrollToUserRatings(): void {
-    const element = document.getElementById('userRatings');
-    if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
+    this.scrollService.scrollToElement('userRatings');
   }
 
   // دالة حساب النسبة المئوية للتقييمات (مثال - في الواقع محتاج API منفصل)
@@ -281,7 +282,6 @@ export class MovieDetail implements OnInit, OnDestroy {
     }
   }
 
-
   selectedMovie: IMovie | null = null;
 
   openMovieModal(movie: IMovie): void {
@@ -291,5 +291,4 @@ export class MovieDetail implements OnInit, OnDestroy {
   closeModal(): void {
     this.selectedMovie = null;
   }
-
 }

@@ -1,7 +1,5 @@
 @if (isLoading()) {
-  <div class="loading-container">
-    <div class="spinner"></div>
-  </div>
+  <app-loading-spinner />
 } @else {
   @if (movieDetails(); as movie) {
   <div class="container-fluid movie-details-container py-5" 
@@ -178,12 +176,7 @@
 }
 
 <!-- زر العودة للأعلى -->
-<button class="back-to-top-btn" 
-        (click)="scrollToTop()" 
-        [class.show]="showBackToTop()"
-        title="Back to Top">
-  <i class="bi bi-chevron-up"></i>
-</button>
+<app-back-to-top />
 
 <!-- Snackbar for Login -->
 @if(showLoginSnackbar()){
