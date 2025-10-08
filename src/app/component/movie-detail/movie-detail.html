@@ -151,14 +151,28 @@
 
     <hr class="my-5">
   
-    <h3 class="mb-4">Recommendations</h3>
-    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
-      @for (rec of recommendations(); track rec.id) {
-        <div class="col">
-          <app-movie-card [movie]="rec" />
-        </div>
-      }
+
+<!-- ------------------A----------------- -->
+  <div class="container all">
+    <h2 class="mb-4 text-white  fa-lg">Recommendations<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+    <div class="movies-slider-wrapper">
+      <div class="movies-slider" #slider>
+        
+        @for (movie of movies; track movie.id) {
+          <div class="col">
+            <app-movie-card [movie]="movie" />
+          </div>
+        }
+        
+      </div>
+      <button class="slider-btn prev" (click)="scrollCast('prev')">&lt;</button>
+      <button class="slider-btn next" (click)="scrollCast('next')">&gt;</button>
     </div>
+  </div>
+
+<!-- -----------------A------------------ -->
+
+
   </div>
   }
 }
@@ -186,6 +200,33 @@
       <div class="snackbar-actions">
         <a (click)="navigateTo('/auth/register')" class="register-link">Don't have an account? <strong>Register</strong></a>
         <button class="btn btn-warning login-btn" (click)="navigateTo('/auth/login')">Login</button>
+      </div>
+    </div>
+  </div>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@if (selectedMovie) {
+  <div class="movie-modal" (click)="closeModal()">
+    <div class="movie-modal-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeModal()">×</button>
+
+      <div class="movie-modal-header">
+
       </div>
     </div>
   </div>

@@ -1,15 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { IMovie } from '../../models/i-movie';
 import { MovieService } from '../../services/movie-service';
-import { DecimalPipe, SlicePipe } from '@angular/common';
+import { CommonModule, DecimalPipe, SlicePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-carousel',
-  imports: [SlicePipe, DecimalPipe],
+  imports: [SlicePipe, DecimalPipe, CommonModule, RouterLink],
   templateUrl: './carousel.html',
   styleUrl: './carousel.css'
 })
 export class Carousel  implements OnInit, OnDestroy {
+  @Input({ required: true }) movie!: IMovie;
+
   movies: IMovie[] = [];
   visibleMovies: IMovie[] = [];
   private intervalId?: any;

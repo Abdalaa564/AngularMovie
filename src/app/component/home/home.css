@@ -5,8 +5,9 @@
 }
 
 .all {
-    margin: 0 8.4rem 0 2rem;
+    margin: 0 8.4rem 3.5rem 2rem;
     max-width: 1285px;
+
 }
 .all .row {
   gap: 0.9rem;

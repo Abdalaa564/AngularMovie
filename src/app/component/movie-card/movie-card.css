@@ -68,7 +68,7 @@
   font-size: 1.2rem;
   cursor: pointer;
   gap: 1rem;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .btn-sm {
@@ -91,4 +91,174 @@
 }
 .watchlist-btn span {
   font-size: 1rem;
+}
+
+
+
+
+
+
+
+
+
+.movie-modal {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.movie-modal-content {
+  background-color: #1c1c1c;
+  color: #fff;
+  border-radius: 15px;
+  max-width: 700px;
+  width: 90%;
+  padding: 20px;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+  animation: slideDown 0.4s ease;
+  position: relative;
+}
+
+.movie-modal-content img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.movie-modal-header {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.movie-modal-header img {
+  width: 75px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.movie-info h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.movie-info h2:hover {
+  text-decoration: underline;
+}
+
+.release-date,
+.rating,
+.genres {
+  margin: 5px 0;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.genre {
+  background: #ffcc00;
+  color: #111;
+  border-radius: 5px;
+  padding: 3px 8px;
+  margin-right: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.movie-overview {
+  margin-top: 20px;
+}
+
+.movie-overview h4 {
+  margin-bottom: 8px;
+  color: #ffcc00;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #ffcc00;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+/* -------------- */
+
+.rate-this {
+  color: #ffcc00;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.rate-this-title{
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.rating-stars{
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 10px;
+}
+
+.rate-star {
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.rate-star:hover {
+  transform: scale(1.2);
+  color: #ffd700;
+}
+
+.rating-icon-with-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #ffcc00;
+  font-weight: 500;
+}
+.info-icon span {
+  color: #dadada;
+  padding: 2px 0;
+  font-size: 1rem;
+  font-weight: 400;
+}
+.ic {
+  margin-left: 0 !important;
 }
