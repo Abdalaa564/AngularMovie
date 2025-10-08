@@ -17,27 +17,38 @@ export class MovieList implements OnInit {
   private movieService = inject(MovieService);
   movies: IMovie[] = [];
   title = 'Results';
+  currentLang = 'en';
 
    ngOnInit(): void {
-const lang = localStorage.getItem('lang') || 'en';
+ const lang = localStorage.getItem('lang') || 'en';
+    this.currentLang = lang;
 
-this.route.queryParams.subscribe(params => {
-  const q = params['q'];
-  const genre = params['genre'];
+    // ضبط اتجاه الصفحة حسب اللغة
+    const dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.setAttribute('dir', dir);
 
-  if (q) {
-    this.movieService.searchMovies(q, lang).subscribe(res => {
-      this.movies = res.results;
-    });
-  } else if (genre) {
-    this.movieService.getMoviesByGenre(genre, lang).subscribe(res => {
-      this.movies = res.results;
-    });
-  } else {
-    this.movieService.getNowPlaying(lang).subscribe(res => {
-      this.movies = res.results;
-    });
-  }
+ // الاشتراك في باراميترات الرابط
+    this.route.queryParams.subscribe(params => {
+      const q = params['q'];
+      const genre = params['genre'];
+
+       if (q) {
+        this.title = `Search: ${q}`;
+        this.movieService.searchMovies(q, lang).subscribe(res => {
+          this.movies = res.results;
+        });
+      } else if (genre) {
+        this.title = `Genre: ${genre}`;
+        this.movieService.getMoviesByGenre(genre, lang).subscribe(res => {
+          this.movies = res.results;
+        });
+      } else {
+        this.title = 'Now Playing';
+        this.movieService.getNowPlaying(lang).subscribe(res => {
+          this.movies = res.results;
+        });
+      }
+
 });
   }
 

@@ -64,12 +64,11 @@ export class MovieService {
     return this.http.get<IMoviesResponse>(url);
   }
 
-  searchMovies(query: string, lang: string): Observable<IMoviesResponse> {
-    const url = `${this.baseUrl}/search/movie?api_key=${this.apiKey}&query=${encodeURIComponent(
-      query
-    )}`;
-    return this.http.get<IMoviesResponse>(url);
-  }
+ searchMovies(query: string, lang: string): Observable<IMoviesResponse> {
+  const url = `${this.baseUrl}/search/movie?api_key=${this.apiKey}&query=${encodeURIComponent(query)}&language=${lang}`;
+  return this.http.get<IMoviesResponse>(url);
+}
+
 
   getPopularMovies(): Observable<IMoviesResponse> {
     const url = `${this.baseUrl}/movie/popular?api_key=${this.apiKey}`;
