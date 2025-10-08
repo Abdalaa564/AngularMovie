@@ -54,27 +54,26 @@
     </div>
   </div>
 
-<<<<<<<<< Temporary merge branch 1
-</div>
-=========
-    <!-- 1------------------ -->
   <div class="container all">
-    <h2 class="mb-4 text-white fa-lg">Top Rated on IMDb this week<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
-    <div class="movies-slider-wrapper">
-      <div class="movies-slider" #TopRatedMoviesSlider>
-
-        @for (movie of TopRatedMovies; track movie.id) {
-          <div class="col">
-            <app-movie-card [movie]="movie" />
-          </div>
-        }
-
-      </div>
-      <button class="slider-btn prev" (click)="prevSlide(TopRatedMoviesSlider)">&lt;</button>
-      <button class="slider-btn next" (click)="nextSlide(TopRatedMoviesSlider)">&gt;</button>
+  <h2 class="mb-4 text-white fa-lg">Top Rated on IMDb this week<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+  <div class="movies-slider-wrapper">
+    <div class="movies-slider" #TopRatedMoviesSlider>
+      
+      @for (movie of TopRatedMovies; track movie.id) {
+        <div class="col">
+          <app-movie-card [movie]="movie" />
+        </div>
+      }
+      
     </div>
+    <button class="slider-btn prev" (click)="prevSlide(TopRatedMoviesSlider)">&lt;</button>
+    <button class="slider-btn next" (click)="nextSlide(TopRatedMoviesSlider)">&gt;</button>
+  </div>
   </div>
 
-
 </div>
->>>>>>>>> Temporary merge branch 2
+
+<!-- ======= -->
+
+
+<app-back-to-top />

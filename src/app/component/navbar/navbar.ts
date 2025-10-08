@@ -8,6 +8,8 @@ import { Genre } from '../../services/genre';
 import { MovieService } from '../../services/movie-service';
 import { ThemeService } from '../../services/theme-service';
 import { Title } from '@angular/platform-browser';
+import { SnackbarService } from '../../services/snackbar.service';
+import { IMovie } from '../../models/i-movie';
 
 @Component({
   selector: 'app-navbar',
