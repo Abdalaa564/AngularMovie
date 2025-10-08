@@ -2,12 +2,13 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Footer } from './component/footer/footer';
 import { Navbar } from './component/navbar/navbar';
+import { AppSnackbar } from './component/snackbar/snackbar';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Navbar, Footer, CommonModule],
+  imports: [RouterOutlet, Navbar, Footer, CommonModule, AppSnackbar],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
