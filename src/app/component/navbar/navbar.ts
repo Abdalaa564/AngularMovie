@@ -8,6 +8,8 @@ import { Genre } from '../../services/genre';
 import { MovieService } from '../../services/movie-service';
 import { ThemeService } from '../../services/theme-service';
 import { Title } from '@angular/platform-browser';
+import { IMovie } from '../../models/i-movie';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -17,13 +19,19 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./navbar.css'],
 })
 export class Navbar implements OnInit {
+   isLoggedIn = false; // عدّل حسب حالة المستخدم
     private router = inject(Router);
 private genreService = inject(Genre);
   // private translate = inject(TranslateService);
   private movieService = inject(MovieService);
  private themeService = inject(ThemeService);
+  private defaultGenre = 'General';
+
 
  ngOnInit(): void {
+   this.selectedGenre = null;
+
+
     // تحميل اللغة
     const savedLang = localStorage.getItem('lang') || 'en';
     this.currentLang = savedLang;
@@ -31,7 +39,8 @@ private genreService = inject(Genre);
     document.documentElement.setAttribute('dir', dir);
 
     // تحميل الثيم
-    this.themeService.initTheme();
+ this.themeService.initTheme();
+
 
     // تعيين عنوان الصفحة
     this.titleService.setTitle('IMDb Clone - Movies');
@@ -97,6 +106,8 @@ toggleGenreMenu() {
   }
 
   goHome() {
+       this.selectedGenre = null;
+
     this.router.navigate(['/']);
   }
 
@@ -148,9 +159,10 @@ const clickedOutsideGenre = !target.closest('.genre-filter');
 
 
 
-  get isDarkMode(): boolean {
+    get isDarkMode(): boolean {
     return this.themeService.currentTheme === 'dark';
   }
+
 
 
   toggleLanguageMenu() {
@@ -174,14 +186,8 @@ movies: IMovie[] = [];
   this.movieService.getNowPlaying(lang).subscribe(res => {
     this.movies = res.results;
   });
-
-
-
 }
-
-
-  // === تغيير الثيم ===
-
+ // === تغيير الثيم ===
   toggleTheme(): void {
     this.themeService.toggleTheme();
   }

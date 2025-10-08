@@ -5,12 +5,12 @@ import { MovieCard } from '../movie-card/movie-card';
 import { Carousel } from '../carousel/carousel';
 import { CommonModule } from '@angular/common'; //  <-- ضيف الـ import ده
 import { MovieComingsoon } from '../movie-comingsoon/movie-comingsoon';
-import { BackToTop } from '../../back-to-top/back-to-top';
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Carousel, MovieCard, MovieComingsoon, CommonModule, BackToTop],
+  imports: [Carousel, MovieCard, MovieComingsoon, CommonModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
@@ -25,6 +25,7 @@ export class Home implements OnInit {
   @ViewChild('moviesSlider', { static: true }) slider!: ElementRef;
   @ViewChild('popularSlider', { static: true }) popularSlider!: ElementRef;
   @ViewChild('UpcomingMoviesSlider', { static: true }) UpcomingMoviesSlider!: ElementRef;
+TopRatedMovies: any;
 
 
   ngOnInit(): void {
@@ -32,8 +33,8 @@ export class Home implements OnInit {
       next: (response) => {
         // ## السطر ده هو التعديل المهم ##
         // بنقوله هات قائمة الأفلام اللي جوه 'results'
-        this.movies = response.results; 
-        
+        this.movies = response.results;
+
         console.log('Movies for Home page:', this.movies); // للتأكد
       },
       error: (err) => console.error('Error fetching movies:', err)
@@ -57,7 +58,7 @@ export class Home implements OnInit {
   }
 
   nextSlide(sliderEl: HTMLDivElement) {
-    const slideWidth = sliderEl.offsetWidth; 
+    const slideWidth = sliderEl.offsetWidth;
     sliderEl.scrollLeft += slideWidth;
   }
 
