@@ -5,7 +5,12 @@ import { MovieCard } from '../movie-card/movie-card';
 import { Carousel } from '../carousel/carousel';
 import { CommonModule } from '@angular/common'; //  <-- ضيف الـ import ده
 import { MovieComingsoon } from '../movie-comingsoon/movie-comingsoon';
+<<<<<<< Updated upstream
 
+=======
+// BackToTop was removed from imports because it's not used in the Home template
+// import { BackToTop } from '../../back-to-top/back-to-top';
+>>>>>>> Stashed changes
 
 @Component({
   selector: 'app-home',
@@ -21,12 +26,18 @@ export class Home implements OnInit {
   movies: IMovie[] = [];
   popularMovies: IMovie[] = [];
   UpcomingMovies: IMovie[] = [];
+  TopRatedMovies: IMovie[] = [];
 
   @ViewChild('slider', { static: true }) slider!: ElementRef;
   @ViewChild('popularSlider', { static: true }) popularSlider!: ElementRef;
+<<<<<<< Updated upstream
 
   @ViewChild('UpcomingMoviesSlider', { static: true }) UpcomingMoviesSlider!: ElementRef;
 TopRatedMovies: any;
+=======
+  @ViewChild('upcomingSlider', { static: true }) upcomingSlider!: ElementRef;
+  @ViewChild('topRatedSlider', { static: true }) topRatedSlider!: ElementRef;
+>>>>>>> Stashed changes
 
 
   ngOnInit(): void {
