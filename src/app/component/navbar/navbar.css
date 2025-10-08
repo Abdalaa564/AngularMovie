@@ -20,9 +20,24 @@
 }
 
 .menu {
+  position: relative;
+  background-color: #222;              /* نفس لون الفلتر واللغة */
+  color: white;
+  padding: 6px 12px;                   /* نفس التباعد الداخلي */
+  border-radius: 5px;                  /* نفس الحواف */
   cursor: pointer;
-  margin-right: 20px;
-margin-left: 30px;
+  font-weight: bold;
+  border: none;
+  margin: 0 10px;                      /* نفس التباعد الجانبي */
+  display: inline-flex;                /* لضبط المحاذاة الرأسية */
+  align-items: center;
+  height: 38px;                        /* نفس ارتفاع الفلتر واللغة */
+  transition: background-color 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* نفس الظل */
+  user-select: none;
+}
+.menu:hover {
+  background-color: #333;              /* تأثير التمرير */
 }
 
 .dropdown-menu div:hover {
@@ -66,7 +81,6 @@ margin-left: 30px;
   user-select: none;
   z-index: 2;
 }
-
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -75,7 +89,7 @@ margin-left: 30px;
   color: white;
   padding: 10px;
   border-radius: 5px;
-  z-index: 1000;
+  z-index: 100;
   min-width: 200px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
@@ -199,19 +213,22 @@ background-image: url(https://media.istockphoto.com/id/1478374885/photo/joyful-f
   padding: 6px 12px;
   border-radius: 4px;
 }
+.search-bar {
+  position: relative;
+  z-index: 1000;
+}
+
 .menu-list {
-  position: absolute;
+ position: absolute;
   top: 100%;
-  left: 85px;
+  left: 0;
   background-color: #222;
   color: white;
   padding: 10px;
   border-radius: 5px;
-  z-index: 150;
-  min-width: 180px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
+  z-index: 102;
+  min-width: 200px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 .menu-item {
@@ -226,5 +243,193 @@ background-image: url(https://media.istockphoto.com/id/1478374885/photo/joyful-f
 }
 
 .menu-item:hover {
+  background-color: #333;
+}
+.genre-menu div {
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.genre-menu div:hover {
+  background-color: #333;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-10px); }
+}
+
+.genre-filter {
+  position: relative;
+  background-color: #222;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+  margin: 0 10px; /* إزالة margin-top */
+  display: inline-flex; /* أفضل من inline-block للمحاذاة الرأسية */
+  align-items: center; /* لضبط المحتوى عموديًا */
+  height: 38px; /* نفس ارتفاع زر اللغة أو البحث لو محتاج توحيد */
+  transition: background-color 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+.genre-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 102;
+  min-width: 200px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.genre-menu div {
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.genre-menu div:hover {
+  background-color: #333;
+}
+
+
+
+
+/* زر اللغة */
+.language-dropdown {
+  position: relative;
+  background-color: #222;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+  margin: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  user-select: none;
+}
+.language-dropdown:hover {
+  background-color: #333;
+}
+
+.language-dropdown:hover {
+  background-color: #333;
+}
+
+/* قائمة اللغة */
+.language-dropdown {
+ position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 102;
+  min-width: 200px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+body[dir="rtl"] .language-dropdown {
+  margin-right: 30px;
+  margin-left: 0;
+}
+
+
+.language-dropdown:hover {
+  background-color: #333;
+}
+
+.language-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 150;
+  min-width: 180px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* لما اللغة تكون عربي (RTL) تظهر القائمة يمين */
+body[dir="rtl"] .language-menu {
+  right: 0;
+  left: auto;
+}
+
+/* لما اللغة تكون إنجليزي أو غيرها (LTR) تظهر القائمة شمال */
+body[dir="ltr"] .language-menu {
+  left: 0;
+  right: auto;
+}
+
+
+.language-menu div {
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #444;
+}
+
+.language-menu div:last-child {
+  border-bottom: none;
+}
+
+.language-menu div:hover {
+  background-color: #333;
+}
+
+/* أنيميشن دخول */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+body.dark-mode {
+  background-color: #121212;
+  color: #f5f5f5;
+}
+
+.theme-toggle {
+  background-color: #222;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.theme-toggle:hover {
   background-color: #333;
 }

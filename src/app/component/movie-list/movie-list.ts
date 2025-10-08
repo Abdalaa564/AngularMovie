@@ -18,15 +18,27 @@ export class MovieList implements OnInit {
   movies: IMovie[] = [];
   title = 'Results';
 
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const q = params['q'];
-      if (q) {
-        this.title = `Results for "${q}"`;
-        this.movieService.searchMovies(q).subscribe(res => {
-          this.movies = res.results;
-        });
-      }
+   ngOnInit(): void {
+const lang = localStorage.getItem('lang') || 'en';
+
+this.route.queryParams.subscribe(params => {
+  const q = params['q'];
+  const genre = params['genre'];
+
+  if (q) {
+    this.movieService.searchMovies(q, lang).subscribe(res => {
+      this.movies = res.results;
+    });
+  } else if (genre) {
+    this.movieService.getMoviesByGenre(genre, lang).subscribe(res => {
+      this.movies = res.results;
+    });
+  } else {
+    this.movieService.getNowPlaying(lang).subscribe(res => {
+      this.movies = res.results;
     });
   }
+});
+  }
+
 }

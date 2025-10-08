@@ -30,6 +30,7 @@ export class MovieService {
   private http = inject(HttpClient);
   private apiKey = 'dd724dfe8a2da5556091cf33e4f4d50d';
   private baseUrl = 'https://api.themoviedb.org/3';
+ // Removed redundant constructor
 
   getNowPlayingMovies(): Observable<IMoviesResponse> {
     const url = `${this.baseUrl}/movie/now_playing?api_key=${this.apiKey}`;
@@ -63,7 +64,7 @@ export class MovieService {
     return this.http.get<IMoviesResponse>(url);
   }
 
-  searchMovies(query: string): Observable<IMoviesResponse> {
+  searchMovies(query: string, lang: string): Observable<IMoviesResponse> {
     const url = `${this.baseUrl}/search/movie?api_key=${this.apiKey}&query=${encodeURIComponent(
       query
     )}`;
@@ -99,4 +100,25 @@ export class MovieService {
     const url = `${this.baseUrl}/movie/${id}/reviews?api_key=${this.apiKey}`;
     return this.http.get<any>(url);
   }
+
+getMoviesByGenre(genreName: string, language: string): Observable<IMoviesResponse> {
+  const genreMap: { [key: string]: number } = {
+    Action: 28,
+    Comedy: 35,
+    Drama: 18,
+    Horror: 27,
+    Romance: 10749,
+    Thriller: 53
+  };
+
+  const genreId = genreMap[genreName];
+  const url = `${this.baseUrl}/discover/movie?api_key=${this.apiKey}&with_genres=${genreId}&language=${language}`;
+  return this.http.get<IMoviesResponse>(url);
+}
+
+getNowPlaying(language: string): Observable<IMoviesResponse> {
+  const url = `${this.baseUrl}/movie/now_playing?api_key=${this.apiKey}&language=${language}`;
+  return this.http.get<IMoviesResponse>(url);
+}
+
 }

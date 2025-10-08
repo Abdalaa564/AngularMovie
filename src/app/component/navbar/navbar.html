@@ -17,22 +17,21 @@
   </div>
   <!-- Search Section -->
   <div class="search-bar">
-    <div class="dropdown" (click)="toggleSearchTypeMenu($event)">
-  {{ searchType }} <i class="fa fa-caret-down"></i>
-  <div class="dropdown-menu" *ngIf="showAllDropdown">
-    <div (click)="selectSearchType('All')"><i class="fa fa-search"></i> All</div>
-    <div (click)="selectSearchType('Titles')"><i class="fa fa-film"></i> Titles</div>
-    <div (click)="selectSearchType('TV')"><i class="fa fa-tv"></i> TV Episodes</div>
-    <div (click)="selectSearchType('Celebs')"><i class="fa fa-user"></i> Celebs</div>
-    <div (click)="selectSearchType('Companies')"><i class="fa fa-building"></i> Companies</div>
-    <div (click)="selectSearchType('Keywords')"><i class="fa fa-tag"></i> Keywords</div>
-    <div><i class="fa fa-plus"></i> Advanced Search</div>
+  <!-- مربع البحث -->
+  <input type="text" placeholder="Search IMDb..." [(ngModel)]="searchText" (keyup.enter)="runSearch()" />
+  <button (click)="runSearch()"><i class="fa fa-search"></i></button>
+</div>
+<!-- زرار فلترة النوع خارج السيرش بوكس -->
+<div class="genre-filter" (click)="toggleGenreMenu()">
+  <span><i class="fa fa-film"></i> {{ selectedGenre || 'Genre' }}</span>
+  <i class="fa fa-caret-down"></i>
+  <div class="genre-menu" *ngIf="showGenreMenu">
+    <div (click)="selectGenre('Action')"><i class="fa fa-bolt"></i> Action</div>
+    <div (click)="selectGenre('Romance')"><i class="fa fa-heart"></i> Romance</div>
+    <div (click)="selectGenre('Thriller')"><i class="fa fa-fire"></i> Thriller</div>
+    <div (click)="selectGenre('Horror')"><i class="fa fa-ghost"></i> Horror</div>
   </div>
 </div>
-
-    <input type="text" placeholder="Search IMDb..." [(ngModel)]="searchText" (keyup.enter)="runSearch()" />
-    <button (click)="runSearch()"><i class="fa fa-search"></i></button>
-  </div>
 
   <!-- Navigation Actions -->
   <div class="nav-actions">
@@ -68,8 +67,22 @@
     <div class="action-item" *ngIf="auth.isLoggedIn()" (click)="logout()" title="Logout">
       <i class="fa fa-sign-out-alt"></i> Logout
     </div>
-    <div class="action-item">
-      EN <i class="fa fa-caret-down"></i>
+     <!-- زر الثيم -->
+  <button class="theme-toggle" (click)="toggleTheme()">
+    {{ isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode' }}
+  </button>
+<!-- زر العودة للأعلى -->
+  <button class="back-to-top" *ngIf="showBackToTop" (click)="scrollToTop()">⬆️</button>
+
+   <!-- Language Dropdown -->
+<div class="language-dropdown" (click)="toggleLanguageMenu()" class="dropdown-language">
+  🌐 {{ currentLang.toUpperCase() }}
+  <i class="fa fa-caret-down"></i>
+  <div class="language-menu" *ngIf="showLanguageMenu">
+    <div *ngFor="let lang of availableLanguages" (click)="changeLanguage(lang)">
+      {{ lang.toUpperCase() }}
     </div>
+  </div>
+</div>
   </div>
 </nav>
