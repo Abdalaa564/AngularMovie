@@ -1,0 +1,154 @@
+.not-found-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+.not-found-avatar {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.not-found-container h1 {
+  font-size: 6rem;
+  color:  #f0ad4e;
+  margin: 0;
+}
+
+.not-found-container p {
+  font-size: 1.2rem;
+  margin: 10px 0 25px;
+  color: #ccc;
+}
+
+.back-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color:  #f0ad4e;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  transition: background 0.3s;
+}
+
+.back-home-btn:hover {
+  background-color: #ff6b6b;
+}
+
+.not-found-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+.not-found-avatar {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.not-found-container h1 {
+  font-size: 6rem;
+  color:  #f0ad4e;
+  margin: 0;
+}
+
+.not-found-container p {
+  font-size: 1.2rem;
+  margin: 10px 0 25px;
+  color: #ccc;
+}
+
+.back-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color:  #f0ad4e;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  transition: background 0.3s;
+}
+
+.back-home-btn:hover {
+  background-color: #ff6b6b;
+}
+
+/* 🎯 شاشات متوسطة (تابلت) */
+@media (max-width: 1024px) {
+  .not-found-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .not-found-container h1 {
+    font-size: 4rem;
+  }
+
+  .not-found-container p {
+    font-size: 1rem;
+  }
+
+  .back-home-btn {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .not-found-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .not-found-container h1 {
+    font-size: 3rem;
+  }
+
+  .not-found-container p {
+    font-size: 0.9rem;
+  }
+
+  .back-home-btn {
+    padding: 6px 15px;
+    font-size: 0.85rem;
+  }
+}
