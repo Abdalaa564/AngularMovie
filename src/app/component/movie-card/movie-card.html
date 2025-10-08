@@ -26,9 +26,16 @@
     <a [routerLink]="['/details', movie.id]" class="text-decoration-none">
       <h6 class="card-title">{{ movie.title }}</h6>
     </a>
-    <button class="btn watchlist-btn mb-2">
-      <span class="me-1">+</span> Watchlist
+    
+    <!-- زر الـ Watchlist المعدل فقط -->
+    <button class="btn watchlist-btn mb-2" 
+            (click)="handleWatchlistClick($event)" 
+            [title]="isFavorite() ? 'Remove from Watchlist' : 'Add to Watchlist'"
+            [class.active]="isFavorite()">
+      <span class="me-1">{{ isFavorite() ? '✓' : '+' }}</span> 
+      {{ isFavorite() ? 'In Watchlist' : 'Watchlist' }}
     </button>
+    
     <div class="card-actions">
       <a class="Trailer me-2"><i class="bi bi-play-fill"></i>Trailer</a>
 
@@ -52,7 +59,7 @@
           [alt]="selectedMovie.title"
         />
         <div class="movie-info">
-          <a [routerLink]="['/details', movie.id]" class="text-decoration-none text-white">
+          <a [routerLink]="['/details', selectedMovie.id]" class="text-decoration-none text-white">
             <h2>{{ selectedMovie.title }}<i class="fa-solid fa-chevron-right fa-xs ii"></i></h2>
           </a>
           <p class="release-date">
@@ -77,14 +84,12 @@
   </div>
 }
 
-
 <!-- Movie Rate -->
 @if (selectedMovieForRating) {
   <div class="movie-modal" (click)="closeModal()">
     <div class="movie-modal-content" (click)="$event.stopPropagation()">
       <button class="close-btn" (click)="closeModal()">×</button>
 
-      
       <div class="movie-rate-header text-center">
         <h2 class="rate-this">RATE THIS</h2>
         <h2 class="rate-this-title">{{ selectedMovieForRating.title }}</h2>
@@ -106,8 +111,26 @@
           You rated this movie: <strong>{{ userRating }}</strong>/10
         </p>
       </div>
+    </div>
+  </div>
+}
 
-
+<!-- Snackbar for Login -->
+@if(showLoginSnackbar()){
+  <div class="snackbar-overlay" (click)="dismissSnackbar()">
+    <div class="snackbar-content" (click)="$event.stopPropagation()">
+      <button class="snackbar-close" (click)="dismissSnackbar()">&times;</button>
+      <div class="snackbar-icon">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+      <div class="snackbar-text">
+        <h4>Login Required</h4>
+        <p>You must be logged in to add movies to your watchlist.</p>
+      </div>
+      <div class="snackbar-actions">
+        <a (click)="navigateTo('/auth/register')" class="register-link">Don't have an account? <strong>Register</strong></a>
+        <button class="btn btn-warning login-btn" (click)="navigateTo('/auth/login')">Login</button>
+      </div>
     </div>
   </div>
 }
