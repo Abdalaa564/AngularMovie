@@ -8,8 +8,15 @@
       <i class="bi bi-star-fill text-warning ms-1 rating-star"></i>
       <span class="rating">{{ movie.vote_average.toFixed(1) }}</span>
       
-      <div class="info-icon " (click)="openRateModal(movie)">
-        <i class="bi bi-star-fill text-warning ms-4 rating-star"></i>
+      <div class="info-icon ic rating-icon-with-text" (click)="openRateModal(movie)">
+        <i
+          class="bi ms-4 rating-star"
+          [ngClass]="{
+            'bi-star-fill text-warning': userRatings[movie.id],
+            'bi-star text-secondary': !userRatings[movie.id]
+          }"
+        ></i>
+
         @if (userRatings[movie.id]) {
           <span>{{ userRatings[movie.id] }}</span>
         }
@@ -87,8 +94,8 @@
             <i
               class="bi bi-star-fill rate-star"
               [ngClass]="{
-                'bi-star-fill': star <= userRating,
-                'bi-star': star > userRating
+                'bi-star-fill text-warning': star <= userRating,
+                'bi-star text-secondary': star > userRating
               }"
               (click)="setRating(star)"
             ></i>

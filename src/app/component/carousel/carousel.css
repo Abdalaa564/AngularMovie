@@ -11,15 +11,25 @@
 
 
 .big-icon {
-    font-size: 5rem;
-    cursor: pointer;
+  font-size: 5rem;
+  font-weight: 100;
+  cursor: pointer;
+  transition: color 0.3s ease;
+
 }
 .carousel-item {
-    position: relative;
-    overflow: hidden;
-    height: 550px;
-    margin-bottom: 5rem;
+  position: relative;
+  overflow: hidden;
+  height: 550px;
+  margin-bottom: 5rem;
+  transition: color 0.3s ease;
+
 }
+
+.carousel-item:hover .icon {
+  color: #ffc107;
+}
+
 .carousel-item img {
   height: 500px;
   object-fit: cover;
@@ -27,6 +37,10 @@
   display: block;
   z-index: 0;
   position: relative;
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+.carousel-item:hover img {
+  filter: brightness(85%) drop-shadow(0 0 10px rgba(0, 0, 0, 0.3));
 }
 .carousel-caption {
   position: absolute;
@@ -139,6 +153,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .browse-link:hover {
@@ -150,4 +165,62 @@
     margin-top: 5px;
     font-size: 1.25rem;
     font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+.carousel {
+  position: relative;
+}
+
+
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 30%; 
+  transform: translateY(-50%); 
+  width: 45px;
+  height: 60px;
+  opacity: 1 !important;
+  /* background: rgba(0, 0, 0, 0.3); */
+  border-radius: 10%;
+  border: 1px solid black;
+  transition: all 0.3s ease;
+  z-index: 30; 
+}
+
+.carousel-control-next {
+  right: 15px;
+}
+
+.carousel-control-prev {
+  left: 15px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  border-radius: 50%;
+  padding: 18px;
+  transition: all 0.3s ease;
+}
+
+
+
+
+.carousel-arrow {
+  font-size: 2rem;
+  font-weight: bolder !important;
+  color: black !important;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-arrow:hover {
+  color: #ffc107 !important;
+  transform: scale(1.15);
 }

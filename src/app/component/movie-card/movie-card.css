@@ -68,7 +68,7 @@
   font-size: 1.2rem;
   cursor: pointer;
   gap: 1rem;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .btn-sm {
@@ -258,4 +258,7 @@
   padding: 2px 0;
   font-size: 1rem;
   font-weight: 400;
+}
+.ic {
+  margin-left: 0 !important;
 }

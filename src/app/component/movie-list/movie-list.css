@@ -1,0 +1,22 @@
+.movies-slider-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.movies-slider {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  scroll-behavior: smooth;
+  width: 100%;
+  gap: 1.1rem;
+  padding: 3rem;
+}
+
+.movies-slider app-movie-card {
+  flex: 0 0 calc(100% / 6);
+  margin-right: 0.5rem;
+}

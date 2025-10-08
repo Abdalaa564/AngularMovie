@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { MovieService } from '../../services/movie-service';
 import { IMovie } from '../../models/i-movie';
 import { MovieCard } from '../movie-card/movie-card';
@@ -14,14 +14,16 @@ import { MovieComingsoon } from '../movie-comingsoon/movie-comingsoon';
   styleUrls: ['./home.css']
 })
 export class Home implements OnInit {
+  @Input({ required: true }) movie!: IMovie;
+
   private movieService = inject(MovieService);
   movies: IMovie[] = [];
   popularMovies: IMovie[] = [];
   UpcomingMovies: IMovie[] = [];
 
   @ViewChild('moviesSlider', { static: true }) slider!: ElementRef;
-    @ViewChild('popularSlider', { static: true }) popularSlider!: ElementRef;
-    @ViewChild('UpcomingMoviesSlider', { static: true }) UpcomingMoviesSlider!: ElementRef;
+  @ViewChild('popularSlider', { static: true }) popularSlider!: ElementRef;
+  @ViewChild('UpcomingMoviesSlider', { static: true }) UpcomingMoviesSlider!: ElementRef;
 
 
   ngOnInit(): void {
