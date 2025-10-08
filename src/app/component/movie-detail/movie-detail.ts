@@ -44,7 +44,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   showLoginSnackbar = signal(false);
   isFavorite = signal(false);
   errorMessage = signal<string | null>(null);
-
+  
   // استخدام الإشارة من الخدمة بدلاً من المحلية
   showBackToTop = this.scrollService.showBackToTop;
 
@@ -75,21 +75,10 @@ export class MovieDetail implements OnInit, OnDestroy {
       }
     });
 
-     const lang = localStorage.getItem('lang') || 'en';
-  const dir = lang === 'ar' ? 'rtl' : 'ltr';
-  document.documentElement.setAttribute('dir', dir);
-
-  const id = this.route.snapshot.paramMap.get('id');
-  if (id) {
-    this.movieService.getMovieDetails(id, lang).subscribe(res => {
-      this.movieDetails.set(res);
-    });
-  }
-
-    // إزالة الـ event listener المحلي - الخدمة تهتم بهذا
-    // if (typeof window !== 'undefined') {
-    //   window.addEventListener('scroll', this.handleScroll.bind(this));
-    // }
+    // إعداد اللغة
+    const lang = localStorage.getItem('lang') || 'en';
+    const dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.setAttribute('dir', dir);
   }
 
   ngOnDestroy(): void {
@@ -112,37 +101,37 @@ export class MovieDetail implements OnInit, OnDestroy {
       reviews: this.movieService.getMovieReviews(id)
     }).subscribe({
       next: ({ details, credits, videos, images, recommendations, reviews }) => {
-        const movieData: IMovie = {
-          ...details,
-          credits,
-          videos,
-          images,
+        const movieData: IMovie = { 
+          ...details, 
+          credits, 
+          videos, 
+          images, 
           reviews
         };
         this.movieDetails.set(movieData);
-
+        
         // تحديث عنوان الصفحة ديناميكياً
         const releaseYear = details.release_date ? new Date(details.release_date).getFullYear() : '';
         this.titleService.setTitle(`${details.title} (${releaseYear})`);
-
+        
         this.recommendations.set(recommendations.results.slice(0, 12));
-
+        
         // تجهيز طاقم العمل المميز
         const director = credits.crew.find(member => member.job === 'Director');
         const producers = credits.crew.filter(member => member.job === 'Producer').slice(0, 2);
-
+        
         const crewToShow: ICrew[] = [];
         if (director) crewToShow.push(director);
         crewToShow.push(...producers);
         this.featuredCrew.set(crewToShow);
-
+        
         // تجهيز الوسائط مع الروابط الآمنة
         const videoItems: ViewMediaItem[] = videos.results
           .filter(v => v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser'))
-          .map(v => ({
-            ...v,
+          .map(v => ({ 
+            ...v, 
             media_type: 'video',
-            safeUrl: this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${v.key}`)
+            safeUrl: this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${v.key}`) 
           }));
 
         const backdropItems: ViewMediaItem[] = images.backdrops.map(img => ({ ...img, media_type: 'backdrop' }));
@@ -164,7 +153,7 @@ export class MovieDetail implements OnInit, OnDestroy {
       }
     });
   }
-
+  
   handleWatchlistClick(): void {
     if (this.authService.isLoggedIn()) {
       const movie = this.movieDetails();
@@ -213,7 +202,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   // دالة مساعدة للسكرول مع خاصية الـ Loop
   private scrollElement(direction: 'prev' | 'next', element: HTMLElement, scrollAmount: number): void {
     const maxScroll = element.scrollWidth - element.clientWidth;
-
+    
     if (direction === 'next') {
       if (element.scrollLeft >= maxScroll - 10) {
         // إذا وصلنا للنهاية، نرجع للبداية
@@ -238,24 +227,12 @@ export class MovieDetail implements OnInit, OnDestroy {
 
   scrollMedia(direction: 'prev' | 'next'): void {
     const element = this.mediaScroller.nativeElement as HTMLElement;
-    const scrollAmount = 480 + 15;
-    const maxScroll = element.scrollWidth - element.clientWidth;
+    this.scrollElement(direction, element, 480 + 15);
+  }
 
-    if (direction === 'next') {
-      if (element.scrollLeft >= maxScroll - 10) {
-        // إذا وصلنا للنهاية، نرجع للبداية
-        element.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        element.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      }
-    } else {
-      if (element.scrollLeft <= 10) {
-        // إذا كنا في البداية، نذهب للنهاية
-        element.scrollTo({ left: maxScroll, behavior: 'smooth' });
-      } else {
-        element.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      }
-    }
+  scrollRecommendations(direction: 'prev' | 'next'): void {
+    const element = this.slider.nativeElement as HTMLElement;
+    this.scrollElement(direction, element, element.clientWidth * 0.8);
   }
 
   // استخدام دالة الخدمة بدلاً من الدالة المحلية
@@ -272,7 +249,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   getRatingPercentage(rating: number): number {
     // هذه دالة مثال - في التطبيق الحقيقي محتاج تجيب البيانات من API
     const mockData = {
-      10: 25, 9: 20, 8: 15, 7: 12, 6: 8,
+      10: 25, 9: 20, 8: 15, 7: 12, 6: 8, 
       5: 6, 4: 5, 3: 4, 2: 3, 1: 2
     };
     return (mockData as any)[rating] || 0;
@@ -295,7 +272,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   openMovieModal(movie: IMovie): void {
     this.selectedMovie = movie;
   }
-
+  
   closeModal(): void {
     this.selectedMovie = null;
   }
