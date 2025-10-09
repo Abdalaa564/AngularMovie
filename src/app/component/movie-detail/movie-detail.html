@@ -125,8 +125,8 @@
       <button class="slider-btn prev" (click)="scrollMedia('prev')"><i class="bi bi-chevron-left"></i></button>
       }
       <div class="scrolling-wrapper media-scroller" #mediaScroller>
-        @for (item of mediaItems(); track (item.media_type === 'video' ? item.key : item.file_path)) {
-        <div class="media-card">
+        @for (item of mediaItems(); track (item.media_type === 'video' ? item.key : item.file_path); let i = $index) {
+        <div class="media-card" (click)="openImageGallery(i)">
           @switch (item.media_type) {
           @case ('video') {
           <div class="video-container">
@@ -226,6 +226,43 @@
 </div>
 } }
 
+<!-- Gallery Modal -->
+@if (showGallery()) {
+<div class="gallery-overlay" (click)="closeGallery()">
+  <div class="gallery-content" (click)="$event.stopPropagation()">
+    <button class="gallery-close" (click)="closeGallery()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    
+    <div class="gallery-image-container">
+      <img [src]="getFullImagePath(getCurrentGalleryImage())" 
+           [alt]="'Gallery image ' + (currentGalleryIndex() + 1)"
+           class="gallery-image">
+      
+      <!-- Navigation Buttons -->
+      @if (canNavigatePrevious()) {
+      <button class="gallery-nav-btn prev" (click)="navigateGallery('prev')">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      }
+      
+      @if (canNavigateNext()) {
+      <button class="gallery-nav-btn next" (click)="navigateGallery('next')">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+      }
+    </div>
+    
+    <!-- Gallery Info -->
+    <div class="gallery-info">
+      <span class="gallery-counter">
+        {{ currentGalleryIndex() + 1 }} / {{ getGalleryImages().length }}
+      </span>
+    </div>
+  </div>
+</div>
+}
+
 <!-- زر العودة للأعلى -->
 <app-back-to-top />
 
@@ -246,14 +283,6 @@
         <strong>Register</strong></a>
       <button class="btn btn-warning login-btn" (click)="navigateTo('/auth/login')">Login</button>
     </div>
-  </div>
-</div>
-} @if (selectedMovie) {
-<div class="movie-modal" (click)="closeModal()">
-  <div class="movie-modal-content" (click)="$event.stopPropagation()">
-    <button class="close-btn" (click)="closeModal()">×</button>
-
-    <div class="movie-modal-header"></div>
   </div>
 </div>
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, signal, ViewChild, ElementRef, effect, Injector } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, ViewChild, ElementRef, effect, Injector, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from '../../services/movie-service';
 import { IMovie, IVideo, ICrew, IImage, MediaItem } from '../../models/i-movie';
@@ -63,6 +63,10 @@ export class MovieDetail implements OnInit, OnDestroy {
   userRating = signal<number>(0);
   tempRating = signal<number>(0);
 
+  // إشارات جديدة للـ Gallery
+  showGallery = signal(false);
+  currentGalleryIndex = signal(0);
+
   constructor() {
     // تتبع حالة الـ wishlist تلقائياً
     effect(() => {
@@ -90,7 +94,8 @@ export class MovieDetail implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // لا حاجة للتنظيف - الخدمة تهتم بهذا
+    // إعادة تفعيل scroll عند تدمير الـ component
+    document.body.style.overflow = 'auto';
   }
 
   // تحميل تقييم المستخدم من الخدمة
@@ -377,19 +382,117 @@ export class MovieDetail implements OnInit, OnDestroy {
   closeModal(): void {
     this.selectedMovie = null;
   }
+
   // التحقق من عدد الـ cast وإخفاء الأزرار إذا كان أقل من 8
-shouldShowCastButtons(): boolean {
-  const movie = this.movieDetails();
-  return (movie?.credits?.cast?.length || 0) > 8;
+  shouldShowCastButtons(): boolean {
+    const movie = this.movieDetails();
+    return (movie?.credits?.cast?.length || 0) > 8;
+  }
+
+  // التحقق من عدد الـ media وإخفاء الأزرار إذا كان أقل من 3
+  shouldShowMediaButtons(): boolean {
+    return this.mediaItems().length > 3;
+  }
+
+  // التحقق من عدد الـ recommendations وإخفاء الأزرار إذا كان أقل من 5
+  shouldShowRecommendationsButtons(): boolean {
+    return this.recommendations().length > 5;
+  }
+
+  // ========== Gallery Functions ==========
+
+  // دالة لفتح الـ Gallery
+openImageGallery(index: number): void {
+  const images = this.getGalleryImages();
+  
+  // نحسب الـ index الصحيح للصور فقط (بدون الفيديوهات)
+  const mediaItems = this.mediaItems();
+  let imageIndex = 0;
+  let found = false;
+  
+  // نبحث عن العنصر في mediaItems ونحسب ترتيبه بين الصور فقط
+  for (let i = 0; i < mediaItems.length; i++) {
+    const item = mediaItems[i];
+    // إذا كان العنصر صورة (ليس فيديو)
+    if (item.media_type === 'backdrop' || item.media_type === 'poster') {
+      // إذا وصلنا للعنصر اللي المستخدم ضغط عليه
+      if (i === index) {
+        found = true;
+        break;
+      }
+      imageIndex++;
+    }
+  }
+  
+  if (images.length > 0 && found) {
+    this.currentGalleryIndex.set(imageIndex);
+    this.showGallery.set(true);
+    
+    // منع scroll للخلفية
+    document.body.style.overflow = 'hidden';
+  }
 }
 
-// التحقق من عدد الـ media وإخفاء الأزرار إذا كان أقل من 3
-shouldShowMediaButtons(): boolean {
-  return this.mediaItems().length > 3;
-}
+  // دالة لإغلاق الـ Gallery
+  closeGallery(): void {
+    this.showGallery.set(false);
+    document.body.style.overflow = 'auto';
+  }
 
-// التحقق من عدد الـ recommendations وإخفاء الأزرار إذا كان أقل من 5
-shouldShowRecommendationsButtons(): boolean {
-  return this.recommendations().length > 5;
-}
+  // دالة للتنقل بين الصور
+  navigateGallery(direction: 'prev' | 'next'): void {
+    const images = this.getGalleryImages();
+    let newIndex = this.currentGalleryIndex();
+    
+    if (direction === 'next') {
+      newIndex = (newIndex + 1) % images.length;
+    } else {
+      newIndex = (newIndex - 1 + images.length) % images.length;
+    }
+    
+    this.currentGalleryIndex.set(newIndex);
+  }
+
+  // الحصول على الصور المتاحة للـ Gallery (فقط الصور، بدون فيديوهات)
+  getGalleryImages(): (IImage & { media_type: 'backdrop' | 'poster' })[] {
+    return this.mediaItems()
+      .filter((item): item is (IImage & { media_type: 'backdrop' | 'poster' }) => 
+        (item.media_type === 'backdrop' || item.media_type === 'poster') && 
+        'file_path' in item
+      );
+  }
+
+  // الحصول على الصورة الحالية في الـ Gallery
+  getCurrentGalleryImage(): string | undefined {
+    const images = this.getGalleryImages();
+    const currentItem = images[this.currentGalleryIndex()];
+    
+    if (!currentItem) return undefined;
+    
+    return currentItem.file_path;
+  }
+
+  // التحقق من إمكانية التنقل للخلف
+  canNavigatePrevious(): boolean {
+    return this.getGalleryImages().length > 1;
+  }
+
+  // التحقق من إمكانية التنقل للأمام
+  canNavigateNext(): boolean {
+    return this.getGalleryImages().length > 1;
+  }
+
+  // إضافة event listener للوحة المفاتيح
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.showGallery()) {
+      if (event.key === 'Escape') {
+        this.closeGallery();
+      } else if (event.key === 'ArrowLeft') {
+        this.navigateGallery('prev');
+      } else if (event.key === 'ArrowRight') {
+        this.navigateGallery('next');
+      }
+    }
+  }
 }
