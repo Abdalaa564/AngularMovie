@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject, signal, ViewChild, ElementRef, effect, Injector, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from '../../services/movie-service';
-import { IMovie, IVideo, ICrew, IImage, MediaItem } from '../../models/i-movie';
+import { IMovie, IVideo, ICrew, IImage, MediaItem, IReview } from '../../models/i-movie';
 import { CommonModule, DatePipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser';
@@ -13,6 +13,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ScrollService } from '../../services/scroll-service';
 import { LoadingSpinner } from '../../loading-spinner/loading-spinner';
 import { BackToTop } from '../../back-to-top/back-to-top';
+import { FormsModule } from '@angular/forms';
 
 // نوع جديد للبيانات المعروضة مع الرابط الآمن
 type ViewMediaItem = (MediaItem & { safeUrl?: SafeResourceUrl });
@@ -20,7 +21,7 @@ type ViewMediaItem = (MediaItem & { safeUrl?: SafeResourceUrl });
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
-  imports: [CommonModule, MovieCard, DatePipe, MatSnackBarModule, LoadingSpinner, BackToTop],
+  imports: [CommonModule, MovieCard, DatePipe, MatSnackBarModule, LoadingSpinner, BackToTop, FormsModule],
   templateUrl: './movie-detail.html',
   styleUrl: './movie-detail.css'
 })
@@ -33,7 +34,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   private movieService = inject(MovieService);
   private sanitizer = inject(DomSanitizer);
   private titleService = inject(Title);
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
   private router = inject(Router);
   private wishlistService = inject(WishlistService);
   private ratingService = inject(RatingService);
@@ -67,6 +68,16 @@ export class MovieDetail implements OnInit, OnDestroy {
   showGallery = signal(false);
   currentGalleryIndex = signal(0);
 
+  // إشارات جديدة للـ Reviews
+  reviews = signal<IReview[]>([]);
+  showReviewForm = signal(false);
+  newReview = signal({
+    content: '',
+    rating: 0
+  });
+  isSubmittingReview = signal(false);
+  isEditingReview = signal(false);
+
   constructor() {
     // تتبع حالة الـ wishlist تلقائياً
     effect(() => {
@@ -93,9 +104,17 @@ export class MovieDetail implements OnInit, OnDestroy {
     document.documentElement.setAttribute('dir', dir);
   }
 
+  // مسح محتوى الـ text box عند الخروج من الصفحة
   ngOnDestroy(): void {
-    // إعادة تفعيل scroll عند تدمير الـ component
+    this.clearReviewForm();
     document.body.style.overflow = 'auto';
+  }
+
+  // دالة مسح محتوى النموذج
+  clearReviewForm(): void {
+    this.newReview.set({ content: '', rating: 0 });
+    this.showReviewForm.set(false);
+    this.isEditingReview.set(false);
   }
 
   // تحميل تقييم المستخدم من الخدمة
@@ -249,6 +268,10 @@ export class MovieDetail implements OnInit, OnDestroy {
         ];
 
         this.mediaItems.set(combinedMedia);
+
+        // تحميل الـ Reviews الخاصة بالفيلم الحالي
+        this.loadMovieReviews(details.id);
+        
         this.isLoading.set(false);
       },
       error: (err) => {
@@ -351,36 +374,8 @@ export class MovieDetail implements OnInit, OnDestroy {
     this.scrollService.scrollToElement('userRatings');
   }
 
-  // دالة حساب النسبة المئوية للتقييمات (مثال - في الواقع محتاج API منفصل)
-  getRatingPercentage(rating: number): number {
-    // هذه دالة مثال - في التطبيق الحقيقي محتاج تجيب البيانات من API
-    const mockData = {
-      10: 25, 9: 20, 8: 15, 7: 12, 6: 8, 
-      5: 6, 4: 5, 3: 4, 2: 3, 1: 2
-    };
-    return (mockData as any)[rating] || 0;
-  }
-
   getFullImagePath(path: string | undefined): string {
     return path ? `https://image.tmdb.org/t/p/w780${path}` : 'assets/placeholder.jpg';
-  }
-
-  // إعادة تحميل البيانات في حالة الخطأ
-  retryLoading(): void {
-    const movie = this.movieDetails();
-    if (movie) {
-      this.loadMovieData(movie.id.toString());
-    }
-  }
-
-  selectedMovie: IMovie | null = null;
-
-  openMovieModal(movie: IMovie): void {
-    this.selectedMovie = movie;
-  }
-  
-  closeModal(): void {
-    this.selectedMovie = null;
   }
 
   // التحقق من عدد الـ cast وإخفاء الأزرار إذا كان أقل من 8
@@ -402,36 +397,36 @@ export class MovieDetail implements OnInit, OnDestroy {
   // ========== Gallery Functions ==========
 
   // دالة لفتح الـ Gallery
-openImageGallery(index: number): void {
-  const images = this.getGalleryImages();
-  
-  // نحسب الـ index الصحيح للصور فقط (بدون الفيديوهات)
-  const mediaItems = this.mediaItems();
-  let imageIndex = 0;
-  let found = false;
-  
-  // نبحث عن العنصر في mediaItems ونحسب ترتيبه بين الصور فقط
-  for (let i = 0; i < mediaItems.length; i++) {
-    const item = mediaItems[i];
-    // إذا كان العنصر صورة (ليس فيديو)
-    if (item.media_type === 'backdrop' || item.media_type === 'poster') {
-      // إذا وصلنا للعنصر اللي المستخدم ضغط عليه
-      if (i === index) {
-        found = true;
-        break;
+  openImageGallery(index: number): void {
+    const images = this.getGalleryImages();
+    
+    // نحسب الـ index الصحيح للصور فقط (بدون الفيديوهات)
+    const mediaItems = this.mediaItems();
+    let imageIndex = 0;
+    let found = false;
+    
+    // نبحث عن العنصر في mediaItems ونحسب ترتيبه بين الصور فقط
+    for (let i = 0; i < mediaItems.length; i++) {
+      const item = mediaItems[i];
+      // إذا كان العنصر صورة (ليس فيديو)
+      if (item.media_type === 'backdrop' || item.media_type === 'poster') {
+        // إذا وصلنا للعنصر اللي المستخدم ضغط عليه
+        if (i === index) {
+          found = true;
+          break;
+        }
+        imageIndex++;
       }
-      imageIndex++;
+    }
+    
+    if (images.length > 0 && found) {
+      this.currentGalleryIndex.set(imageIndex);
+      this.showGallery.set(true);
+      
+      // منع scroll للخلفية
+      document.body.style.overflow = 'hidden';
     }
   }
-  
-  if (images.length > 0 && found) {
-    this.currentGalleryIndex.set(imageIndex);
-    this.showGallery.set(true);
-    
-    // منع scroll للخلفية
-    document.body.style.overflow = 'hidden';
-  }
-}
 
   // دالة لإغلاق الـ Gallery
   closeGallery(): void {
@@ -494,5 +489,377 @@ openImageGallery(index: number): void {
         this.navigateGallery('next');
       }
     }
+  }
+
+  // ========== Review Functions ==========
+
+  // فتح نموذج إضافة review
+  openReviewForm(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.loginSnackbarMessage.set('You must be logged in to write a review.');
+      this.showLoginSnackbar.set(true);
+      return;
+    }
+    
+    // التحقق من وجود تقييم أولاً
+    if (this.userRating() === 0) {
+      this.snackBar.open('Please rate the movie first before writing a review.', 'Close', {
+        duration: 4000,
+        panelClass: ['movie-snackbar-error']
+      });
+      return;
+    }
+    
+    // تحقق إذا كان المستخدم لديه review مسبقاً
+    const existingReview = this.getUserReviewForCurrentMovie();
+    if (existingReview) {
+      // فتح وضع التعديل
+      this.newReview.set({
+        content: existingReview.content,
+        rating: 0 // لا نحتاج التقييم هنا لأنه مرتبط بالنجوم
+      });
+      this.isEditingReview.set(true);
+    } else {
+      // فتح وضع الإضافة الجديدة
+      this.newReview.set({ content: '', rating: 0 }); // التأكد من أنه نظيف
+      this.isEditingReview.set(false);
+    }
+    
+    this.showReviewForm.set(true);
+  }
+
+  // دالة تعديل الـ review
+  editUserReview(review: IReview): void {
+    if (!this.authService.isLoggedIn()) return;
+    
+    this.newReview.set({
+      content: review.content,
+      rating: 0
+    });
+    this.isEditingReview.set(true);
+    this.showReviewForm.set(true);
+    
+    // scroll إلى النموذج
+    setTimeout(() => {
+      document.querySelector('.review-form-sidebar')?.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }, 100);
+  }
+
+  // إغلاق نموذج إضافة/تعديل review
+  closeReviewForm(): void {
+    this.showReviewForm.set(false);
+    this.newReview.set({ content: '', rating: 0 });
+    this.isEditingReview.set(false);
+  }
+
+  // الحصول على review المستخدم للفيلم الحالي
+  getUserReviewForCurrentMovie(): IReview | null {
+    const movie = this.movieDetails();
+    const userEmail = this.authService.getCurrentUserEmail();
+    
+    if (!movie || !userEmail) return null;
+    
+    return this.reviews().find(review => 
+      review.author === userEmail && review.movie_id === movie.id
+    ) || null;
+  }
+
+  // إرسال review جديد
+  submitReview(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.loginSnackbarMessage.set('You must be logged in to submit a review.');
+      this.showLoginSnackbar.set(true);
+      return;
+    }
+
+    const movie = this.movieDetails();
+    if (!movie) return;
+
+    // التأكد من وجود تقييم
+    if (this.userRating() === 0) {
+      this.snackBar.open('Please rate the movie first.', 'Close', {
+        duration: 3000,
+        panelClass: ['movie-snackbar-error']
+      });
+      return;
+    }
+
+    const review = this.newReview();
+    if (!review.content.trim()) {
+      this.snackBar.open('Please write your review content.', 'Close', {
+        duration: 3000,
+        panelClass: ['movie-snackbar-error']
+      });
+      return;
+    }
+
+    this.isSubmittingReview.set(true);
+
+    // محاكاة إرسال البيانات مع ربط بالفيلم
+    setTimeout(() => {
+      const userEmail = this.authService.getCurrentUserEmail();
+      
+      // إذا كان في وضع التعديل، نستخدم نفس الـID
+      const reviewId = this.isEditingReview() ? 
+        this.getUserReviewForCurrentMovie()?.id || `${movie.id}_${Date.now()}` : 
+        `${movie.id}_${Date.now()}`;
+
+      const newReview: IReview & { likes_count?: number, movie_id: number } = {
+        id: reviewId,
+        author: userEmail || 'Anonymous',
+        author_details: {
+          name: userEmail?.split('@')[0] || 'User',
+          username: userEmail?.split('@')[0] || 'user',
+          avatar_path: null,
+          rating: this.userRating() // استخدام التقييم من النجوم
+        },
+        content: review.content,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        url: '',
+        movie_id: movie.id,
+        likes_count: this.isEditingReview() ? 
+          (this.getUserReviewForCurrentMovie() as any)?.likes_count || 0 : 0
+      };
+
+      // حفظ الـ Review في localStorage مرتبط بالفيلم
+      this.saveReviewToStorage(newReview, movie.id);
+
+      // تحديث القائمة
+      if (this.isEditingReview()) {
+        // تحديث الـreview الموجود
+        this.reviews.set(this.reviews().map(r => 
+          r.id === reviewId ? newReview : r
+        ));
+      } else {
+        // إضافة الـreview الجديد للقائمة
+        this.reviews.set([newReview, ...this.reviews()]);
+      }
+
+      // إغلاق النموذج وإعادة التعيين
+      this.closeReviewForm();
+      this.isSubmittingReview.set(false);
+
+      const message = this.isEditingReview() ? 'Review updated successfully!' : 'Review submitted successfully!';
+      this.snackBar.open(message, 'Close', {
+        duration: 3000,
+        panelClass: ['movie-snackbar-success']
+      });
+    }, 1000);
+  }
+
+  // حفظ الـ Review في localStorage
+  private saveReviewToStorage(review: IReview & { likes_count?: number, movie_id: number }, movieId: number): void {
+    const userEmail = this.authService.getCurrentUserEmail();
+    if (!userEmail) return;
+
+    const storageKey = `movie_reviews_${userEmail}`;
+    try {
+      const existingReviews = this.getUserReviewsFromStorage(userEmail);
+      
+      // إزالة أي review سابق لنفس الفيلم من نفس المستخدم
+      const filteredReviews = existingReviews.filter((r: any) => 
+        !(r.movie_id === movieId && r.author === userEmail)
+      );
+      
+      // إضافة الـ review الجديد
+      filteredReviews.push({...review, movie_id: movieId});
+      
+      localStorage.setItem(storageKey, JSON.stringify(filteredReviews));
+    } catch (error) {
+      console.error('Failed to save review to storage:', error);
+    }
+  }
+
+  // جلب الـ Reviews من localStorage
+  private getUserReviewsFromStorage(userEmail: string): any[] {
+    const storageKey = `movie_reviews_${userEmail}`;
+    try {
+      const raw = localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  // تحميل الـ Reviews الخاصة بالفيلم الحالي
+  private loadMovieReviews(movieId: number): void {
+    // Reviews من TMDB API
+    this.movieService.getMovieReviews(movieId.toString()).subscribe({
+      next: (reviewsResponse) => {
+        const tmdbReviews = reviewsResponse.results || [];
+        
+        // جلب الـ Reviews المحفوظة من المستخدمين
+        const userReviews = this.getAllUserReviews().filter((review: any) => 
+          review.movie_id === movieId
+        );
+        
+        // دمج الـ Reviews من TMDB والـ Reviews المحلية
+        this.reviews.set([...userReviews, ...tmdbReviews]);
+      },
+      error: (err) => {
+        console.error('Failed to load reviews:', err);
+        // إذا فشل تحميل الـ Reviews من API، نستخدم الـ Reviews المحلية فقط
+        const userReviews = this.getAllUserReviews().filter((review: any) => 
+          review.movie_id === movieId
+        );
+        this.reviews.set(userReviews);
+      }
+    });
+  }
+
+  // جلب كل الـ Reviews من كل المستخدمين
+  private getAllUserReviews(): any[] {
+    const allReviews: any[] = [];
+    const keys = Object.keys(localStorage);
+    
+    keys.forEach(key => {
+      if (key.startsWith('movie_reviews_')) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (raw) {
+            const userReviews = JSON.parse(raw);
+            allReviews.push(...userReviews);
+          }
+        } catch (error) {
+          console.error('Failed to parse reviews from storage:', error);
+        }
+      }
+    });
+    
+    return allReviews;
+  }
+
+  // حذف review
+  deleteReview(reviewId: string): void {
+    if (!this.authService.isLoggedIn()) {
+      this.loginSnackbarMessage.set('You must be logged in to delete reviews.');
+      this.showLoginSnackbar.set(true);
+      return;
+    }
+
+    const userEmail = this.authService.getCurrentUserEmail();
+    if (!userEmail) return;
+
+    // حذف من localStorage
+    this.deleteReviewFromStorage(reviewId, userEmail);
+
+    // تحديث القائمة
+    this.reviews.set(this.reviews().filter(review => review.id !== reviewId));
+
+    this.snackBar.open('Review deleted successfully!', 'Close', {
+      duration: 3000,
+      panelClass: ['movie-snackbar-success']
+    });
+  }
+
+  // حذف review من localStorage
+  private deleteReviewFromStorage(reviewId: string, userEmail: string): void {
+    const storageKey = `movie_reviews_${userEmail}`;
+    try {
+      const existingReviews = this.getUserReviewsFromStorage(userEmail);
+      const filteredReviews = existingReviews.filter((review: any) => review.id !== reviewId);
+      localStorage.setItem(storageKey, JSON.stringify(filteredReviews));
+    } catch (error) {
+      console.error('Failed to delete review from storage:', error);
+    }
+  }
+
+  // عمل like/unlike للreview
+  toggleLikeReview(reviewId: string): void {
+    if (!this.authService.isLoggedIn()) {
+      this.loginSnackbarMessage.set('You must be logged in to like reviews.');
+      this.showLoginSnackbar.set(true);
+      return;
+    }
+
+    const userEmail = this.authService.getCurrentUserEmail();
+    if (!userEmail) return;
+
+    const storageKey = `review_likes_${userEmail}`;
+    try {
+      const currentLikes = this.getUserLikesFromStorage(userEmail);
+      const isLiked = currentLikes.includes(reviewId);
+      
+      let updatedLikes: string[];
+      if (isLiked) {
+        updatedLikes = currentLikes.filter(id => id !== reviewId);
+      } else {
+        updatedLikes = [...currentLikes, reviewId];
+      }
+      
+      localStorage.setItem(storageKey, JSON.stringify(updatedLikes));
+      
+      // تحديث عدد الlikes في الـreview
+      this.updateReviewLikes(reviewId, isLiked ? -1 : 1);
+      
+      this.snackBar.open(isLiked ? 'Review unliked!' : 'Review liked!', 'Close', {
+        duration: 2000,
+        panelClass: ['movie-snackbar']
+      });
+    } catch (error) {
+      console.error('Failed to toggle like:', error);
+    }
+  }
+
+  // الحصول على likes المستخدم من localStorage
+  private getUserLikesFromStorage(userEmail: string): string[] {
+    const storageKey = `review_likes_${userEmail}`;
+    try {
+      const raw = localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  // تحديث عدد الlikes في الـreview
+  private updateReviewLikes(reviewId: string, change: number): void {
+    const updatedReviews = this.reviews().map(review => {
+      if (review.id === reviewId) {
+        const currentLikes = (review as any).likes_count || 0;
+        return {
+          ...review,
+          likes_count: Math.max(0, currentLikes + change)
+        };
+      }
+      return review;
+    });
+    
+    this.reviews.set(updatedReviews);
+  }
+
+  // التحقق إذا كان المستخدم عمل like للreview
+  isReviewLikedByUser(reviewId: string): boolean {
+    const userEmail = this.authService.getCurrentUserEmail();
+    if (!userEmail) return false;
+    
+    const userLikes = this.getUserLikesFromStorage(userEmail);
+    return userLikes.includes(reviewId);
+  }
+
+  // حساب عدد النجوم للتقييم (للعرض فقط)
+  getStarRating(rating: number | null): number {
+    return rating ? Math.round(rating) : 0; // مباشرة من 10
+  }
+
+  // تنسيق تاريخ الـ review
+  formatReviewDate(dateString: string): string {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  // الحصول على الصورة الرمزية للمستخدم
+  getAvatarUrl(avatarPath: string | null): string {
+    if (avatarPath) {
+      return avatarPath.startsWith('http') ? avatarPath : `https://image.tmdb.org/t/p/w64${avatarPath}`;
+    }
+    return 'assets/default-avatar.png';
   }
 }

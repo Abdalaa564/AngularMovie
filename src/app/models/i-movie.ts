@@ -48,8 +48,9 @@ export interface IReview {
   id: string;
   updated_at: string;
   url: string;
+  movie_id?: number;
+  likes_count?: number; // إضافة هذه الخاصية
 }
-
 export interface IReviewsResponse {
   results: IReview[];
 }
