@@ -343,3 +343,276 @@
     gap: 1.2rem;
   }
 }
+/* التنسيقات الأصلية كما هي... */
+
+/* Snackbar Styles - إضافة فقط في النهاية */
+.snackbar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  animation: fadeIn 0.3s ease;
+}
+
+.snackbar-content {
+  position: relative;
+  background-color: #2c2c2c;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  animation: slideInUp 0.4s ease;
+}
+
+.snackbar-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.snackbar-close:hover {
+  color: #fff;
+}
+
+.snackbar-icon {
+  font-size: 3rem;
+  color: #ffc107;
+  margin-bottom: 1rem;
+}
+
+.snackbar-text h4 {
+  margin: 0 0 0.5rem 0;
+  font-weight: bold;
+}
+
+.snackbar-text p {
+  margin: 0;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+}
+
+.snackbar-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.snackbar-actions .login-btn {
+  width: 100%;
+  font-weight: bold;
+}
+
+.snackbar-actions .register-link {
+  color: #ccc;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.snackbar-actions .register-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Snackbar Style */
+.movie-snackbar {
+  background-color: #ffc107;
+  color: #111;
+  font-weight: bold;
+}
+
+/* زر Watchlist النشط */
+.watchlist-btn.active {
+  background-color: #ffc107 !important;
+  color: #111 !important;
+}
+/* إضافة الـ CSS للـ Trailer Snackbar */
+.trailer-snackbar .snackbar-content {
+  max-width: 800px;
+  width: 95%;
+}
+
+.trailer-content {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.trailer-container {
+  margin-top: 1rem;
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* نسبة 16:9 */
+}
+
+.trailer-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+.trailer-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #ffc107;
+}
+
+.trailer-error {
+  text-align: center;
+  padding: 2rem;
+  color: #dc3545;
+}
+
+.trailer-error i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* تحسينات الـ Responsive للـ Trailer */
+@media (max-width: 768px) {
+  .trailer-snackbar .snackbar-content {
+    margin: 1rem;
+    padding: 1rem;
+  }
+  
+  .trailer-container {
+    padding-bottom: 56.25%; /* نفس النسبة للجوال */
+  }
+}
+
+/* باقي الـ CSS يبقى كما هو */
+.card-body{
+  padding: 7px;
+  margin-bottom: -40px;
+}
+
+.movie-card {
+  background-color: #2c2c2c;
+  border: none;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  font-family: cairo, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
+  overflow: hidden;
+  width: 190px;
+  height: 300px;
+}
+
+.rating-star{
+  font-size: 0.8rem;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  color: #fff;
+}
+.card-title :hover{
+  text-decoration: underline;
+}
+
+.rating-container .rating {
+  color: #dadada;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.Trailer{
+  color: #ffffff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 1rem;
+  font-weight: 600;
+  gap: 0.3rem;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.Trailer:hover {
+  color: #ffc107;
+}
+
+.card-actions{
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  gap: 1rem;
+  margin-left: 10px;
+}
+
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 2px 6px;
+}
+
+.watchlist-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #5799ef;
+  padding: 4px 37px;
+  border-radius: 50px;
+  font-size: .875rem;
+  font-weight: 500;
+  min-width: 100px;
+  text-align: center;
+  border: none;
+  transition: background-color 0.2s ease-in-out;
+}
+.watchlist-btn span {
+  font-size: 1rem;
+}
+
+.watchlist-btn.active {
+  background-color: #ffc107 !important;
+  color: #111 !important;
+}
+

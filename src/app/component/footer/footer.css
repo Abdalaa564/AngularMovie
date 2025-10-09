@@ -114,7 +114,6 @@ footer {
 
 
 
-/* Tablet */
 @media (max-width: 1024px) {
   .footer-top {
     flex-direction: column;
@@ -150,7 +149,6 @@ footer {
   }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
   .footer-top {
     flex-direction: column;

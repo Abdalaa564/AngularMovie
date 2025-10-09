@@ -1,24 +1,146 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject, signal, effect, Injector } from '@angular/core';
 import { IMovie } from '../../models/i-movie';
-import { RouterLink } from '@angular/router';
-import { DatePipe, NgClass } from '@angular/common'; //  <-- 1. اعمل Import هنا
+import { Router, RouterLink } from '@angular/router';
+import { DatePipe, NgClass } from '@angular/common';
+import { AuthService } from '../../services/auth-service';
+import { WishlistService } from '../../services/wishlist-service';
+import { RatingService } from '../../services/rating-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-movie-card',
   standalone: true,
-  imports: [RouterLink, DatePipe, NgClass], //         <-- 2. ضيفه هنا
+  imports: [RouterLink, DatePipe, NgClass],
   templateUrl: './movie-card.html',
   styleUrls: ['./movie-card.css']
 })
 export class MovieCard {
   @Input({ required: true }) movie!: IMovie;
+  
+  private authService = inject(AuthService);
+  private wishlistService = inject(WishlistService);
+  private ratingService = inject(RatingService);
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
+  private injector = inject(Injector);
+
   selectedMovie: IMovie | null = null;
   selectedMovieForRating: IMovie | null = null;
-  userRating: number = 0;
+  showLoginSnackbar = signal(false);
+  showRatingLoginSnackbar = signal(false);
+  isFavorite = signal(false);
   imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
+
+  userRating = signal<number>(0);
+
+  constructor() {
+    // تتبع حالة الـ wishlist تلقائياً
+    effect(() => {
+      const wishlistItems = this.wishlistService.items();
+      this.isFavorite.set(wishlistItems.some(item => item.id === this.movie.id));
+      
+      // تحميل تقييم المستخدم لهذا الفيلم من الخدمة
+      this.loadUserRating();
+    }, { injector: this.injector });
+  }
+
+  // تحميل تقييم المستخدم
+  private loadUserRating(): void {
+    const rating = this.ratingService.getUserRating(this.movie.id);
+    this.userRating.set(rating);
+  }
+
+  // التعامل مع تقييم المستخدم في الكارد - يظهر snackbar مباشرة
+  handleUserRating(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.showRatingLoginSnackbar.set(true);
+      return;
+    }
+
+    // إذا كان المستخدم مسجل، افتح المودال للـ rating
+    this.openRateModal(this.movie);
+  }
+
+  // التعامل مع تقييم المستخدم في المودال
+  handleRatingInModal(rating: number): void {
+    const currentRating = this.userRating();
+    let newRating = rating;
+
+    // إذا ضغط على نفس التقييم الحالي، يلغي التقييم
+    if (currentRating === rating) {
+      newRating = 0;
+    }
+
+    this.userRating.set(newRating);
+    this.ratingService.setUserRating(this.movie.id, newRating);
+
+    // عرض رسالة للمستخدم
+    if (newRating > 0) {
+      this.snackBar.open(`You rated "${this.movie.title}" ${newRating}/10`, 'Close', {
+        duration: 3000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['movie-snackbar']
+      });
+    } else {
+      this.snackBar.open(`Rating for "${this.movie.title}" removed`, 'Close', {
+        duration: 3000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['movie-snackbar']
+      });
+    }
+
+    this.closeModal();
+  }
+
+  // التعامل مع زر الـ watchlist
+  handleWatchlistClick(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (this.authService.isLoggedIn()) {
+      if (this.isFavorite()) {
+        this.wishlistService.removeMovie(this.movie.id);
+        this.showWishlistNotification(`"${this.movie.title}" removed from watchlist`);
+      } else {
+        this.wishlistService.addMovie(this.movie);
+        this.showWishlistNotification(`"${this.movie.title}" added to watchlist`);
+      }
+    } else {
+      this.showLoginSnackbar.set(true);
+    }
+  }
+
+  private showWishlistNotification(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'center',
+      panelClass: ['movie-snackbar']
+    });
+  }
+
+  navigateTo(path: string): void {
+    this.dismissSnackbar();
+    this.dismissRatingSnackbar();
+    this.router.navigate([path]);
+  }
+
+  dismissSnackbar(): void {
+    this.showLoginSnackbar.set(false);
+  }
+
+  dismissRatingSnackbar(): void {
+    this.showRatingLoginSnackbar.set(false);
+  }
 
   openMovieModal(movie: IMovie): void {
     this.selectedMovie = movie;
+  }
+
+  openRateModal(movie: IMovie): void {
+    this.selectedMovieForRating = movie;
   }
   
   closeModal(): void {
@@ -26,17 +148,7 @@ export class MovieCard {
     this.selectedMovieForRating = null;
   }
 
-  userRatings: { [movieId: number]: number } = {};
-
-   openRateModal(movie: IMovie): void {
-    this.selectedMovieForRating = movie;
-    this.userRating = this.userRatings[movie.id] || 0;
-  }
-
-   setRating(star: number): void {
-    this.userRating = star;
-    if (this.selectedMovieForRating) {
-      this.userRatings[this.selectedMovieForRating.id] = star;
-    }
+  setRating(star: number): void {
+    this.handleRatingInModal(star);
   }
 }

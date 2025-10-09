@@ -129,4 +129,11 @@ export class MovieService {
   }
 
 
+getMedia(movieId: number) {
+  return this.http.get<any>(
+    `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${this.apiKey}&language=en`
+  );
+}
+
+
 }

@@ -1,104 +1,77 @@
-<div class="Home">
-  <app-carousel [movie]="movie"></app-carousel>
+@if (isLoading()) {
+  <app-loading-spinner />
+} @else {
+  <div class="Home">
+    <app-carousel [movie]="movie"/>
+    <br>
+    <br>
+    <div class="container all">
+      <h2 class="mb-4 fa-lg">Now Playing<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+      <div class="movies-slider-wrapper">
+        <div class="movies-slider" #slider>
 
-  <div class="container all">
-    <h2 class="mb-4 text-white fa-lg">Now Playing <i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+          @for (movie of movies; track movie.id) {
+            <div class="col">
+              <app-movie-card [movie]="movie" />
+            </div>
+          }
+
+        </div>
+        <button class="slider-btn prev" (click)="prevSlide(slider)">&lt;</button>
+        <button class="slider-btn next" (click)="nextSlide(slider)">&gt;</button>
+      </div>
+    </div>
+    <div class="container all">
+      <h2 class="mb-4 fa-lg">Popular interests<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+      <div class="movies-slider-wrapper">
+        <div class="movies-slider" #popularSlider>
+
+          @for (movie of popularMovies; track movie.id) {
+            <div class="col">
+              <app-movie-card [movie]="movie" />
+            </div>
+          }
+
+        </div>
+        <button class="slider-btn prev" (click)="prevSlide(popularSlider)">&lt;</button>
+        <button class="slider-btn next" (click)="nextSlide(popularSlider)">&gt;</button>
+      </div>
+    </div>
+
+      <div class="container all">
+      <h2 class="mb-4 fa-lg">Coming soon to theaters<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
+      <div class="movies-slider-wrapper">
+        <div class="movies-slider" #UpcomingMoviesSlider>
+
+          @for (movie of UpcomingMovies; track movie.id) {
+            <div class="col">
+              <app-movie-comingsoon [movie]="movie" />
+            </div>
+          }
+
+        </div>
+        <button class="slider-btn prev" (click)="prevSlide(UpcomingMoviesSlider)">&lt;</button>
+        <button class="slider-btn next" (click)="nextSlide(UpcomingMoviesSlider)">&gt;</button>
+      </div>
+    </div>
+
+    <div class="container allf">
+    <h2 class="mb-4 fa-lg">Top Rated on IMDb this week<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
     <div class="movies-slider-wrapper">
-      <div class="movies-slider" #slider>
-
-        @for (movie of movies; track movie.id) {
-        <div class="col">
-          <app-movie-card [movie]="movie" />
-        </div>
+      <div class="movies-slider" #TopRatedMoviesSlider>
+        
+        @for (movie of TopRatedMovies; track movie.id) {
+          <div class="col">
+            <app-movie-card [movie]="movie" />
+          </div>
         }
-
+        
       </div>
-      <button class="slider-btn prev" (click)="prevSlide(slider)">&lt;</button>
-      <button class="slider-btn next" (click)="nextSlide(slider)">&gt;</button>
+      <button class="slider-btn prev" (click)="prevSlide(TopRatedMoviesSlider)">&lt;</button>
+      <button class="slider-btn next" (click)="nextSlide(TopRatedMoviesSlider)">&gt;</button>
+    </div>
     </div>
   </div>
-
-  <!-- 1------------------ -->
-
-
-  <div class="container all">
-    <h2 class="mb-4 text-white fa-lg">Popular interests <i class="fa-solid fa-chevron-right fa-xs"></i></h2>
-    <div class="movies-slider-wrapper">
-      <div class="movies-slider" #popularSlider>
-
-        @for (movie of popularMovies; track movie.id) {
-        <div class="col">
-          <app-movie-card [movie]="movie" />
-        </div>
-        }
-
-      </div>
-      <button class="slider-btn prev" (click)="prevSlide(popularSlider)">&lt;</button>
-      <button class="slider-btn next" (click)="nextSlide(popularSlider)">&gt;</button>
-    </div>
-  </div>
-
-    <!-- 1------------------ -->
-  <div class="container all">
-    <h2 class="mb-4 text-white fa-lg">Coming soon to theaters <i class="fa-solid fa-chevron-right fa-xs"></i></h2>
-    <div class="movies-slider-wrapper">
-
-      <div class="movies-slider" #UpcomingMoviesSlider>
-
-        @for (movie of UpcomingMovies; track movie.id) {
-        <div class="col">
-          <app-movie-comingsoon [movie]="movie" />
-        </div>
-        }
-
-      </div>
-      <button class="slider-btn prev" (click)="prevSlide(UpcomingMoviesSlider)">&lt;</button>
-      <button class="slider-btn next" (click)="nextSlide(UpcomingMoviesSlider)">&gt;</button>
-    </div>
-  </div>
-
-  <div class="container all">
-  <h2 class="mb-4 text-white fa-lg">Top Rated on IMDb this week<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
-  <div class="movies-slider-wrapper">
-    <div class="movies-slider" #TopRatedMoviesSlider>
-      
-      @for (movie of TopRatedMovies; track movie.id) {
-        <div class="col">
-          <app-movie-card [movie]="movie" />
-        </div>
-      }
-      
-    </div>
-    <button class="slider-btn prev" (click)="prevSlide(TopRatedMoviesSlider)">&lt;</button>
-    <button class="slider-btn next" (click)="nextSlide(TopRatedMoviesSlider)">&gt;</button>
-  </div>
-  </div>
-
-</div>
-
-<!-- ======= -->
-
-</div>
-
-<!-- 1------------------ -->
-<div class="container all">
-  <h2 class="mb-4 text-white fa-lg">Top Rated on IMDb this week<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
-  <div class="movies-slider-wrapper">
-    <div class="movies-slider" #TopRatedMoviesSlider>
-
-      @for (movie of TopRatedMovies; track movie.id) {
-      <div class="col">
-        <app-movie-card [movie]="movie" />
-      </div>
-      }
-
-    </div>
-    <button class="slider-btn prev" (click)="prevSlide(TopRatedMoviesSlider)">&lt;</button>
-    <button class="slider-btn next" (click)="nextSlide(TopRatedMoviesSlider)">&gt;</button>
-  </div>
-</div>
-
-
-</div>
+}
 
 <app-back-to-top />

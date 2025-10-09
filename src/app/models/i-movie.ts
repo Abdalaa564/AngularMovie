@@ -48,11 +48,14 @@ export interface IReview {
   id: string;
   updated_at: string;
   url: string;
+  movie_id?: number;
+  likes_count?: number;
 }
 
 export interface IReviewsResponse {
   results: IReview[];
 }
+
 
 export type MediaItem = 
   | (IVideo & { media_type: 'video' })

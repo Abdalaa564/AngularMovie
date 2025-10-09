@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-md-8">
-    <div id="moviesCarousel" class="carousel slide carousel-dark mb-5" data-bs-ride="carousel">
+    <div id="moviesCarousel" class="carousel slide carousel-dark " data-bs-ride="carousel">
       <div class="carousel-inner">
-
+        
         @for (movie of movies; track movie.id; let i = $index){
           <div class="carousel-item" [class.active]="i === 0"
           data-bs-interval="4000">
-
+          
           <a [routerLink]="['/details', movie.id]" class="text-decoration-none">
             <img [src]="getBackdropUrl(movie.backdrop_path)" class="d-block w-100 main-image" [alt]="movie.title">
 
@@ -52,7 +52,7 @@
 
 
 
-
+      
       <button class="carousel-control-prev" type="button" data-bs-target="#moviesCarousel" data-bs-slide="prev">
         <i class="bi bi-chevron-right carousel-arrow"></i>
       </button>
@@ -62,19 +62,19 @@
     </div>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-4 d-none d-lg-block">
     <h6 class="fw-bold text-warning up-next">Up next</h6>
     <div class="up-next-list">
 
       @for (movie of visibleMovies; track movie.id) {
-<div class="up-next-card mb-3">
-  <img [src]="getPosterUrl(movie.poster_path)" [alt]="movie.title">
-  <div class="up-next-text">
-    <div class="d-flex mb-1 main-icon">
-      <span><i class="bi bi-play-circle fs-2"></i>
-        <span class="ms-2">{{ movie.videos?.results?.[0]?.duration || '3:00' }}</span>
-      </span>
-    </div>
+          <div  class="d-flex mb-3 up-next-card">
+        <img [src]="getPosterUrl(movie.poster_path)" [alt]="movie.title" class="me-3">
+        <div>
+          <div class="d-flex mb-1 main-icon">
+            <span><i class="bi bi-play-circle fs-2"></i> 
+              <span class="ms-2">{{ movie.videos?.results?.[0]?.duration || '3:00' }}</span>
+          </span>
+          </div>
 
           <h6 class="mb-1">{{ movie.title }}</h6>
           <p class="small mb-1 text-muted">{{ movie.overview | slice:0:50 }}...</p>
@@ -87,6 +87,6 @@
     }
     </div>
 
-    <a href="#" class="browse-link">Browse trailers &gt;</a>
+    <a (click)="selectGenre('Thriller')" class="browse-link">Browse trailers &gt;</a>
   </div>
 </div>

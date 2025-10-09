@@ -1,13 +1,14 @@
 .navbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding: 10px 20px;
   background-color: #232222;
   color: white;
-  padding: 10px 20px;
-  font-family: cairo, sans-serif;
   gap: 10px;
-  flex-wrap: wrap;
 }
+
 
 .logo {
   background-color: #f5c518;
@@ -56,6 +57,26 @@
   margin-left: 30px;
   position: relative;
   overflow: visible;
+}
+.search-bar.hidden {
+  display: none;
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav-actions.hidden {
+  display: none;
+}
+.options-toggle,
+.search-icon {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .search-bar input {
@@ -109,9 +130,11 @@
 
 .nav-links {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 15px;
 }
+
 
 .pro {
   color: #00bfff;
@@ -336,15 +359,12 @@ background-image: url(https://media.istockphoto.com/id/1478374885/photo/joyful-f
   background-color: #333;
 }
 
-.language-dropdown:hover {
-  background-color: #333;
-}
-
 /* قائمة اللغة */
 .language-dropdown {
  position: absolute;
   top: 100%;
   left: 0;
+  cursor: pointer;
   background-color: #222;
   color: white;
   padding: 10px;
@@ -432,4 +452,23 @@ body.dark-mode {
 
 .theme-toggle:hover {
   background-color: #333;
+}
+@media (max-width: 900px) {
+  .nav-actions {
+    display: none;
+  }
+
+  .options-toggle {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .search-bar {
+    display: none;
+  }
+
+  .search-icon {
+    display: block;
+  }
 }

@@ -8,29 +8,39 @@
       <i class="bi bi-star-fill text-warning ms-1 rating-star"></i>
       <span class="rating">{{ movie.vote_average.toFixed(1) }}</span>
       
-      <div class="info-icon ic rating-icon-with-text" (click)="openRateModal(movie)">
+      <!-- زر التقييم المعدل -->
+      <div class="info-icon ic rating-icon-with-text" (click)="handleUserRating()">
         <i
           class="bi ms-4 rating-star"
           [ngClass]="{
-            'bi-star-fill text-warning': userRatings[movie.id],
-            'bi-star text-secondary': !userRatings[movie.id]
+            'bi-star-fill text-warning': userRating() > 0,
+            'bi-star text-secondary': userRating() === 0
           }"
         ></i>
 
-        @if (userRatings[movie.id]) {
-          <span>{{ userRatings[movie.id] }}</span>
+        @if (userRating() > 0) {
+          <span>{{ userRating() }}</span>
         }
       </div>
-
     </div>
+    
     <a [routerLink]="['/details', movie.id]" class="text-decoration-none">
       <h6 class="card-title">{{ movie.title }}</h6>
     </a>
-    <button class="btn watchlist-btn mb-2">
-      <span class="me-1">+</span> Watchlist
+    
+    <!-- زر الـ Watchlist -->
+    <button class="btn watchlist-btn mb-2" 
+            (click)="handleWatchlistClick($event)" 
+            [title]="isFavorite() ? 'Remove from Watchlist' : 'Add to Watchlist'"
+            [class.active]="isFavorite()">
+      <span class="me-1">{{ isFavorite() ? '✓' : '+' }}</span> 
+      {{ isFavorite() ? 'In Watchlist' : 'Watchlist' }}
     </button>
+    
     <div class="card-actions">
-      <a class="Trailer me-2"><i class="bi bi-play-fill"></i>Trailer</a>
+      <a [routerLink]="['/Trailer', movie.id]" class="Trailer me-2">
+        <i class="bi bi-play-fill"></i>Trailer
+      </a>
 
       <div class="info-icon" (click)="openMovieModal(movie)">
         <i class="bi bi-exclamation-circle"></i>
@@ -52,7 +62,7 @@
           [alt]="selectedMovie.title"
         />
         <div class="movie-info">
-          <a [routerLink]="['/details', movie.id]" class="text-decoration-none text-white">
+          <a [routerLink]="['/details', selectedMovie.id]" class="text-decoration-none text-white">
             <h2>{{ selectedMovie.title }}<i class="fa-solid fa-chevron-right fa-xs ii"></i></h2>
           </a>
           <p class="release-date">
@@ -77,14 +87,12 @@
   </div>
 }
 
-
-<!-- Movie Rate -->
+<!-- Movie Rate Modal -->
 @if (selectedMovieForRating) {
   <div class="movie-modal" (click)="closeModal()">
     <div class="movie-modal-content" (click)="$event.stopPropagation()">
       <button class="close-btn" (click)="closeModal()">×</button>
 
-      
       <div class="movie-rate-header text-center">
         <h2 class="rate-this">RATE THIS</h2>
         <h2 class="rate-this-title">{{ selectedMovieForRating.title }}</h2>
@@ -94,8 +102,8 @@
             <i
               class="bi bi-star-fill rate-star"
               [ngClass]="{
-                'bi-star-fill text-warning': star <= userRating,
-                'bi-star text-secondary': star > userRating
+                'text-warning': star <= userRating(),
+                'text-secondary': star > userRating()
               }"
               (click)="setRating(star)"
             ></i>
@@ -103,11 +111,49 @@
         </div>
 
         <p class="user-rating-text mt-2">
-          You rated this movie: <strong>{{ userRating }}</strong>/10
+          You rated this movie: <strong>{{ userRating() }}</strong>/10
         </p>
       </div>
+    </div>
+  </div>
+}
 
+<!-- Snackbar for Watchlist Login -->
+@if(showLoginSnackbar()){
+  <div class="snackbar-overlay" (click)="dismissSnackbar()">
+    <div class="snackbar-content" (click)="$event.stopPropagation()">
+      <button class="snackbar-close" (click)="dismissSnackbar()">&times;</button>
+      <div class="snackbar-icon">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+      <div class="snackbar-text">
+        <h4>Login Required</h4>
+        <p>You must be logged in to add movies to your watchlist.</p>
+      </div>
+      <div class="snackbar-actions">
+        <a (click)="navigateTo('/auth/register')" class="register-link">Don't have an account? <strong>Register</strong></a>
+        <button class="btn btn-warning login-btn" (click)="navigateTo('/auth/login')">Login</button>
+      </div>
+    </div>
+  </div>
+}
 
+<!-- Snackbar for Rating Login -->
+@if(showRatingLoginSnackbar()){
+  <div class="snackbar-overlay" (click)="dismissRatingSnackbar()">
+    <div class="snackbar-content" (click)="$event.stopPropagation()">
+      <button class="snackbar-close" (click)="dismissRatingSnackbar()">&times;</button>
+      <div class="snackbar-icon">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+      <div class="snackbar-text">
+        <h4>Login Required</h4>
+        <p>You must be logged in to rate movies.</p>
+      </div>
+      <div class="snackbar-actions">
+        <a (click)="navigateTo('/auth/register')" class="register-link">Don't have an account? <strong>Register</strong></a>
+        <button class="btn btn-warning login-btn" (click)="navigateTo('/auth/login')">Login</button>
+      </div>
     </div>
   </div>
 }

@@ -130,6 +130,16 @@ export class Wishlist {
     this.wishlist.removeMovie(id);
   }
 
+  // Open movie details for the given id
+  openDetails(id: number) {
+    try {
+      // navigate to the same route used by the app routes
+      this.router.navigate(['/details', id]);
+    } catch {
+      // ignore navigation errors
+    }
+  }
+
   setPage(n: number) {
     const total = this.totalPages();
     const page = Math.min(Math.max(1, n), total);

@@ -20,3 +20,178 @@
   flex: 0 0 calc(100% / 6);
   margin-right: 0.5rem;
 }
+
+
+
+/* Highlight active buttons in sort/view toolbars */
+.btn-group .btn.active {
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.2);
+}
+
+/* Movie list controls styling to match wishlist */
+.movie-list-controls .btn-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.movie-list-controls .btn {
+  border: 1px solid #d0d6da;
+  background: white;
+  color: #222;
+  padding: 6px 10px;
+  margin-right: 6px;
+  border-radius: 3px;
+  font-size: 0.9rem;
+}
+
+.movie-list-controls .btn.active {
+  background: #222;
+  color: white;
+  box-shadow: none;
+}
+
+.movie-list-controls .btn-sm {
+  padding: 4px 8px;
+}
+
+.movie-list-controls .btn-pill {
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: #e9eef2;
+}
+
+.movie-list-controls .btn-pill.active {
+  background: #00a6d6;
+  color: white;
+}
+
+/* Light list rows similar to IMDb */
+.list-group-item.bg-light {
+  background-color: #f8f9fa;
+}
+
+/* Pagination tweaks */
+.pagination .page-item .page-link {
+  cursor: pointer;
+}
+
+.pagination .page-item.disabled .page-link {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Wishlist pagination: pill buttons, centered */
+.wishlist-pagination-wrap {
+  margin-top: 8px;
+  margin-bottom: 20px;
+}
+
+.pagination-pill {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pagination-pill .page-item {
+  display: inline-flex;
+}
+
+.btn-pill {
+  border-radius: 999px;
+  padding: 8px 14px;
+  min-width: 38px;
+  border: none;
+  background: #e9eef2;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.pagination-pill .page-item.active .btn-pill {
+  background: #00a6d6; /* teal/blue accent */
+  color: white;
+  font-weight: 600;
+}
+
+.page-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: #666;
+}
+
+.pagination-pill .page-item.disabled .btn-pill {
+  opacity: 0.5;
+}
+
+.page-size select.form-select-sm {
+  width: 80px;
+}
+
+/* Styled circular page numbers like the example */
+.pagination-pill .page-item.number {
+  width: 36px;
+  height: 36px;
+}
+
+.pagination-pill .page-item.number .btn-pill {
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.pagination-pill .page-item .btn-pill.small-dot {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 50%;
+  background: #f0f2f4;
+  color: #666;
+}
+
+.pagination-pill .page-item.active .btn-pill.small-dot,
+.pagination-pill .page-item.active .btn-pill {
+  background: #00a6d6;
+  color: white;
+}
+
+.pagination-pill .page-item.prev .btn-pill,
+.pagination-pill .page-item.next .btn-pill {
+  border-radius: 20px;
+  padding: 8px 14px;
+}
+
+.wishlist-pagination-wrap {
+  margin-top: 12px;
+}
+
+.pagination-pill .page-item + .page-item {
+  margin-left: 6px;
+}
+
+/* visually hidden (screen reader only) */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* focus styles for accessibility */
+.btn-pill:focus {
+  outline: 3px solid rgba(0,166,214,0.5);
+  outline-offset: 2px;
+}
+

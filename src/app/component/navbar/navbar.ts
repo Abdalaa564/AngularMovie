@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, computed, HostListener, inject, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import { WishlistService } from '../../services/wishlist-service';
 import { Genre } from '../../services/genre';
@@ -10,6 +10,7 @@ import { ThemeService } from '../../services/theme-service';
 import { Title } from '@angular/platform-browser';
 import { IMovie } from '../../models/i-movie';
 import { SnackbarService } from '../../services/snackbar.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -22,10 +23,8 @@ export class Navbar implements OnInit {
   isLoggedIn = false; // عدّل حسب حالة المستخدم
   private router = inject(Router);
   private genreService = inject(Genre);
-  // private translate = inject(TranslateService);
   private movieService = inject(MovieService);
   private themeService = inject(ThemeService);
-  private defaultGenre = 'General';
 
   ngOnInit(): void {
     this.selectedGenre = null;
@@ -41,6 +40,18 @@ export class Navbar implements OnInit {
 
     // تعيين عنوان الصفحة
     this.titleService.setTitle('IMDb Clone - Movies');
+
+ // ✅ تصفير النوع عند الرجوع للصفحة الرئيسية
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      const url = event.urlAfterRedirects;
+      if (url === '/' || url.startsWith('/home')) {
+        this.selectedGenre = null;
+      }
+    });
+
+
   }
 
   showMenuList = false;
@@ -108,8 +119,6 @@ export class Navbar implements OnInit {
 
   showAllDropdown = false;
 
-  // === زر العودة للأعلى ===
-
   // === عنوان الصفحة ===
   private titleService = inject(Title);
   private snackbar = inject(SnackbarService) as SnackbarService;
@@ -129,6 +138,16 @@ export class Navbar implements OnInit {
     this.snackbar.success('Logged out');
     this.router.navigate(['/']);
   }
+hideOptions = false;
+hideSearchBar = false;
+
+toggleOptionsMenu() {
+  this.hideOptions = !this.hideOptions;
+}
+
+toggleSearchBar() {
+  this.hideSearchBar = !this.hideSearchBar;
+}
 
   @HostListener('document:click', ['$event'])
   handleClickOutside(event: MouseEvent) {
@@ -175,4 +194,6 @@ export class Navbar implements OnInit {
   toggleTheme(): void {
     this.themeService.toggleTheme();
   }
+
+
 }

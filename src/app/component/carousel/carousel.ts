@@ -1,8 +1,8 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { IMovie } from '../../models/i-movie';
 import { MovieService } from '../../services/movie-service';
 import { CommonModule, DecimalPipe, SlicePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-carousel',
@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './carousel.css'
 })
 export class Carousel  implements OnInit, OnDestroy {
+  private router = inject(Router);
   @Input({ required: true }) movie!: IMovie;
 
   movies: IMovie[] = [];
@@ -72,4 +73,12 @@ export class Carousel  implements OnInit, OnDestroy {
     }, 10000);
   }
 
+  selectedGenre: string | null = null;
+  showGenreMenu = false;
+    selectGenre(genre: string) {
+    this.selectedGenre = genre;
+    this.showGenreMenu = false;
+    this.router.navigate(['/MovieList'], { queryParams: { genre } });
+  }
+  
 }

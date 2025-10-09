@@ -1,6 +1,6 @@
 .card-body{
-  padding: 7px;
-  margin-bottom: -40px;
+  width: 300px;
+  padding: 0px 10px 18px 25px;
 }
 
 .movie-card {
@@ -10,14 +10,10 @@
   font-family: cairo, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
   overflow: hidden;
 
-  width: 300px;
-  height: 100;
+  width: 360px; /* بدل 400px */
+  max-width: 400px;
+  height: auto; /* بدل 315px */
 }
-
-/* .movie-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-} */
 
 .rating-star{
   font-size: 0.8rem;
@@ -91,4 +87,54 @@
 }
 .watchlist-btn span {
   font-size: 1rem;
+}
+
+.media-card {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 ratio */
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #212529;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+.media-card:hover {
+  transform: scale(1.03);
+}
+
+ .media-card .video-container {
+  width: 400px;
+  height: 100%;
+}
+
+.media-card img,
+.media-card iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.skeleton-loader {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+  background-size: 200% 100%;
+  border-radius: 8px;
+  animation: skeleton-loading 1.2s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
