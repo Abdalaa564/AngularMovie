@@ -1,205 +1,259 @@
 @if (isLoading()) {
-  <app-loading-spinner />
-} @else {
-  @if (movieDetails(); as movie) {
-  <div class="container-fluid movie-details-container py-5" 
-       [style.background-image]="'url(https://image.tmdb.org/t/p/original' + movie.backdrop_path + ')'">
-    <div class="container details-content">
-      <div class="row">
-        <div class="col-md-4 text-center">
-          <img [src]="imageBaseUrl + movie.poster_path" class="img-fluid rounded shadow movie-poster-img" [alt]="movie.title">
+<app-loading-spinner />
+} @else { @if (movieDetails(); as movie) {
+<div class="container-fluid movie-details-container py-5"
+  [style.background-image]="'url(https://image.tmdb.org/t/p/original' + movie.backdrop_path + ')'">
+  <div class="container details-content">
+    <div class="row">
+      <div class="col-md-4 text-center">
+        <img [src]="imageBaseUrl + movie.poster_path" class="img-fluid rounded shadow movie-poster-img"
+          [alt]="movie.title" />
+      </div>
+      <div class="col-md-8">
+        <h2>{{ movie.title }} 
+          @if (movie.release_date) {
+          ({{ movie.release_date | date : 'yyyy' }})
+          }
+        </h2>
+
+        <!-- Quick Info Section -->
+        @if (movie.release_date || (movie.genres && movie.genres.length > 0) || movie.runtime) {
+        <div class="quick-info">
+          @if (movie.release_date) {
+          <span>{{ movie.release_date | date : 'MM/dd/yyyy' }}</span>
+          <span class="dot-separator"></span>
+          }
+          
+          @if (movie.genres && movie.genres.length > 0) {
+          @for (genre of movie.genres; track genre.id) {
+          <span>{{ genre.name }}@if (!$last) {, }</span>
+          }
+          <span class="dot-separator"></span>
+          }
+          
+          @if (movie.runtime) {
+          <span>{{ formatRuntime(movie.runtime) }}</span>
+          }
         </div>
-        <div class="col-md-8">
-          <h2>{{ movie.title }} ({{ movie.release_date | date: 'yyyy' }})</h2>
-          
-          <div class="quick-info">
-            <span>{{ movie.release_date | date: 'MM/dd/yyyy' }}</span>
-            <span class="dot-separator"></span>
-            @for (genre of movie.genres; track genre.id) {
-              <span>{{ genre.name }}@if (!$last) {, }</span>
-            }
-            <span class="dot-separator"></span>
-            <span>{{ formatRuntime(movie.runtime) }}</span>
+        }
+
+        <!-- Tagline -->
+        @if (movie.tagline) {
+        <p class="tagline mt-3">
+          <em>{{ movie.tagline }}</em>
+        </p>
+        }
+
+        <div class="d-flex align-items-center gap-3 mb-3 action-bar">
+          <!-- زر الـ Rating ليعمل scroll -->
+          <div class="rating-badge clickable-rating" (click)="scrollToUserRatings()">
+            <i class="bi bi-star-fill text-dark me-1"></i>
+            <strong>{{ movie.vote_average.toFixed(1) }}</strong> / 10
           </div>
-          <p class="tagline mt-3"><em>{{ movie.tagline }}</em></p>
-  
-          <div class="d-flex align-items-center gap-3 mb-3 action-bar">
-            <!-- زر الـ Rating ليعمل scroll -->
-            <div class="rating-badge clickable-rating" (click)="scrollToUserRatings()">
-              <i class="bi bi-star-fill text-dark me-1"></i> 
-              <strong>{{ movie.vote_average.toFixed(1) }}</strong> / 10
-            </div>
-            
-            <button class="btn btn-outline-warning btn-sm watchlist-trigger-btn" 
-                    (click)="handleWatchlistClick()" 
-                    [title]="isFavorite() ? 'Remove from Watchlist' : 'Add to Watchlist'"
-                    [class.active]="isFavorite()">
-              <i [class]="isFavorite() ? 'bi bi-bookmark-heart-fill' : 'bi bi-bookmark-plus'"></i>
-              {{ isFavorite() ? 'In Watchlist' : 'Add to Watchlist' }}
-            </button>
-          </div>
-          
+
+          <button class="btn btn-outline-warning btn-sm watchlist-trigger-btn" (click)="handleWatchlistClick()"
+            [title]="isFavorite() ? 'Remove from Watchlist' : 'Add to Watchlist'" [class.active]="isFavorite()">
+            <i [class]="isFavorite() ? 'bi bi-bookmark-heart-fill' : 'bi bi-bookmark-plus'"></i>
+            {{ isFavorite() ? 'In Watchlist' : 'Add to Watchlist' }}
+          </button>
+        </div>
+
+        <!-- Overview -->
+        @if (movie.overview) {
+        <div>
           <h4>Overview</h4>
           <p>{{ movie.overview }}</p>
+        </div>
+        }
 
-          <div class="row crew-section md-4">
-            @for (crewMember of featuredCrew(); track crewMember.credit_id) {
-              <div class="col-md-4">
-                <strong>{{ crewMember.name }}</strong>
-                <p>{{ crewMember.job }}</p>
+        <!-- Featured Crew -->
+        @if (featuredCrew().length > 0) {
+        <div class="row crew-section md-4">
+          @for (crewMember of featuredCrew(); track crewMember.credit_id) {
+          <div class="col-md-4">
+            <strong>{{ crewMember.name }}</strong>
+            <p>{{ crewMember.job }}</p>
+          </div>
+          }
+        </div>
+        }
+      </div>
+    </div>
+    <br />
+
+    <!-- قسم الـ Cast - يظهر فقط لو فيه بيانات -->
+    @if (movie.credits && movie.credits.cast && movie.credits.cast.length > 0) {
+    <div class="row md-5">
+      <div class="col-12">
+        <h3 class="mb-4">Top Billed Cast</h3>
+        <div class="cast-slider">
+          @if (shouldShowCastButtons()) {
+          <button class="slider-btn prev" (click)="scrollCast('prev')"><i class="bi bi-chevron-left"></i></button>
+          }
+          <div class="scrolling-wrapper" #scrollingWrapper>
+            @for (actor of movie.credits.cast | slice:0:15; track actor.id) {
+            <div class="actor-card">
+              @if (actor.profile_path) {
+              <img [src]="imageBaseUrl + actor.profile_path" [alt]="actor.name" class="actor-img">
+              } @else {
+              <div class="actor-img-placeholder"><i class="bi bi-person"></i></div>
+              }
+              <div class="actor-info">
+                <strong>{{ actor.name }}</strong>
+                <small>{{ actor.character }}</small>
               </div>
+            </div>
             }
           </div>
-        </div>
-      </div>
-      <br>
-
-      <div class="row md-5">
-        <div class="col-12">
-          <h3 class="mb-4">Top Billed Cast</h3>
-          <div class="cast-slider">
-            <button class="slider-btn prev" (click)="scrollCast('prev')"><i class="bi bi-chevron-left"></i></button>
-            <div class="scrolling-wrapper" #scrollingWrapper>
-              @for (actor of movie.credits?.cast | slice:0:15; track actor.id) {
-                <div class="actor-card">
-                  @if (actor.profile_path) {
-                    <img [src]="imageBaseUrl + actor.profile_path" [alt]="actor.name" class="actor-img">
-                  } @else {
-                    <div class="actor-img-placeholder"><i class="bi bi-person"></i></div>
-                  }
-                  <div class="actor-info">
-                    <strong>{{ actor.name }}</strong>
-                    <small>{{ actor.character }}</small>
-                  </div>
-                </div>
-              }
-            </div>
-            <button class="slider-btn next" (click)="scrollCast('next')"><i class="bi bi-chevron-right"></i></button>
-          </div>
+          @if (shouldShowCastButtons()) {
+          <button class="slider-btn next" (click)="scrollCast('next')"><i class="bi bi-chevron-right"></i></button>
+          }
         </div>
       </div>
     </div>
-  </div>
-  
-  <div class="container my-5">
-    @if (mediaItems().length > 0) {
-      <h3 class="mb-4">Media</h3>
-      <div class="media-slider">
-        <button class="slider-btn prev" (click)="scrollMedia('prev')"><i class="bi bi-chevron-left"></i></button>
-        <div class="scrolling-wrapper media-scroller" #mediaScroller>
-          @for (item of mediaItems(); track (item.media_type === 'video' ? item.key : item.file_path)) {
-            <div class="media-card">
-              @switch (item.media_type) {
-                @case ('video') {
-                  <div class="video-container">
-                    <iframe [src]="item.safeUrl" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
-                  </div>
-                }
-                @case ('backdrop') {
-                  <img [src]="getFullImagePath(item.file_path)" alt="Backdrop">
-                }
-                @case ('poster') {
-                  <img [src]="getFullImagePath(item.file_path)" alt="Poster">
-                }
-              }
-            </div>
-          }
-        </div>
-        <button class="slider-btn next" (click)="scrollMedia('next')"><i class="bi bi-chevron-right"></i></button>
-      </div>
-      <hr class="my-5">
     }
+  </div>
+</div>
 
-    <!-- قسم User Ratings -->
-    <div class="user-ratings-section" id="userRatings">
-      <h3 class="mb-4">User Ratings & Reviews</h3>
-      
-      <div class="ratings-summary">
-        <div class="rating-score">
-          <div class="score-circle">
-            <span class="score">{{ (movie.vote_average || 0).toFixed(1) }}</span>
-            <span class="out-of">/10</span>
+<div class="container my-5">
+  <!-- قسم الـ Media - يظهر فقط لو فيه بيانات -->
+  @if (mediaItems().length > 0) {
+  <div>
+    <h3 class="mb-4">Media</h3>
+    <div class="media-slider">
+      @if (shouldShowMediaButtons()) {
+      <button class="slider-btn prev" (click)="scrollMedia('prev')"><i class="bi bi-chevron-left"></i></button>
+      }
+      <div class="scrolling-wrapper media-scroller" #mediaScroller>
+        @for (item of mediaItems(); track (item.media_type === 'video' ? item.key : item.file_path)) {
+        <div class="media-card">
+          @switch (item.media_type) {
+          @case ('video') {
+          <div class="video-container">
+            <iframe [src]="item.safeUrl" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
           </div>
-          <div class="rating-stars">
-            <div class="stars-container">
-              @for (star of [1,2,3,4,5,6,7,8,9,10]; track star) {
-                <i class="bi bi-star-fill" [class.filled]="star <= (movie.vote_average || 0)"></i>
-              }
-            </div>
-            <span class="vote-count">{{ (movie.vote_count || 0).toLocaleString() }} votes</span>
-          </div>
-        </div>
-        
-        <div class="rating-distribution">
-          <h5>Rating Distribution</h5>
-          @for (rating of [10,9,8,7,6,5,4,3,2,1]; track rating) {
-            <div class="distribution-bar">
-              <span class="rating-label">{{ rating }}</span>
-              <div class="bar-container">
-                <div class="bar-fill" [style.width.%]="getRatingPercentage(rating)"></div>
-              </div>
-              <span class="percentage">{{ getRatingPercentage(rating) }}%</span>
-            </div>
+          }
+          @case ('backdrop') {
+          <img [src]="getFullImagePath(item.file_path)" alt="Backdrop">
+          }
+          @case ('poster') {
+          <img [src]="getFullImagePath(item.file_path)" alt="Poster">
+          }
           }
         </div>
+        }
       </div>
+      @if (shouldShowMediaButtons()) {
+      <button class="slider-btn next" (click)="scrollMedia('next')"><i class="bi bi-chevron-right"></i></button>
+      }
     </div>
-
-    <hr class="my-5">
-
-    <!-- Recommendations Section -->
-    <div class="container all">
-      <h2 class="mb-4 text-white fa-lg">Recommendations<i class="fa-solid fa-chevron-right fa-xs"></i></h2>
-      <div class="movies-slider-wrapper">
-        <div class="movies-slider" #slider>
-          
-          @for (movie of recommendations(); track movie.id) {
-            <div class="col">
-              <app-movie-card [movie]="movie" />
-            </div>
-          }
-          
-        </div>
-        <button class="slider-btn prev" (click)="scrollRecommendations('prev')">&lt;</button>
-        <button class="slider-btn next" (click)="scrollRecommendations('next')">&gt;</button>
-      </div>
-    </div>
-
+    <hr class="my-5" />
   </div>
   }
-}
+
+  <!-- قسم User Ratings -->
+  <div class="user-ratings-section" id="userRatings">
+    <h3 class="mb-4">User Ratings & Reviews</h3>
+
+    <div class="ratings-summary">
+      <div class="rating-score">
+        <div class="score-circle">
+          <span class="score">{{ (getLocalVoteAverage() || 0).toFixed(1) }}</span>
+          <span class="out-of">/10</span>
+        </div>
+        <div class="rating-stars">
+          <!-- النجوم التفاعلية -->
+          <div class="interactive-stars">
+            @for (star of [1,2,3,4,5,6,7,8,9,10]; track star) {
+            <i class="bi bi-star-fill star" [class.active]="star <= (tempRating() || userRating() || 0)"
+              [class.rated]="star <= userRating()" (click)="handleUserRating(star)" (mouseenter)="onStarHover(star)"
+              (mouseleave)="onStarLeave()">
+            </i>
+            }
+          </div>
+
+          <div class="user-rating-info">
+            @if (userRating() > 0) {
+            <p class="your-rating">
+              Your rating: <strong>{{ userRating() }}/10</strong>
+            </p>
+            <p class="click-to-remove">Click your rating to remove it</p>
+            } @else {
+            <p class="rate-prompt">Rate this movie</p>
+            }
+          </div>
+
+          <span class="vote-count">{{ (getLocalVoteCount() || 0).toLocaleString() }} votes</span>
+        </div>
+      </div>
+
+      <div class="rating-distribution">
+        <h5>Rating Distribution</h5>
+        @for (rating of [10,9,8,7,6,5,4,3,2,1]; track rating) {
+        <div class="distribution-bar">
+          <span class="rating-label">{{ rating }}</span>
+          <div class="bar-container">
+            <div class="bar-fill" [style.width.%]="getRatingPercentage(rating)"></div>
+          </div>
+          <span class="percentage">{{ getRatingPercentage(rating) }}%</span>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommendations Section -->
+  @if (recommendations().length > 0) {
+  <div class="container all">
+    <h2 class="mb-4 text-white fa-lg">
+      Recommendations<i class="fa-solid fa-chevron-right fa-xs"></i>
+    </h2>
+    <div class="movies-slider-wrapper">
+      <div class="movies-slider" #slider>
+        @for (movie of recommendations(); track movie.id) {
+        <div class="col">
+          <app-movie-card [movie]="movie" />
+        </div>
+        }
+      </div>
+      @if (shouldShowRecommendationsButtons()) {
+      <button class="slider-btn prev" (click)="scrollRecommendations('prev')">&lt;</button>
+      <button class="slider-btn next" (click)="scrollRecommendations('next')">&gt;</button>
+      }
+    </div>
+  </div>
+  }
+</div>
+} }
 
 <!-- زر العودة للأعلى -->
 <app-back-to-top />
 
 <!-- Snackbar for Login -->
 @if(showLoginSnackbar()){
-  <div class="snackbar-overlay" (click)="dismissSnackbar()">
-    <div class="snackbar-content" (click)="$event.stopPropagation()">
-      <button class="snackbar-close" (click)="dismissSnackbar()">&times;</button>
-      <div class="snackbar-icon">
-        <i class="bi bi-exclamation-triangle-fill"></i>
-      </div>
-      <div class="snackbar-text">
-        <h4>Login Required</h4>
-        <p>You must be logged in to add movies to your watchlist.</p>
-      </div>
-      <div class="snackbar-actions">
-        <a (click)="navigateTo('/auth/register')" class="register-link">Don't have an account? <strong>Register</strong></a>
-        <button class="btn btn-warning login-btn" (click)="navigateTo('/auth/login')">Login</button>
-      </div>
+<div class="snackbar-overlay" (click)="dismissSnackbar()">
+  <div class="snackbar-content" (click)="$event.stopPropagation()">
+    <button class="snackbar-close" (click)="dismissSnackbar()">&times;</button>
+    <div class="snackbar-icon">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+    </div>
+    <div class="snackbar-text">
+      <h4>Login Required</h4>
+      <p>{{ loginSnackbarMessage() }}</p>
+    </div>
+    <div class="snackbar-actions">
+      <a (click)="navigateTo('/auth/register')" class="register-link">Don't have an account?
+        <strong>Register</strong></a>
+      <button class="btn btn-warning login-btn" (click)="navigateTo('/auth/login')">Login</button>
     </div>
   </div>
-}
+</div>
+} @if (selectedMovie) {
+<div class="movie-modal" (click)="closeModal()">
+  <div class="movie-modal-content" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closeModal()">×</button>
 
-@if (selectedMovie) {
-  <div class="movie-modal" (click)="closeModal()">
-    <div class="movie-modal-content" (click)="$event.stopPropagation()">
-      <button class="close-btn" (click)="closeModal()">×</button>
-
-      <div class="movie-modal-header">
-
-      </div>
-    </div>
+    <div class="movie-modal-header"></div>
   </div>
+</div>
 }

@@ -8,6 +8,7 @@ import { DomSanitizer, SafeResourceUrl, Title } from '@angular/platform-browser'
 import { MovieCard } from '../movie-card/movie-card';
 import { AuthService } from '../../services/auth-service';
 import { WishlistService } from '../../services/wishlist-service';
+import { RatingService } from '../../services/rating-service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ScrollService } from '../../services/scroll-service';
 import { LoadingSpinner } from '../../loading-spinner/loading-spinner';
@@ -35,6 +36,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private router = inject(Router);
   private wishlistService = inject(WishlistService);
+  private ratingService = inject(RatingService);
   private injector = inject(Injector);
   private snackBar = inject(MatSnackBar);
   private scrollService = inject(ScrollService);
@@ -44,6 +46,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   showLoginSnackbar = signal(false);
   isFavorite = signal(false);
   errorMessage = signal<string | null>(null);
+  loginSnackbarMessage = signal('You must be logged in to add movies to your watchlist.');
   
   // استخدام الإشارة من الخدمة بدلاً من المحلية
   showBackToTop = this.scrollService.showBackToTop;
@@ -56,6 +59,10 @@ export class MovieDetail implements OnInit, OnDestroy {
   // استخدام النوع الجديد في الـ Signal
   mediaItems = signal<ViewMediaItem[]>([]);
 
+  // متغيرات جديدة للـ User Rating
+  userRating = signal<number>(0);
+  tempRating = signal<number>(0);
+
   constructor() {
     // تتبع حالة الـ wishlist تلقائياً
     effect(() => {
@@ -63,6 +70,7 @@ export class MovieDetail implements OnInit, OnDestroy {
       const wishlistItems = this.wishlistService.items();
       if (movie) {
         this.isFavorite.set(wishlistItems.some(item => item.id === movie.id));
+        this.loadUserRating(movie.id);
       }
     }, { injector: this.injector });
   }
@@ -83,6 +91,98 @@ export class MovieDetail implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // لا حاجة للتنظيف - الخدمة تهتم بهذا
+  }
+
+  // تحميل تقييم المستخدم من الخدمة
+  private loadUserRating(movieId: number): void {
+    const rating = this.ratingService.getUserRating(movieId);
+    this.userRating.set(rating);
+  }
+
+  // التعامل مع تقييم المستخدم
+  handleUserRating(rating: number): void {
+    if (!this.authService.isLoggedIn()) {
+      this.loginSnackbarMessage.set('You must be logged in to rate movies.');
+      this.showLoginSnackbar.set(true);
+      return;
+    }
+
+    const movie = this.movieDetails();
+    if (!movie) return;
+
+    const currentRating = this.userRating();
+    let newRating = rating;
+
+    // إذا ضغط على نفس التقييم الحالي، يلغي التقييم
+    if (currentRating === rating) {
+      newRating = 0;
+    }
+
+    this.userRating.set(newRating);
+    this.ratingService.setUserRating(movie.id, newRating);
+
+    // عرض رسالة للمستخدم
+    if (newRating > 0) {
+      this.snackBar.open(`You rated "${movie.title}" ${newRating}/10`, 'Close', {
+        duration: 3000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['movie-snackbar']
+      });
+    } else {
+      this.snackBar.open(`Rating for "${movie.title}" removed`, 'Close', {
+        duration: 3000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['movie-snackbar']
+      });
+    }
+  }
+
+  // تحريك الماوس فوق النجوم
+  onStarHover(rating: number): void {
+    if (this.authService.isLoggedIn()) {
+      this.tempRating.set(rating);
+    }
+  }
+
+  // إزالة الماوس من النجوم
+  onStarLeave(): void {
+    this.tempRating.set(0);
+  }
+
+  // حساب التقييمات المحلية (للعرض فقط)
+  getLocalVoteCount(): number {
+    const movie = this.movieDetails();
+    if (!movie || typeof movie.vote_count === 'undefined') return 0;
+
+    const baseVotes = movie.vote_count || 0;
+    const currentRating = this.userRating();
+    
+    // إذا كان هناك تقييم جديد، نزيد عدد التصويتات
+    if (currentRating > 0) {
+      return baseVotes + 1;
+    }
+    
+    return baseVotes;
+  }
+
+  // حساب متوسط التقييم المحلي (للعرض فقط)
+  getLocalVoteAverage(): number {
+    const movie = this.movieDetails();
+    if (!movie || typeof movie.vote_average === 'undefined') return 0;
+
+    const baseAverage = movie.vote_average || 0;
+    const baseVotes = movie.vote_count || 0;
+    const currentRating = this.userRating();
+    
+    if (currentRating > 0 && baseVotes > 0) {
+      // حساب المتوسط الجديد
+      const totalScore = (baseAverage * baseVotes) + currentRating;
+      return totalScore / (baseVotes + 1);
+    }
+    
+    return baseAverage;
   }
 
   loadMovieData(id: string): void {
@@ -170,6 +270,7 @@ export class MovieDetail implements OnInit, OnDestroy {
         this.isFavorite.set(!wasFavorite);
       }
     } else {
+      this.loginSnackbarMessage.set('You must be logged in to add movies to your watchlist.');
       this.showLoginSnackbar.set(true);
     }
   }
@@ -276,4 +377,19 @@ export class MovieDetail implements OnInit, OnDestroy {
   closeModal(): void {
     this.selectedMovie = null;
   }
+  // التحقق من عدد الـ cast وإخفاء الأزرار إذا كان أقل من 8
+shouldShowCastButtons(): boolean {
+  const movie = this.movieDetails();
+  return (movie?.credits?.cast?.length || 0) > 8;
+}
+
+// التحقق من عدد الـ media وإخفاء الأزرار إذا كان أقل من 3
+shouldShowMediaButtons(): boolean {
+  return this.mediaItems().length > 3;
+}
+
+// التحقق من عدد الـ recommendations وإخفاء الأزرار إذا كان أقل من 5
+shouldShowRecommendationsButtons(): boolean {
+  return this.recommendations().length > 5;
+}
 }
