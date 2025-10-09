@@ -1,6 +1,6 @@
 /* Full-page auth layout */
 .auth-page {
-  min-height: 100vh;
+  min-height: 90vh;
   background-image: url('/assets/Background.jpg');
   background-size: cover;
   background-position: center center;
@@ -14,6 +14,7 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.55));
+  /* background-size: cover; */
   z-index: 0;
 }
 

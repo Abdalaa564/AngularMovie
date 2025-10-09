@@ -8,13 +8,8 @@ import { Genre } from '../../services/genre';
 import { MovieService } from '../../services/movie-service';
 import { ThemeService } from '../../services/theme-service';
 import { Title } from '@angular/platform-browser';
-<<<<<<< Updated upstream
 import { IMovie } from '../../models/i-movie';
 import { SnackbarService } from '../../services/snackbar.service';
-=======
-import { SnackbarService } from '../../services/snackbar.service';
-import { IMovie } from '../../models/i-movie';
->>>>>>> Stashed changes
 
 @Component({
   selector: 'app-navbar',
