@@ -5,11 +5,12 @@ import { MovieCard } from '../movie-card/movie-card';
 import { Carousel } from '../carousel/carousel';
 import { CommonModule } from '@angular/common'; //  <-- ضيف الـ import ده
 import { MovieComingsoon } from '../movie-comingsoon/movie-comingsoon';
+import { BackToTop } from "../../back-to-top/back-to-top";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Carousel, MovieCard, MovieComingsoon, CommonModule],
+  imports: [Carousel, MovieCard, MovieComingsoon, CommonModule, BackToTop],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
 })
@@ -84,4 +85,4 @@ export class Home implements OnInit {
     sliderEl.scrollLeft -= slideWidth;
   }
 
-} 
+}

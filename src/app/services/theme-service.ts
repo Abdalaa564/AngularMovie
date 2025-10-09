@@ -6,13 +6,14 @@ import { Injectable } from '@angular/core';
 export class ThemeService {
   private isDark = false;
 
-  initTheme() {
+  initTheme(): void {
     const saved = localStorage.getItem('theme') || 'light';
     this.isDark = saved === 'dark';
     this.applyTheme();
   }
 
-  toggleTheme() {
+
+  toggleTheme(): void {
     this.isDark = !this.isDark;
     localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
     this.applyTheme();
@@ -22,8 +23,15 @@ export class ThemeService {
     return this.isDark ? 'dark' : 'light';
   }
 
-  private applyTheme() {
-    document.body.classList.toggle('dark-mode', this.isDark);
+  private applyTheme(): void {
+  if (this.isDark) {
+    document.body.classList.add('dark-mode');
+    document.body.classList.remove('light-mode');
+  } else {
+    document.body.classList.add('light-mode');
+    document.body.classList.remove('dark-mode');
+  }
+
   }
 
 }
