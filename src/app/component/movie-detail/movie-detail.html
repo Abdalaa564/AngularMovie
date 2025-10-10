@@ -45,7 +45,7 @@
         }
 
         <div class="d-flex align-items-center gap-3 mb-3 action-bar">
-          <!-- زر الـ Rating ليعمل scroll -->
+
           <div class="rating-badge clickable-rating" (click)="scrollToUserRatings()">
             <i class="bi bi-star-fill text-dark me-1"></i>
             <strong>{{ movie.vote_average.toFixed(1) }}</strong> / 10
@@ -81,7 +81,6 @@
     </div>
     <br />
 
-    <!-- قسم الـ Cast - يظهر فقط لو فيه بيانات -->
     @if (movie.credits && movie.credits.cast && movie.credits.cast.length > 0) {
     <div class="row md-5">
       <div class="col-12">
@@ -116,7 +115,7 @@
 </div>
 
 <div class="container my-5">
-  <!-- قسم الـ Media - يظهر فقط لو فيه بيانات -->
+
   @if (mediaItems().length > 0) {
   <div>
     <h3 class="mb-4">Media</h3>
@@ -151,7 +150,6 @@
   </div>
   }
 
-  <!-- قسم User Ratings -->
   <div class="user-ratings-section" id="userRatings">
     <h3 class="mb-4">User Ratings & Reviews</h3>
 
@@ -162,7 +160,6 @@
           <span class="out-of">/10</span>
         </div>
         <div class="rating-stars">
-          <!-- النجوم التفاعلية -->
           <div class="interactive-stars">
             @for (star of [1,2,3,4,5,6,7,8,9,10]; track star) {
             <i class="bi bi-star-fill star" [class.active]="star <= (tempRating() || userRating() || 0)"

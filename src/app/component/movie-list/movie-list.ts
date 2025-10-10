@@ -6,12 +6,13 @@ import { IMovie } from '../../models/i-movie';
 import { MovieCard } from '../movie-card/movie-card';
 import { WishlistItem, WishlistService } from '../../services/wishlist-service';
 import { AuthService } from '../../services/auth-service';
-import { LoadingSpinner } from '../../loading-spinner/loading-spinner'; // ١. استيراد المكون
+import { LoadingSpinner } from '../../loading-spinner/loading-spinner'; 
+import { BackToTop } from '../../back-to-top/back-to-top';
 
 @Component({
   selector: 'app-movie-list',
   standalone: true,
-  imports: [CommonModule, MovieCard, LoadingSpinner, DatePipe], // ٢. إضافة المكون و DatePipe هنا
+  imports: [CommonModule, MovieCard, LoadingSpinner, DatePipe, BackToTop], 
   templateUrl: './movie-list.html',
   styleUrls: ['./movie-list.css']
 })
@@ -25,7 +26,7 @@ export class MovieList implements OnInit {
   movies = signal<IMovie[]>([]);
   title = 'Results';
   currentLang = 'en';
-  isLoading = signal(true); // ٣. إضافة إشارة التحميل
+  isLoading = signal(true); 
 
   items = computed<IMovie[]>(() => this.movies());
 
@@ -88,7 +89,7 @@ export class MovieList implements OnInit {
     document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
 
     this.route.queryParams.subscribe(params => {
-      this.isLoading.set(true); // ٤. تفعيل الـ spinner
+      this.isLoading.set(true); 
       const q = params['q'];
       const genre = params['genre'];
       let movieSource$;
@@ -107,11 +108,11 @@ export class MovieList implements OnInit {
       movieSource$.subscribe({
         next: res => {
           this.movies.set(res.results);
-          this.isLoading.set(false); // ٥. إيقاف الـ spinner عند النجاح
+          this.isLoading.set(false); 
         },
         error: () => {
           this.movies.set([]);
-          this.isLoading.set(false); // ٦. إيقاف الـ spinner عند الخطأ
+          this.isLoading.set(false); 
         }
       });
     });

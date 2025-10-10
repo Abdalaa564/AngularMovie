@@ -25,7 +25,6 @@ img, video, iframe {
   height: auto;
 }
 
-/* الأساسيات */
 .movie-details-container {
   background-size: cover;
   background-position: center center;
@@ -106,7 +105,6 @@ img, video, iframe {
   opacity: 0.8;
 }
 
-/* السلايدرات */
 .cast-slider,
 .media-slider {
   position: relative;
@@ -156,7 +154,6 @@ img, video, iframe {
   background-color: rgba(74, 74, 74, 0.721);
 }
 
-/* الكروت */
 .actor-card {
   flex: 0 0 auto;
   width: 140px;
@@ -250,7 +247,6 @@ img, video, iframe {
   max-width: 100%;
 }
 
-/* Recommendations Slider */
 .container.all {
   margin: 0 auto 3.5rem auto;
   max-width: 1285px;
@@ -323,7 +319,6 @@ img, video, iframe {
   opacity: 1;
 }
 
-/* الأزرار */
 .action-bar .watchlist-trigger-btn {
   background-color: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 193, 7, 0.5);
@@ -356,7 +351,6 @@ img, video, iframe {
   box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
 }
 
-/* التقييمات */
 .user-ratings-section {
   margin: 0.7rem;
   padding: 1rem;
@@ -474,7 +468,6 @@ img, video, iframe {
   margin: 0.5rem 0;
 }
 
-/* الريفيوز */
 .reviews-section {
   margin-top: -6rem;
   flex: 1;
@@ -829,7 +822,6 @@ img, video, iframe {
   font-size: 3rem;
 }
 
-/* Snackbar Styles */
 .snackbar-overlay {
   position: fixed;
   top: 0;
@@ -929,7 +921,6 @@ img, video, iframe {
   text-decoration: underline;
 }
 
-/* Gallery Styles */
 .gallery-overlay {
   position: fixed;
   top: 0;
@@ -1049,7 +1040,6 @@ img, video, iframe {
   font-weight: 500;
 }
 
-/* Trailer Snackbar */
 .trailer-snackbar .snackbar-content {
   max-width: 800px;
   width: 95%;
@@ -1094,7 +1084,6 @@ img, video, iframe {
   margin-bottom: 1rem;
 }
 
-/* الأنيميشن */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -1127,7 +1116,6 @@ img, video, iframe {
   color: white !important;
 }
 
-/* الـ Responsive */
 @media (max-width: 991px) {
   .details-content h2 {
     font-size: 1.8rem;
@@ -1252,7 +1240,6 @@ img, video, iframe {
     font-size: 1.2rem;
   }
 
-  /* Responsive للـ Snackbar */
   .snackbar-content {
     margin: 1rem;
     padding: 1.5rem;

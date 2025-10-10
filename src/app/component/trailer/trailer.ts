@@ -6,11 +6,12 @@ import { IMovie } from '../../models/i-movie';
 import { forkJoin } from 'rxjs';
 import { CommonModule, DatePipe } from '@angular/common';
 import { LoadingSpinner } from '../../loading-spinner/loading-spinner';
+import { BackToTop } from '../../back-to-top/back-to-top';
 
 @Component({
   selector: 'app-trailer',
   standalone: true,
-  imports: [RouterLink, CommonModule, LoadingSpinner, DatePipe],
+  imports: [RouterLink, CommonModule, LoadingSpinner, DatePipe, BackToTop],
   templateUrl: './trailer.html',
   styleUrls: ['./trailer.css']
 })

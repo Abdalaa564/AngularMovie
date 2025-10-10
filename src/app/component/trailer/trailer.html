@@ -3,7 +3,7 @@
 } @else {
   <div class="trailer-page text-center text-white">
     <div class="back-button mb-3">
-      <a [routerLink]="['/details', movieId()]" class="btn btn-outline-light">
+      <a [routerLink]="['/details', movieId()]" class="btn btn-outline-light back-buttonAA">
         <i class="bi bi-arrow-left"></i> Back to Movie Details
       </a>
     </div>
@@ -27,3 +27,5 @@
     }
   </div>
 }
+
+<app-back-to-top />

@@ -71,12 +71,17 @@
         <img [src]="getPosterUrl(movie.poster_path)" [alt]="movie.title" class="me-3">
         <div>
           <div class="d-flex mb-1 main-icon">
-            <span><i class="bi bi-play-circle fs-2"></i> 
+          <a [routerLink]="['/Trailer', movie.id]" class="Trailer">
+            <span><i class="bi bi-play-circle fs-2 icon2"></i> 
+              
               <span class="ms-2">{{ movie.videos?.results?.[0]?.duration || '3:00' }}</span>
-          </span>
+            </span>
+          </a>
           </div>
 
+          <a [routerLink]="['/Trailer', movie.id]" class="Trailer">
           <h6 class="mb-1">{{ movie.title }}</h6>
+          </a>
           <p class="small mb-1 text-muted">{{ movie.overview | slice:0:50 }}...</p>
           <div class="d-flex gap-3 small text-muted  custom-icons">
             <span><i class="bi bi-hand-thumbs-up"></i>{{ movie.vote_average | number:'1.1-1' }}</span>

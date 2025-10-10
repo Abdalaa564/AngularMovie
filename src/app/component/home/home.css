@@ -19,7 +19,7 @@
 }
 
 .all h2{
- color: black;
+ color: #fff;
 }
 
 .movies-slider-wrapper {
@@ -69,4 +69,21 @@
 
 .movies-slider-wrapper:hover .slider-btn {
   opacity: 1;
+}
+
+
+
+
+.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

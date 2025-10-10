@@ -31,22 +31,36 @@ export class Login implements OnInit {
 
   onSubmit() {
     if (!this.email || !this.password) {
-      this.error = 'برجاء إدخال البريد وكلمة المرور';
+      this.error = 'Please enter your email and password.';
       this.message = null;
       return;
     }
     const ok = this.auth.login(this.email, this.password);
     if (ok) {
       this.error = null;
-      this.message = 'تم تسجيل الدخول بنجاح';
+      this.message = 'Signed in successfully.';
       setTimeout(() => this.router.navigateByUrl('/'), 800);
     } else {
       this.message = null;
-      this.error = 'بيانات غير صحيحة، حاول مرة أخرى';
+      this.error = 'Invalid credentials, please try again.';
     }
   }
 
   goToRegister() {
     this.router.navigate(['/auth/register']);
   }
+
+  signInWithGoogle() {
+  this.auth.signInWithGoogle()
+    .then(() => {
+      this.error = null;
+      this.message = 'Signed in successfully with Google.';
+      setTimeout(() => this.router.navigateByUrl('/'), 800);
+    })
+    .catch((err: any) => {
+      this.message = null;
+      this.error = 'Google sign-in failed: ' + err.message;
+    });
+}
+
 }

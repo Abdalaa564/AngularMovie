@@ -10,9 +10,9 @@
   font-family: cairo, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
   overflow: hidden;
 
-  width: 360px; /* بدل 400px */
+  width: 360px; 
   max-width: 400px;
-  height: auto; /* بدل 315px */
+  height: auto; 
 }
 
 .rating-star{
@@ -76,7 +76,7 @@
 .watchlist-btn {
   background-color: rgba(255, 255, 255, 0.1);
   color: #5799ef;
-  padding: 4px 37px;     /* الارتفاع والعرض الداخلي */
+  padding: 4px 37px;  
   border-radius: 50px;
   font-size: .875rem;
   font-weight: 500;
@@ -92,7 +92,7 @@
 .media-card {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 ratio */
+  padding-top: 56.25%;
   border-radius: 8px;
   overflow: hidden;
   background-color: #212529;

@@ -30,6 +30,13 @@
           <div class="auth-footer">
             <a class="forgot" routerLink="/auth/register" href="/auth/register">Create an account</a>
           </div>
+
+          <hr class="hra" data-content="OR">
+
+          <button type="button" class="google-btn" (click)="signInWithGoogle()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" />
+            <span>Sign in with Google</span>
+          </button>
         </form>
       </div>
     </div>

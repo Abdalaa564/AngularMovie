@@ -2,13 +2,11 @@
   <a [routerLink]="['/details', movie.id]" class="text-decoration-none">
 
     <div class="media-card">
-      <!-- Poster دائمًا موجود -->
       <img
         [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
         alt="{{ movie.title }}"
       />
 
-      <!-- الفيديو يظهر فقط عند التحميل -->
       @if (!isLoading() && videoItems().length > 0) {
         <iframe
           [src]="videoItems()[0].safeUrl"

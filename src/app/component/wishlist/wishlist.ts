@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { WishlistService, WishlistItem } from '../../services/wishlist-service';
 import { AuthService } from '../../services/auth-service';
+import { BackToTop } from '../../back-to-top/back-to-top';
 
 @Component({
   selector: 'app-wishlist',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, BackToTop],
   templateUrl: './wishlist.html',
   styleUrls: ['./wishlist.css']
 })
@@ -17,14 +18,11 @@ export class Wishlist {
   private router = inject(Router);
   items = computed<WishlistItem[]>(() => this.wishlist.items());
 
-  // Pagination state
   pageSize = signal<number>(4);
   currentPage = signal<number>(1);
-  // ARIA live message for screen readers
   liveMessage = signal<string>('');
   private readonly pageSizeKey = 'wishlist.pageSize';
 
-  // Derived pagination values
   totalPages = computed(() => {
     const total = this.sortedItems().length;
     return Math.max(1, Math.ceil(total / this.pageSize()));
@@ -32,18 +30,16 @@ export class Wishlist {
 
   pages = computed(() => Array.from({ length: this.totalPages() }, (_, i) => i + 1));
 
-  // Visible pages with ellipses for large page counts
   visiblePages = computed<(number | 'ellipsis')[]>(() => {
     const total = this.totalPages();
     const current = this.currentPage();
-    const maxVisible = 7; // approximate controls length
+    const maxVisible = 7; 
 
     if (total <= maxVisible) {
       return Array.from({ length: total }, (_, i) => i + 1);
     }
 
     const pages: (number | 'ellipsis')[] = [];
-    // always show first
     pages.push(1);
 
     let left = Math.max(2, current - 2);
@@ -63,28 +59,23 @@ export class Wishlist {
       pages.push('ellipsis');
     }
 
-    // always show last
     pages.push(total);
     return pages;
   });
 
-  // Items for current page
   pagedItems = computed<WishlistItem[]>(() => {
     const all = this.sortedItems();
     const size = this.pageSize();
     const total = Math.max(1, Math.ceil(all.length / size));
-    // clamp current page
     const page = Math.min(Math.max(1, this.currentPage()), total);
     const start = (page - 1) * size;
     return all.slice(start, start + size);
   });
 
-  // UI state
   sortKey = signal<'added' | 'title' | 'rating' | 'year'>('added');
   sortDir = signal<'asc' | 'desc'>('desc');
   viewMode = signal<'grid' | 'list'>('grid');
 
-  // Derived, sorted items according to current controls
   sortedItems = computed<WishlistItem[]>(() => {
     const list = [...this.items()];
     const key = this.sortKey();
@@ -130,13 +121,10 @@ export class Wishlist {
     this.wishlist.removeMovie(id);
   }
 
-  // Open movie details for the given id
   openDetails(id: number) {
     try {
-      // navigate to the same route used by the app routes
       this.router.navigate(['/details', id]);
     } catch {
-      // ignore navigation errors
     }
   }
 
@@ -146,12 +134,11 @@ export class Wishlist {
     this.currentPage.set(page);
     this.scrollToTop();
     this.focusPagination();
-    // announce the new page for screen readers
+
     try {
       this.liveMessage.set(`Page ${page} of ${total}`);
       setTimeout(() => this.liveMessage.set(''), 1800);
     } catch {
-      // ignore
     }
   }
 
@@ -171,39 +158,35 @@ export class Wishlist {
       try {
         window.localStorage.setItem(this.pageSizeKey, String(normalized));
       } catch {
-        // ignore storage errors
       }
     }
     this.scrollToTop();
     this.focusPagination();
-    // announce the page-size change
     try {
       const total = this.totalPages();
       this.liveMessage.set(`Showing ${this.pageSize()} items per page. Page ${this.currentPage()} of ${total}`);
       setTimeout(() => this.liveMessage.set(''), 2000);
     } catch {
-      // ignore
     }
   }
 
   ngOnInit() {
     if (!this.auth.isLoggedIn()) {
-      // redirect unauthenticated users to login (no alert)
+
       this.router.navigate(['/auth/login']);
       return;
     }
-    // ensure wishlist reflects current user
+
     this.wishlist.refreshForCurrentUser();
-    // reset pagination if wishlist changes
+
     effect(() => {
-      // read dependencies
+
       const _ = this.sortedItems().length;
-      // reset to first page when list changes
+
       this.currentPage.set(1);
     });
-    // keyboard navigation support
+
     if (typeof window !== 'undefined') {
-      // try load persisted page size
       try {
         const raw = window.localStorage.getItem(this.pageSizeKey);
         const n = raw ? parseInt(raw, 10) : NaN;
@@ -211,7 +194,6 @@ export class Wishlist {
           this.pageSize.set(n);
         }
       } catch {
-        // ignore
       }
 
       window.addEventListener('keydown', this.handleKeydown.bind(this));
@@ -232,7 +214,7 @@ export class Wishlist {
   }
 
   private handleKeydown(e: KeyboardEvent) {
-    if (this.isTypingTarget(e)) return; // avoid interfering with form inputs
+    if (this.isTypingTarget(e)) return; 
 
     switch (e.key) {
       case 'ArrowLeft':
@@ -254,7 +236,6 @@ export class Wishlist {
     }
   }
 
-  // Jump when ellipsis is clicked. If clicked left-side ellipsis -> jump -3, right-side -> +3
   jumpEllipsis(index: number) {
     const vp = this.visiblePages();
     // find the corresponding numeric neighbors
@@ -279,7 +260,6 @@ export class Wishlist {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       } catch {
-        // ignore
       }
     }
   }
@@ -288,18 +268,15 @@ export class Wishlist {
     try {
       const root = document.getElementById('wishlist-pagination');
       if (!root) return;
-      // find active button inside
       const active = root.querySelector('.page-item.active .btn-pill') as HTMLElement | null;
       const target = active || (root.querySelector('.page-item .btn-pill') as HTMLElement | null);
       if (target) {
-        // make the list focusable and move focus to the active control
         (root as HTMLElement).focus();
         target.focus({ preventScroll: true });
       } else {
         (root as HTMLElement).focus();
       }
     } catch {
-      // ignore
     }
   }
 }

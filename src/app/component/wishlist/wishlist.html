@@ -9,8 +9,13 @@
 
   <ng-container *ngIf="auth.isLoggedIn()" class="mt-3">
     <div *ngIf="items().length === 0" class="text-muted no_movies">
-      No movies in watchlist
-
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/5303/5303750.png"
+    alt="Empty watchlist"
+    class="empty-avatar"
+  />
+  <!-- https://cdn-icons-png.flaticon.com/512/616/616408.png -->
+  <p>No movies in watchlist</p>
     </div>
 
     <div class="d-flex justify-content-between align-items-center mb-3" *ngIf="items().length > 0">
@@ -33,7 +38,7 @@
     <div *ngIf="viewMode() === 'grid'" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
       <div class="col" *ngFor="let it of pagedItems()">
         <!-- make entire card clickable; keep Remove button from bubbling -->
-        <div class="card h-100 text-white bg-dark mb-5" (click)="openDetails(it.id)" role="button" tabindex="0" style="cursor: pointer;">
+        <div class="card h-100 text-white bg-dark aokm" (click)="openDetails(it.id)" role="button" tabindex="0" style="cursor: pointer;">
           <img [src]="'https://image.tmdb.org/t/p/w500' + it.poster_path" class="card-img-top" [alt]="it.title">
           <div class="card-body ">
             <h6 class="card-title">{{ it.title }}</h6>
@@ -100,3 +105,5 @@
     <div class="visually-hidden" aria-live="polite">{{ liveMessage() }}</div>
   </ng-container>
 </div>
+
+<app-back-to-top />

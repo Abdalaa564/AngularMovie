@@ -82,7 +82,6 @@
   opacity: 0.6;
 }
 
-/* Wishlist pagination: pill buttons, centered */
 .wishlist-pagination-wrap {
   margin-top: 8px;
   margin-bottom: 20px;
@@ -112,7 +111,7 @@
 }
 
 .pagination-pill .page-item.active .btn-pill {
-  background: #00a6d6; /* teal/blue accent */
+  background: #00a6d6;
   color: white;
   font-weight: 600;
 }

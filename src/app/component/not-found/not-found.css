@@ -112,7 +112,6 @@
   background-color: #ff6b6b;
 }
 
-/* 🎯 شاشات متوسطة (تابلت) */
 @media (max-width: 1024px) {
   .not-found-avatar {
     width: 120px;

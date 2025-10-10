@@ -34,39 +34,32 @@ export class MovieCard {
   userRating = signal<number>(0);
 
   constructor() {
-    // تتبع حالة الـ wishlist تلقائياً
     effect(() => {
       const wishlistItems = this.wishlistService.items();
       this.isFavorite.set(wishlistItems.some(item => item.id === this.movie.id));
       
-      // تحميل تقييم المستخدم لهذا الفيلم من الخدمة
       this.loadUserRating();
     }, { injector: this.injector });
   }
 
-  // تحميل تقييم المستخدم
   private loadUserRating(): void {
     const rating = this.ratingService.getUserRating(this.movie.id);
     this.userRating.set(rating);
   }
 
-  // التعامل مع تقييم المستخدم في الكارد - يظهر snackbar مباشرة
   handleUserRating(): void {
     if (!this.authService.isLoggedIn()) {
       this.showRatingLoginSnackbar.set(true);
       return;
     }
 
-    // إذا كان المستخدم مسجل، افتح المودال للـ rating
     this.openRateModal(this.movie);
   }
 
-  // التعامل مع تقييم المستخدم في المودال
   handleRatingInModal(rating: number): void {
     const currentRating = this.userRating();
     let newRating = rating;
 
-    // إذا ضغط على نفس التقييم الحالي، يلغي التقييم
     if (currentRating === rating) {
       newRating = 0;
     }
@@ -74,7 +67,6 @@ export class MovieCard {
     this.userRating.set(newRating);
     this.ratingService.setUserRating(this.movie.id, newRating);
 
-    // عرض رسالة للمستخدم
     if (newRating > 0) {
       this.snackBar.open(`You rated "${this.movie.title}" ${newRating}/10`, 'Close', {
         duration: 3000,
@@ -94,7 +86,6 @@ export class MovieCard {
     this.closeModal();
   }
 
-  // التعامل مع زر الـ watchlist
   handleWatchlistClick(event: Event): void {
     event.preventDefault();
     event.stopPropagation();

@@ -20,6 +20,7 @@ export class Home implements OnInit {
   @Input({ required: true }) movie!: IMovie;
 
   private movieService = inject(MovieService);
+  
   movies: IMovie[] = [];
   popularMovies: IMovie[] = [];
   UpcomingMovies: IMovie[] = [];

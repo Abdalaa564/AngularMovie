@@ -1,7 +1,7 @@
 <nav class="navbar">
   <!-- Logo -->
     <div class="logo" [routerLink]="['/']" style="cursor: pointer;">
-    IMDb
+    AAMM
   </div>
   <!-- Menu -->
    <div class="menu" (click)="toggleMenuList()">
@@ -9,21 +9,19 @@
 
     <div class="menu-list" *ngIf="showMenuList">
       <a routerLink="/" class="menu-item"><i class="fa fa-home"></i> Home</a>
-      <a routerLink="/Wishlist" class="menu-item"><i class="fa fa-film"></i> Movies</a>
+      <a (click)="selectGenre('Action')" class="menu-item"><i class="fa fa-film"></i> Movies</a>
       <a routerLink="/auth/login" class="menu-item"> <i class="fa fa-user"></i> Sign In</a>
       <a routerLink="/" class="menu-item"><i class="fa fa-envelope"></i> Contact</a>
     </div>
   </div>
 
 
-    <!-- مربع البحث الكامل -->
   <div class="search-bar" [class.hidden]="hideSearchBar">
     <input type="text" [(ngModel)]="searchText" placeholder="Search IMDb..." (keyup.enter)="runSearch()" />
     <button (click)="runSearch()"><i class="fa fa-search"></i></button>
   </div>
 
 
-<!-- زرار فلترة النوع خارج السيرش بوكس -->
 <div class="genre-filter" (click)="toggleGenreMenu()">
   <span><i class="fa fa-film"></i> {{ selectedGenre  || ('General') }}</span>
   <i class="fa fa-caret-down"></i>
@@ -40,7 +38,7 @@
     <div class="imdbpro"
          (mouseenter)="showImdbPro = true"
          (mouseleave)="showImdbPro = false">
-      <span>IMDb<span class="pro">Pro</span></span>
+      <span>AAMM<span class="pro">Pro</span></span>
 
       <div class="imdbpro-box"
            (mouseenter)="showImdbPro = true"
@@ -49,7 +47,7 @@
         <p>Expand your network</p>
         <p>Express yourself authentically</p>
         <p>Access exclusive insights</p>
-        <button>Try IMDbPro for FREE</button>
+        <button *ngIf="!auth.isLoggedIn()" (click)="goToLogin()">Try AAMMPro for FREE</button>
       </div>
     </div>
 
@@ -69,7 +67,6 @@
     <div class="action-item" *ngIf="auth.isLoggedIn()" (click)="logout()" title="Logout">
       <i class="fa fa-sign-out-alt"></i> Logout
     </div>
-     <!-- زر الثيم -->
     <button class="theme-toggle" (click)="toggleTheme()">
     {{ isDarkMode ? '☀️ ' : '🌙 ' }}
   </button>
