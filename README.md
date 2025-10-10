@@ -1,59 +1,72 @@
-# FinalMovie
+# 🎬 Angular Movie App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.3.
+An Angular web application that allows users to browse movies, view details, manage a wishlist, and search for films — all powered by [The Movie Database (TMDB)](https://www.themoviedb.org/) API.
 
-## Development server
+## 🚀 Live Demo  
+👉 [https://abdalaa564.github.io/AngularMovie/](https://abdalaa564.github.io/AngularMovie/)
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 🧑‍💻 Team: **Echo Team**
+- Abdalaa Khaleel  
+- Mohamed Zain AlAbidine
+- Mohamed yahia Sayed 
+- Abdalaa Farrag Abdalaa
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 📝 Table of Contents
+- [About the Project](#about-the-project)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Pages](#pages)
+- [License](#license)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+## 📌 About the Project
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The **Movie App** enables users to:
+- Browse and search through the latest movies using TMDB API
+- View detailed information about each movie
+- Manage a personalized **wishlist**
+- Switch between **languages** (EN/AR)
+- Experience smooth UI with dark mode, loading spinners, and responsive design
 
-```bash
-ng generate --help
-```
+This project was developed as the **final project for the ITI Intensive Angular Program**.
 
-## Building
+---
 
-To build the project run:
+## ✨ Features
 
-```bash
-ng build
-```
+- 🎞 **Movie List** – Display movies with pagination  
+- 📝 **Movie Details** – Show description, rating, trailer, and recommendations  
+- ❤️ **Wishlist** – Add/remove movies, counter in navbar  
+- 🌍 **Multi-language Support** – EN / AR RTL for Arabic  
+- 🔍 **Search** – Search movies using TMDB API  
+- 🌙 **Dark Mode** – Toggle between light/dark themes  
+- ⏫ **Back to Top Button**  
+- 🦴 **Skeleton Loaders** for smooth UX  
+- 🔐 **Authentication** – Login/Register using LocalStorage or Firebase (Bonus)
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## 🧰 Tech Stack
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- **Angular** 
+- **TMDB API**  
+- **TypeScript**  
+- **HTML5 / CSS3**  
+- **GitHub Pages** for deployment
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## 📄 Pages
 
-For end-to-end (e2e) testing, run:
+home { carousel, mavie-card, movie-comingsoon, carddetail } Footer, NotFound, Trailer, Skeleton, Reating,  Lazy Loading
 
-```bash
-ng e2e
-```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
-## Additional Resources
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📜 License
+This project is licensed under the MIT License - see the LICENSE file for details.
