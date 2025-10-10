@@ -63,7 +63,13 @@ This project was developed as the **final project for the ITI Intensive Angular 
 
 ## 📄 Pages
 
-home { carousel, mavie-card, movie-comingsoon, carddetail } Footer, NotFound, Trailer, Skeleton, Reating,  Lazy Loading
+/-> home { carousel, mavie-card, movie-comingsoon, card-detail } 
+/Footer
+/NotFound
+/Trailer
+Skeleton
+Reating 
+Lazy Loading
 
 
 
