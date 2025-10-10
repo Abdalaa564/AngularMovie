@@ -1,18 +1,26 @@
 
 .Home {
-    background-color: black;
-    font-family: cairo, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
+  background-color: #f8f9fa;
+  font-family: cairo, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
 }
 
 .all {
-    margin: 0 8.4rem 3.5rem 2rem;
-    max-width: 1285px;
-
+  margin: 0 8.4rem 3.5rem 2rem;
+  max-width: 1285px;
 }
+.allf {
+  margin: 0 8.4rem 3.0 2rem;
+  max-width: 1285px;
+  padding-bottom: 20px;
+}
+
 .all .row {
   gap: 0.9rem;
 }
 
+.all h2{
+ color: #fff;
+}
 
 .movies-slider-wrapper {
   position: relative;
@@ -61,4 +69,21 @@
 
 .movies-slider-wrapper:hover .slider-btn {
   opacity: 1;
+}
+
+
+
+
+.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

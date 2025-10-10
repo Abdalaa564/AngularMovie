@@ -1,35 +1,49 @@
-<div class="auth-page">
-	<div class="auth-overlay"></div>
-	<div class="auth-center">
-		<div class="glass-card auth-form">
-			<h1 class="title">Create Account</h1>
+@if (isPageLoading()) {
+  <app-loading-spinner />
+} @else {
+  <div class="auth-page">
+    <div class="auth-center">
+      <div class="glass-card auth-form">
+        <h1 class="title">Create Account</h1>
 
-			<form (ngSubmit)="onSubmit()" #regForm="ngForm" class="auth-inner">
-				<div class="alerts">
-					<div class="alert success" *ngIf="message">{{ message }}</div>
-					<div class="alert error" *ngIf="error">{{ error }}</div>
-				</div>
+        <form (ngSubmit)="onSubmit()" #regForm="ngForm" class="auth-inner">
+          <div class="alerts">
+            <div class="alert success" *ngIf="message">{{ message }}</div>
+            <div class="alert error" *ngIf="error">{{ error }}</div>
+          </div>
 
-				<div class="field">
-					<label for="email">Email</label>
-					<input id="email" name="email" type="email" required [(ngModel)]="email" #emailModel="ngModel" placeholder="you@example.com" />
-					<div class="error" *ngIf="emailModel.invalid && emailModel.touched">Please enter a valid email.</div>
-				</div>
+          <div class="field">
+            <label for="name">Your Name</label>
+            <input id="name" name="name" type="text" required [(ngModel)]="name" #nameModel="ngModel" placeholder="Enter your name" />
+            <div class="error" *ngIf="nameModel.invalid && nameModel.touched">Please enter your name.</div>
+          </div>
 
-				<div class="field">
-					<label for="password">Password</label>
-					<input id="password" name="password" type="password" required minlength="6" [(ngModel)]="password" #pwModel="ngModel" placeholder="Create a password" />
-					<div class="error" *ngIf="pwModel.invalid && pwModel.touched">Password is required (min 6 chars).</div>
-				</div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required [(ngModel)]="email" #emailModel="ngModel" placeholder="you@example.com" />
+            <div class="error" *ngIf="emailModel.invalid && emailModel.touched">Please enter a valid email.</div>
+          </div>
 
-				<div class="field">
-					<label for="confirm">Confirm Password</label>
-					<input id="confirm" name="confirm" type="password" required [(ngModel)]="confirmPassword" #confirmModel="ngModel" placeholder="Repeat password" />
-					<div class="error" *ngIf="confirmPassword && confirmPassword !== password">Passwords do not match.</div>
-				</div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" required minlength="6" [(ngModel)]="password" #pwModel="ngModel" placeholder="Create a password" />
+            <div class="error" *ngIf="pwModel.invalid && pwModel.touched">Password is required (min 6 chars).</div>
+          </div>
 
-				<button type="submit" class="cta" [disabled]="regForm.invalid || password !== confirmPassword">Register</button>
-			</form>
-		</div>
-	</div>
-</div>
+          <div class="field">
+            <label for="confirm">Confirm Password</label>
+            <input id="confirm" name="confirm" type="password" required [(ngModel)]="confirmPassword" #confirmModel="ngModel" placeholder="Repeat password" />
+            <div class="error" *ngIf="confirmModel.touched && confirmPassword !== password">Passwords do not match.</div>
+          </div>
+
+          <button type="submit" class="cta" [disabled]="regForm.invalid || password !== confirmPassword">Register</button>
+          <hr class="hra">
+          <div class="action-item" title="Logout">
+              <i class="fa fa-sign-out-alt"></i> Already have an account? <span (click)="logout()"> Sign in ></span>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+}

@@ -1,13 +1,14 @@
 .navbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding: 10px 20px;
   background-color: #232222;
   color: white;
-  padding: 10px 20px;
-  font-family: cairo, sans-serif;
   gap: 10px;
-  flex-wrap: wrap;
 }
+
 
 .logo {
   background-color: #f5c518;
@@ -21,23 +22,23 @@
 
 .menu {
   position: relative;
-  background-color: #222;              /* نفس لون الفلتر واللغة */
+  background-color: #222; 
   color: white;
-  padding: 6px 12px;                   /* نفس التباعد الداخلي */
-  border-radius: 5px;                  /* نفس الحواف */
+  padding: 6px 12px; 
+  border-radius: 5px; 
   cursor: pointer;
   font-weight: bold;
   border: none;
-  margin: 0 10px;                      /* نفس التباعد الجانبي */
-  display: inline-flex;                /* لضبط المحاذاة الرأسية */
+  margin: 0 10px;     
+  display: inline-flex;       
   align-items: center;
-  height: 38px;                        /* نفس ارتفاع الفلتر واللغة */
+  height: 38px;      
   transition: background-color 0.2s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* نفس الظل */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   user-select: none;
 }
 .menu:hover {
-  background-color: #333;              /* تأثير التمرير */
+  background-color: #333; 
 }
 
 .dropdown-menu div:hover {
@@ -56,6 +57,26 @@
   margin-left: 30px;
   position: relative;
   overflow: visible;
+}
+.search-bar.hidden {
+  display: none;
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav-actions.hidden {
+  display: none;
+}
+.options-toggle,
+.search-icon {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .search-bar input {
@@ -109,9 +130,11 @@
 
 .nav-links {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 15px;
 }
+
 
 .pro {
   color: #00bfff;
@@ -159,7 +182,6 @@ background-image: url(https://media.istockphoto.com/id/1478374885/photo/joyful-f
   border-radius: 3px;
 
 }
-/* عناصر التنقل بعد البحث */
 .nav-actions {
   display: flex;
   align-items: center;
@@ -180,22 +202,18 @@ background-image: url(https://media.istockphoto.com/id/1478374885/photo/joyful-f
   color: #f5c518;
 }
 
-/* تحسين زر البحث */
 .search-bar button:hover {
   background-color: #e4b800;
 }
 
-/* تحسين Dropdown */
 .dropdown:hover {
   background-color: #f0f0f0;
 }
 
-/* تحسين أيقونات */
 .fa {
   font-size: 14px;
 }
 
-/* تأثير دخول للبوكس */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -205,7 +223,6 @@ background-image: url(https://media.istockphoto.com/id/1478374885/photo/joyful-f
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* تحسين النص داخل بوكس IMDbPro */
 .imdbpro-box p {
   margin: 5px 0;
   text-transform: uppercase;
@@ -277,10 +294,10 @@ background-image: url(https://media.istockphoto.com/id/1478374885/photo/joyful-f
   cursor: pointer;
   font-weight: bold;
   border: none;
-  margin: 0 10px; /* إزالة margin-top */
-  display: inline-flex; /* أفضل من inline-block للمحاذاة الرأسية */
-  align-items: center; /* لضبط المحتوى عموديًا */
-  height: 38px; /* نفس ارتفاع زر اللغة أو البحث لو محتاج توحيد */
+  margin: 0 10px;
+  display: inline-flex; 
+  align-items: center;
+  height: 38px;
   transition: background-color 0.2s ease;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
@@ -314,7 +331,6 @@ background-image: url(https://media.istockphoto.com/id/1478374885/photo/joyful-f
 
 
 
-/* زر اللغة */
 .language-dropdown {
   position: relative;
   background-color: #222;
@@ -336,15 +352,11 @@ background-image: url(https://media.istockphoto.com/id/1478374885/photo/joyful-f
   background-color: #333;
 }
 
-.language-dropdown:hover {
-  background-color: #333;
-}
-
-/* قائمة اللغة */
 .language-dropdown {
  position: absolute;
   top: 100%;
   left: 0;
+  cursor: pointer;
   background-color: #222;
   color: white;
   padding: 10px;
@@ -379,13 +391,11 @@ body[dir="rtl"] .language-dropdown {
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* لما اللغة تكون عربي (RTL) تظهر القائمة يمين */
 body[dir="rtl"] .language-menu {
   right: 0;
   left: auto;
 }
 
-/* لما اللغة تكون إنجليزي أو غيرها (LTR) تظهر القائمة شمال */
 body[dir="ltr"] .language-menu {
   left: 0;
   right: auto;
@@ -408,7 +418,6 @@ body[dir="ltr"] .language-menu {
   background-color: #333;
 }
 
-/* أنيميشن دخول */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -432,4 +441,33 @@ body.dark-mode {
 
 .theme-toggle:hover {
   background-color: #333;
+}
+@media (max-width: 900px) {
+  .nav-actions {
+    display: none;
+  }
+
+  .options-toggle {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .search-bar {
+    display: flex;
+    order: 3;
+    width: 100%;
+    max-width: none;
+    margin: 10px 0 0 0;
+  }
+
+  .search-icon {
+    display: none;
+  }
 }

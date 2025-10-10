@@ -8,10 +8,12 @@ import { MovieList } from './component/movie-list/movie-list';
 import { Carousel } from './component/carousel/carousel';
 import { Login } from './component/auth/login/login';
 import { Register } from './component/auth/register/register';
+import { Trailer } from './component/trailer/trailer';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'Home' },
   { path: 'details/:id', component: MovieDetail, title: 'Movie Details' },
+  { path: 'Trailer/:id', component: Trailer, title: 'Movie Trailer' },
   { path: 'MovieList', component: MovieList, title: 'MovieList' },
   { path: 'auth/login', component: Login, title: 'Login' },
   { path: 'auth/register', component: Register, title: 'Register' },

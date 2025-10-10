@@ -20,7 +20,7 @@ import { filter } from 'rxjs';
   styleUrls: ['./navbar.css'],
 })
 export class Navbar implements OnInit {
-  isLoggedIn = false; // عدّل حسب حالة المستخدم
+  isLoggedIn = false; 
   private router = inject(Router);
   private genreService = inject(Genre);
   private movieService = inject(MovieService);
@@ -29,19 +29,15 @@ export class Navbar implements OnInit {
   ngOnInit(): void {
     this.selectedGenre = null;
 
-    // تحميل اللغة
     const savedLang = localStorage.getItem('lang') || 'en';
     this.currentLang = savedLang;
     const dir = savedLang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.setAttribute('dir', dir);
 
-    // تحميل الثيم
     this.themeService.initTheme();
 
-    // تعيين عنوان الصفحة
     this.titleService.setTitle('IMDb Clone - Movies');
 
- // ✅ تصفير النوع عند الرجوع للصفحة الرئيسية
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
@@ -65,7 +61,7 @@ export class Navbar implements OnInit {
   hideProBox() {
     setTimeout(() => {
       this.showImdbPro = false;
-    }, 200); // تأخير 200ms
+    }, 200); 
   }
 
   searchText = '';
@@ -119,7 +115,6 @@ export class Navbar implements OnInit {
 
   showAllDropdown = false;
 
-  // === عنوان الصفحة ===
   private titleService = inject(Title);
   private snackbar = inject(SnackbarService) as SnackbarService;
 
@@ -138,6 +133,16 @@ export class Navbar implements OnInit {
     this.snackbar.success('Logged out');
     this.router.navigate(['/']);
   }
+hideOptions = false;
+hideSearchBar = false;
+
+toggleOptionsMenu() {
+  this.hideOptions = !this.hideOptions;
+}
+
+toggleSearchBar() {
+  this.hideSearchBar = !this.hideSearchBar;
+}
 
   @HostListener('document:click', ['$event'])
   handleClickOutside(event: MouseEvent) {
@@ -150,7 +155,7 @@ export class Navbar implements OnInit {
     if (clickedOutsideMenu) this.showMenuList = false;
     if (clickedOutsideLanguage) this.showLanguageMenu = false;
   }
-  // === اللغة ===
+
   availableLanguages = ['en', 'ar', 'fr', 'zh'];
   currentLang = 'en';
   showLanguageMenu = false;
@@ -165,7 +170,6 @@ export class Navbar implements OnInit {
 
   movies: IMovie[] = [];
 
-  // === تغيير اللغة ===
   changeLanguage(lang: string): void {
     this.currentLang = lang;
     localStorage.setItem('lang', lang);
@@ -173,15 +177,17 @@ export class Navbar implements OnInit {
     const dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.setAttribute('dir', dir);
     this.showLanguageMenu = false;
-    // إعادة تحميل الصفحة علشان المكون MovieList يقرأ اللغة الجديدة
+
     window.location.reload();
 
     this.movieService.getNowPlaying(lang).subscribe((res) => {
       this.movies = res.results;
     });
   }
-  // === تغيير الثيم ===
+
   toggleTheme(): void {
     this.themeService.toggleTheme();
   }
+
+
 }

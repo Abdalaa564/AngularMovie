@@ -13,7 +13,7 @@ import { SnackbarService } from '../../services/snackbar.service';
         <button class="snackbar-close" (click)="svc.close(m.id)" aria-label="Close notification">×</button>
       </div>
     </div>
-    <!-- Visually-hidden live region for screen readers to announce latest message -->
+
     <div [attr.aria-live]="latestPoliteness" class="visually-hidden" aria-atomic="true">{{ latestMessage }}</div>
   `,
   styles: [

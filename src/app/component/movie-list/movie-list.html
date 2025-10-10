@@ -1,12 +1,78 @@
-    <div class="movies-slider-wrapper">
-      <div class="movies-slider" #slider>
-        
-        @for (movie of movies; track movie.id) {
-          <div class="col">
-            <app-movie-card [movie]="movie" />
+@if (isLoading()) {
+  <app-loading-spinner />
+} @else {
+  <div *ngIf="items().length > 0" class="movie-list-controls d-flex align-items-center justify-content-center mt-3">
+    <div class="btn-group" role="group" aria-label="Sort controls mb-2">
+      <button type="button" class="btn btn-outline-dark btn-sm" [class.active]="sortKey() === 'added'" (click)="setSortKey('added')">Recently added</button>
+      <button type="button" class="btn btn-outline-dark btn-sm" [class.active]="sortKey() === 'title'" (click)="setSortKey('title')">Title</button>
+      <button type="button" class="btn btn-outline-dark btn-sm" [class.active]="sortKey() === 'rating'" (click)="setSortKey('rating')">IMDb rating</button>
+      <button type="button" class="btn btn-outline-dark" [class.active]="sortKey() === 'year'" (click)="setSortKey('year')">Year</button>
+      <button type="button" class="btn btn-outline-dark btn-sm" (click)="toggleDir()">
+        <span *ngIf="sortDir() === 'asc'">▲</span>
+        <span *ngIf="sortDir() === 'desc'">▼</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="viewMode() === 'grid'" class="movies-slider-wrapper">
+    <div class="movies-slider" #slider>
+      @for (movie of pagedItems(); track movie.id) {
+        <div class="col">
+          <app-movie-card [movie]="movie" />
+        </div>
+      }
+    </div>
+  </div>
+
+  <div *ngIf="viewMode() === 'list'" class="list-group mb-4">
+    <div class="list-group-item list-group-item-action bg-light mb-2" *ngFor="let movie of pagedItems()" (click)="openDetails(movie.id)" style="cursor: pointer;">
+      <div class="d-flex align-items-center">
+        <img [src]="'https://image.tmdb.org/t/p/w200' + movie.poster_path" [alt]="movie.title" class="me-3 rounded" style="width: 60px; height: 90px; object-fit: cover;">
+        <div class="flex-grow-1">
+          <div class="d-flex align-items-center">
+            <h6 class="mb-1 me-2">{{ movie.title }}</h6>
+            <span class="text-muted">({{ movie.release_date | date: 'yyyy' }})</span>
           </div>
-        }
-        
+          <small class="text-muted">IMDb {{ (movie.vote_average || 0).toFixed(1) }}</small>
+        </div>
+        <div class="ms-3">
+          <button class="btn btn-sm btn-outline-danger" (click)="remove(movie.id); $event.stopPropagation()">Remove</button>
+        </div>
       </div>
     </div>
-    
+  </div>
+
+  <div *ngIf="totalPages() > 1" class="wishlist-pagination-wrap">
+    <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+      <div class="page-size">
+        <label for="pageSize" class="form-label me-2 mb-0">Per page:</label>
+        <select id="pageSize" class="form-select form-select-sm" (change)="setPageSize($any($event.target).value)" [value]="pageSize()">
+          <option value="4">4</option>
+          <option value="8">8</option>
+          <option value="12">12</option>
+        </select>
+      </div>
+    </div>
+
+    <nav aria-label="Wishlist pagination">
+      <ul id="wishlist-pagination" class="pagination pagination-pill justify-content-center" tabindex="-1" role="navigation" aria-label="Pagination">
+        <li class="page-item prev" [class.disabled]="currentPage() === 1">
+          <button type="button" class="page-link btn-pill" (click)="prevPage()" [attr.aria-disabled]="currentPage() === 1" aria-label="Previous page">Prev</button>
+        </li>
+
+        <li class="page-item" *ngFor="let p of visiblePages(); let i = index" [class.active]="currentPage() === p" [class.ellipsis]="p === 'ellipsis'" [class.number]="p !== 'ellipsis'">
+          <button *ngIf="p !== 'ellipsis'" type="button" class="page-link btn-pill" (click)="setPage($any(p))" [attr.aria-current]="currentPage() === p ? 'page' : null" aria-label="Go to page {{p}}">{{ p }}</button>
+          <button *ngIf="p === 'ellipsis'" type="button" class="page-link btn-pill small-dot" (click)="jumpEllipsis(i)" aria-label="More pages">…</button>
+        </li>
+
+        <li class="page-item next" [class.disabled]="currentPage() === totalPages()">
+          <button type="button" class="page-link btn-pill" (click)="nextPage()" [attr.aria-disabled]="currentPage() === totalPages()" aria-label="Next page">Next</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="visually-hidden" aria-live="polite">{{ liveMessage() }}</div>
+}
+
+<app-back-to-top />

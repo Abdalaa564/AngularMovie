@@ -1,5 +1,5 @@
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router'; // <-- 1. استيراد الدالة الجديدة
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router'; 
 
 import { routes } from './app.routes';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
@@ -14,12 +14,11 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
 
-    // 2. إضافة الخاصية الجديدة هنا
     provideRouter(
       routes,
       withComponentInputBinding(),
       withInMemoryScrolling({
-        scrollPositionRestoration: 'top', // للانتقال لأعلى الصفحة دائماً
+        scrollPositionRestoration: 'top',
       })
     ),
     provideHttpClient(),

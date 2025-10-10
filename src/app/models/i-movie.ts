@@ -49,11 +49,13 @@ export interface IReview {
   updated_at: string;
   url: string;
   movie_id?: number;
-  likes_count?: number; // إضافة هذه الخاصية
+  likes_count?: number;
 }
+
 export interface IReviewsResponse {
   results: IReview[];
 }
+
 
 export type MediaItem = 
   | (IVideo & { media_type: 'video' })

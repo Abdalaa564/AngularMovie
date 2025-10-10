@@ -3,14 +3,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* ياخد ارتفاع الصفحة كلها */
+  min-height: 100vh; 
   background-color: #1a1a1a;
-  position: fixed; /* يغطي الشاشة كلها */
+  position: fixed; 
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 9999; /* يبقى فوق كل العناصر */
+  z-index: 9999;
 }
 
 .spinner {

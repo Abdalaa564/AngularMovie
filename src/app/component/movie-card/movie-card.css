@@ -80,7 +80,7 @@
 .watchlist-btn {
   background-color: rgba(255, 255, 255, 0.1);
   color: #5799ef;
-  padding: 4px 37px;     /* الارتفاع والعرض الداخلي */
+  padding: 4px 37px;  
   border-radius: 50px;
   font-size: .875rem;
   font-weight: 500;
@@ -92,14 +92,6 @@
 .watchlist-btn span {
   font-size: 1rem;
 }
-
-
-
-
-
-
-
-
 
 .movie-modal {
   position: fixed !important;
@@ -264,19 +256,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/* الشاشات الصغيرة (الموبايل) */
 @media (max-width: 768px) {
   .movie-card {
     width: 150px;
@@ -313,7 +292,6 @@
   }
 }
 
-/* التابلت */
 @media (min-width: 769px) and (max-width: 1024px) {
   .movie-card {
     width: 160px;
@@ -343,9 +321,7 @@
     gap: 1.2rem;
   }
 }
-/* التنسيقات الأصلية كما هي... */
 
-/* Snackbar Styles - إضافة فقط في النهاية */
 .snackbar-overlay {
   position: fixed;
   top: 0;
@@ -449,15 +425,167 @@
   }
 }
 
-/* Custom Snackbar Style */
 .movie-snackbar {
   background-color: #ffc107;
   color: #111;
   font-weight: bold;
 }
 
-/* زر Watchlist النشط */
+
 .watchlist-btn.active {
   background-color: #ffc107 !important;
   color: #111 !important;
 }
+
+.trailer-snackbar .snackbar-content {
+  max-width: 800px;
+  width: 95%;
+}
+
+.trailer-content {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.trailer-container {
+  margin-top: 1rem;
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; 
+}
+
+.trailer-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+.trailer-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #ffc107;
+}
+
+.trailer-error {
+  text-align: center;
+  padding: 2rem;
+  color: #dc3545;
+}
+
+.trailer-error i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .trailer-snackbar .snackbar-content {
+    margin: 1rem;
+    padding: 1rem;
+  }
+  
+  .trailer-container {
+    padding-bottom: 56.25%;
+  }
+}
+
+.card-body{
+  padding: 7px;
+  margin-bottom: -40px;
+}
+
+.movie-card {
+  background-color: #2c2c2c;
+  border: none;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  font-family: cairo, Roboto, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
+  overflow: hidden;
+  width: 190px;
+  height: 300px;
+}
+
+.rating-star{
+  font-size: 0.8rem;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  color: #fff;
+}
+.card-title :hover{
+  text-decoration: underline;
+}
+
+.rating-container .rating {
+  color: #dadada;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.Trailer{
+  color: #ffffff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 1rem;
+  font-weight: 600;
+  gap: 0.3rem;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.Trailer:hover {
+  color: #ffc107;
+}
+
+.card-actions{
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  gap: 1rem;
+  margin-left: 10px;
+}
+
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 2px 6px;
+}
+
+.watchlist-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #5799ef;
+  padding: 4px 37px;
+  border-radius: 50px;
+  font-size: .875rem;
+  font-weight: 500;
+  min-width: 100px;
+  text-align: center;
+  border: none;
+  transition: background-color 0.2s ease-in-out;
+}
+.watchlist-btn span {
+  font-size: 1rem;
+}
+
+.watchlist-btn.active {
+  background-color: #ffc107 !important;
+  color: #111 !important;
+}
+

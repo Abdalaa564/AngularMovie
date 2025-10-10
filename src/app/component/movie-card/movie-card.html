@@ -8,7 +8,6 @@
       <i class="bi bi-star-fill text-warning ms-1 rating-star"></i>
       <span class="rating">{{ movie.vote_average.toFixed(1) }}</span>
       
-      <!-- غيرنا openRateModal(movie) إلى handleUserRating() -->
       <div class="info-icon ic rating-icon-with-text" (click)="handleUserRating()">
         <i
           class="bi ms-4 rating-star"
@@ -22,13 +21,12 @@
           <span>{{ userRating() }}</span>
         }
       </div>
-
     </div>
+    
     <a [routerLink]="['/details', movie.id]" class="text-decoration-none">
       <h6 class="card-title">{{ movie.title }}</h6>
     </a>
     
-    <!-- زر الـ Watchlist -->
     <button class="btn watchlist-btn mb-2" 
             (click)="handleWatchlistClick($event)" 
             [title]="isFavorite() ? 'Remove from Watchlist' : 'Add to Watchlist'"
@@ -38,7 +36,9 @@
     </button>
     
     <div class="card-actions">
-      <a class="Trailer me-2"><i class="bi bi-play-fill"></i>Trailer</a>
+      <a [routerLink]="['/Trailer', movie.id]" class="Trailer me-2">
+        <i class="bi bi-play-fill"></i>Trailer
+      </a>
 
       <div class="info-icon" (click)="openMovieModal(movie)">
         <i class="bi bi-exclamation-circle"></i>
@@ -48,7 +48,6 @@
   </div>
 </div>
 
-<!-- باقي الكود يبقى كما هو -->
 <!-- Movie Modal -->
 @if (selectedMovie) {
   <div class="movie-modal" (click)="closeModal()">
@@ -86,7 +85,7 @@
   </div>
 }
 
-<!-- Movie Rate -->
+<!-- Movie Rate Modal -->
 @if (selectedMovieForRating) {
   <div class="movie-modal" (click)="closeModal()">
     <div class="movie-modal-content" (click)="$event.stopPropagation()">
@@ -101,8 +100,8 @@
             <i
               class="bi bi-star-fill rate-star"
               [ngClass]="{
-                'bi-star-fill text-warning': star <= userRating(),
-                'bi-star text-secondary': star > userRating()
+                'text-warning': star <= userRating(),
+                'text-secondary': star > userRating()
               }"
               (click)="setRating(star)"
             ></i>
@@ -117,7 +116,7 @@
   </div>
 }
 
-<!-- Snackbar for Login -->
+<!-- Snackbar for Watchlist Login -->
 @if(showLoginSnackbar()){
   <div class="snackbar-overlay" (click)="dismissSnackbar()">
     <div class="snackbar-content" (click)="$event.stopPropagation()">
